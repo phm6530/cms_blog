@@ -1,8 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-import { compare } from "bcryptjs";
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     jwt({ token, user }) {
@@ -28,9 +26,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       // 비동기
       async authorize(credentials) {
+        const { email, password } = credentials;
+
+        if (!email || !password) {
+          throw new Error("잘못된 요청입니다.");
+        }
+
         return {
-          id: user.id.toString(),
-          email: user.email?.toString(),
+          id: "유저",
+          email: "squirrel309@naver.com",
         };
       },
     }),

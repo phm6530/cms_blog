@@ -24,3 +24,12 @@ npm install axios
 
 npm install drizzle-orm pg
 npm install -D drizzle-kit
+
+<!-- dark Mode -->
+
+npm install next-themes
+
+<!-- ui -->
+
+npm install lucide-react
+npm install shadcn-ui
