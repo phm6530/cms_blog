@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z.string().min(2, {
@@ -34,11 +35,15 @@ export default function Page() {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    await signIn("credentials", {
+    const res = await signIn("credentials", {
       email: data.email,
       password: data.password,
       redirect: true,
     });
+
+    if (res?.error) {
+      toast("에러러");
+    }
   };
 
   return (

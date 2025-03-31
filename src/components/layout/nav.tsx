@@ -13,7 +13,7 @@ const navlist = [
   },
   {
     href: "/login",
-    name: "Login",
+    name: "로그인",
   },
 ];
 
