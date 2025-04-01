@@ -3,90 +3,66 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { signIn } from "next-auth/react";
+import { Form } from "@/components/ui/form";
+import { loginSchema } from "./schema";
+import InputField from "@/components/shared/inputField";
+import PasswordInputField from "@/components/shared/inputPasswordField";
+import Link from "next/link";
+import LoginAction from "./action";
 import { toast } from "sonner";
 
-const formSchema = z.object({
-  email: z.string().min(2, {
-    message: "필수항목입니다.",
-  }),
-  password: z.string().min(10, {
-    message: "필수항목입니다.",
-  }),
-});
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
+  const { update } = useSession();
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    const res = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: true,
-    });
-
-    if (res?.error) {
-      toast("에러러");
+  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+    const res = await LoginAction(data);
+    if (!!res.error) {
+      toast.error(res.errorMessage);
+      return;
+    }
+    if (res.success) {
+      toast.success("로그인 되었습니다.");
+      await update();
+      router.push("/");
     }
   };
 
   return (
-    <div className="w-[500px] mx-auto">
+    <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
+          <InputField
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>USER</FormLabel>
-                <FormControl>
-                  <Input placeholder="admin" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="USER"
+            placeholder="관리자 ID를 입력해주세요"
           />
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>PASSWORD</FormLabel>
-                <FormControl>
-                  <Input placeholder="admin" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <PasswordInputField />
 
           <Button type="submit" className="w-full">
             로그인
           </Button>
         </form>
       </Form>
-    </div>
+      <div className="auth-nav flex justify-center gap-2 p-4 items-center">
+        <Link href={"/register"} className="text-xs">
+          관리자 생성
+        </Link>
+        <span className="opacity-40">|</span>
+        <Link href={"/register"} className="text-xs">
+          비밀번호 찾기
+        </Link>
+      </div>
+    </>
   );
 }

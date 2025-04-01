@@ -21,6 +21,8 @@ export default function Nav() {
   const session = useSession();
   const isLoading = session.status === "loading";
 
+  console.log(session);
+
   return (
     <nav className="border-b">
       <Grid className=" flex gap-5 py-3 items-center justify-center">

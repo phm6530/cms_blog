@@ -5,8 +5,6 @@ import Grid from "@/components/layout/grid";
 import ClientProvider from "@/provider/client-provider";
 import Nav from "@/components/layout/nav";
 import { Toaster } from "@/components/ui/sonner";
-import { db } from "@/db/db";
-import { sql } from "drizzle-orm";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,13 +25,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  try {
-    // 간단한 쿼리 실행 (현재 DB 시간 가져오기)
-    const result = await db.execute(sql`SELECT NOW() as now`);
-    console.log(result[0].now);
-  } catch (error) {
-    console.error(error);
-  }
+  // try {
+  //   const result = await db.execute(sql`SELECT NOW() as now`);
+  //   console.log(result[0].now);
+  // } catch (error) {
+  //   console.error(error);
+  // }
 
   return (
     <html lang="en" suppressHydrationWarning>
