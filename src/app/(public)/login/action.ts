@@ -5,7 +5,6 @@ import { db } from "@/db/db";
 import { usersTable } from "@/db/schema";
 import { compare } from "bcryptjs";
 import { eq } from "drizzle-orm";
-import { redirect } from "next/navigation";
 
 type loginProps = {
   email: string;
