@@ -10,4 +10,8 @@ if (!connectionString) {
 }
 
 export const client = postgres(connectionString, { prepare: false });
-export const db = drizzle(client);
+export const dbDev = drizzle(client);
+
+// Supabase에서 발급받은 DATABASE_URL 사용
+const product = postgres(process.env.DATABASE_URL!, { prepare: false });
+export const db = drizzle(product);

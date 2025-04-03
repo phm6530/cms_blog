@@ -1,5 +1,8 @@
 // db/baseColumns.ts
-import { timestamp } from "drizzle-orm/pg-core";
+import { pgEnum, timestamp } from "drizzle-orm/pg-core";
+
+// 1. enum 타입 먼저 선언
+export const userRoleEnum = pgEnum("role", ["admin", "member"]);
 
 export const baseColumns = {
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),

@@ -15,13 +15,19 @@ const navlist = [
     href: "/login",
     name: "로그인",
   },
+  {
+    href: "/blog",
+    name: "블로그",
+  },
+  {
+    href: "/guestbook",
+    name: "방명록",
+  },
 ];
 
 export default function Nav() {
   const session = useSession();
   const isLoading = session.status === "loading";
-
-  console.log(session);
 
   return (
     <nav className="border-b">
@@ -49,7 +55,11 @@ export default function Nav() {
             }
           }
           return (
-            <Link key={`${link.href}-${idx}`} href={link.href}>
+            <Link
+              key={`${link.href}-${idx}`}
+              href={link.href}
+              className="text-sm"
+            >
               {link.name}
             </Link>
           );

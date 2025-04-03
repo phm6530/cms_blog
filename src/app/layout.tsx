@@ -5,6 +5,8 @@ import Grid from "@/components/layout/grid";
 import ClientProvider from "@/provider/client-provider";
 import Nav from "@/components/layout/nav";
 import { Toaster } from "@/components/ui/sonner";
+import { db } from "@/db/db";
+import { sql } from "drizzle-orm";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
