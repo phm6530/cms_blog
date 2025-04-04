@@ -1,10 +1,12 @@
 import { integer, pgTable, text } from "drizzle-orm/pg-core";
 
+//Main Blog
 export const blogGroup = pgTable("blog_group", {
   group_id: integer("group_id").primaryKey().generatedAlwaysAsIdentity(),
   group_name: text("group_name").notNull(),
 });
 
+//sub Schema
 export const blogSubGroup = pgTable("blog_sub_group", {
   sub_group_id: integer("sub_group_id")
     .primaryKey()

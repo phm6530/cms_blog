@@ -37,7 +37,6 @@ export async function GET() {
   }
   const tagGroups = [...hashMap.values()];
 
-  console.log("요청안옴 ㅎ");
   return NextResponse.json({
     success: true,
     result: tagGroups,

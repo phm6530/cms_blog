@@ -1,65 +1,62 @@
 "use client";
+
 import Link from "next/link";
 import Grid from "./grid";
 import ThemeHandler from "./ThemeHandler";
 import { Button } from "../ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { Skeleton } from "../ui/skeleton";
+import { useEffect, useState } from "react";
 
 const navlist = [
-  {
-    href: "/",
-    name: "Home",
-  },
-  {
-    href: "/login",
-    name: "로그인",
-  },
-  {
-    href: "/blog",
-    name: "블로그",
-  },
-  {
-    href: "/guestbook",
-    name: "방명록",
-  },
+  { href: "/", name: "Home" },
+  { href: "/login", name: "로그인" },
+  { href: "/blog", name: "블로그" },
+  { href: "/guestbook", name: "방명록" },
 ];
 
 export default function Nav() {
-  const session = useSession();
-  const isLoading = session.status === "loading";
+  const { data: session, status } = useSession();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const isLoading = status === "loading";
 
   return (
     <nav className="border-b">
-      <Grid className=" flex gap-5 py-3 items-center justify-center">
+      <Grid className="flex gap-5 py-3 items-center justify-center">
         {navlist.map((link, idx) => {
           if (link.href === "/login") {
-            if (isLoading) {
+            if (!isClient || isLoading) {
               return (
                 <Skeleton
-                  key={`${link.href}-${idx}`}
+                  key={`skeleton-${idx}`}
                   className="w-[40px] h-[12px] rounded-md"
                 />
               );
-            } else if (!!session.data) {
+            } else if (session) {
               return (
-                <Button
-                  variant={"outline"}
-                  key={`${link.href}-${idx}`}
-                  className="text-xs  animate-wiggle bg-transparent!"
-                  onClick={async () => await signOut()}
-                >
-                  로그아웃
-                </Button>
+                <div key={`auth-${idx}`} className="flex items-center gap-2">
+                  <Link href={"/admin"} className="text-sm">
+                    관리자
+                  </Link>
+                  <Button
+                    variant={"outline"}
+                    className="text-xs animate-wiggle"
+                    onClick={async () => await signOut()}
+                  >
+                    로그아웃
+                  </Button>
+                </div>
               );
             }
           }
+
           return (
-            <Link
-              key={`${link.href}-${idx}`}
-              href={link.href}
-              className="text-sm"
-            >
+            <Link key={link.href} href={link.href} className="text-sm">
               {link.name}
             </Link>
           );

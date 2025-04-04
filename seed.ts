@@ -1,20 +1,19 @@
 // import "dotenv/config";
 // import { usersTable } from "@/db/schema";
 // import { db } from "@/db/db";
+// import bcrypt from "bcryptjs";
 
 // async function main() {
-//   const user: typeof usersTable.$inferInsert = {
-//     name: "리슨업",
-//     email: "john@example.com",
-//     password: "$2b$10$jXyj8bJG7ht/V7eLZHtsgeIDDDJfk9GaG0IqsKl15J5gJbBep90H.",
-//     role: "admin",
-//   };
+//   const ps = "zlahdzl12!";
+//   const password = await bcrypt.hash(ps, 10);
 
-//   await db.insert(usersTable).values(user);
-//   console.log("New user created!");
+//   console.log(password);
 
-//   const users = await db.select().from(usersTable);
-//   console.log("Getting all users from the database: ", users);
+//   const tet = await bcrypt.compare(
+//     "zlahdzl12!",
+//     "$2b$10$pDRfdc7Of47kxfcFCyBhu.bwtGu7Oh9Z0Y.D1Eei.b4If3AnVEPHO"
+//   );
+//   console.log(tet);
 // }
 
 // main();

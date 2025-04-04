@@ -13,10 +13,12 @@ import { toast } from "sonner";
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import useThrottling from "@/hook/useThrottling";
 
 export default function Page() {
   const router = useRouter();
   const { update } = useSession();
+  const { throttle } = useThrottling();
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -26,18 +28,21 @@ export default function Page() {
   });
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    const res = await LoginAction(data);
-    if (!!res.error) {
+    const res = await throttle(() => LoginAction(data), 1500);
+    if (!res) return;
+    if (res.error) {
       toast.error(res.errorMessage);
+      form.setValue("password", "");
+      form.trigger("password");
       return;
     }
+
     if (res.success) {
       toast.success("로그인 되었습니다.");
       await update();
       router.push("/");
     }
   };
-
   return (
     <>
       <Form {...form}>

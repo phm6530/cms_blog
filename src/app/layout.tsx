@@ -5,17 +5,6 @@ import Grid from "@/components/layout/grid";
 import ClientProvider from "@/provider/client-provider";
 import Nav from "@/components/layout/nav";
 import { Toaster } from "@/components/ui/sonner";
-import { db } from "@/db/db";
-import { sql } from "drizzle-orm";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -36,9 +25,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={` antialiased`}>
         <ClientProvider>
           <Nav />
           <Grid className="mt-6">{children}</Grid> <Toaster />

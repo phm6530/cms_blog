@@ -1,7 +1,5 @@
 "use server";
-
 import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
 
 type ActionsProps = {
   endPoint: string;
@@ -24,46 +22,26 @@ type ErrorResponse = {
   statusCode?: number;
 };
 
-// BASE_NEST_URL은 환경변수로 관리합니다.
-const BASE_NEST_URL = process.env.BASE_NEST_URL;
-if (!BASE_NEST_URL) {
-  throw new Error("BASE_NEST_URL is not defined");
-}
-
 export const withFetchRevaildationAction = async <T>({
   endPoint,
   tags,
-  requireAuth,
   options,
 }: ActionsProps): Promise<SuccessResponse<T> | ErrorResponse> => {
-  // Cookie 가져오기
-  const cookieStore = cookies();
-  const authCookie = (await cookieStore).get("token");
-
-  // 인증 필요시 토큰 체크
-  if (requireAuth && !authCookie) {
-    return {
-      success: false,
-      message: "인증 토큰이 없습니다.",
-      statusCode: 401,
-    };
-  }
-
   // 헤더 구성
   const headers: HeadersInit = {
     ...(options?.body ? { "Content-Type": "application/json" } : {}),
-    ...(requireAuth && authCookie
-      ? { Authorization: `Bearer ${authCookie.value}` }
-      : {}),
     ...options?.headers,
   };
 
   try {
     // API 요청 실행
-    const response = await fetch(`${BASE_NEST_URL}/${endPoint}`, {
-      ...options,
-      headers,
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/${endPoint}`,
+      {
+        ...options,
+        headers,
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
@@ -78,18 +56,16 @@ export const withFetchRevaildationAction = async <T>({
       throw new Error(errorData.message || "Request Failed");
     }
 
-    // 태그가 있다면 리밸리데이션 실행
     if (tags && tags.length > 0) {
       for (const tag of tags) {
         revalidateTag(tag);
       }
     }
 
-    // 응답 JSON 파싱 후 반환
-    const resultData = await response.json();
+    const { result }: { result: T } = await response.json();
     return {
       success: true,
-      result: resultData,
+      result: result,
     };
   } catch (error) {
     if (error instanceof Error) {

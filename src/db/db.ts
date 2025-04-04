@@ -1,17 +1,21 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+// lib/db.ts
 import "dotenv/config";
+import { drizzle, PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import * as schema from "./schema";
 
-// NEXT_PUBLIC_ 은 클라이언트에 노출되므로 제거하는 것이 좋습니다
-const connectionString = process.env.DATABASE_URL;
+class Database {
+  private static instance: PostgresJsDatabase<typeof schema>;
 
-if (!connectionString) {
-  throw new Error("DATABASE_URL is not defined");
+  static getInstance() {
+    if (!Database.instance) {
+      const connection = postgres(process.env.DATABASE_URL!, {
+        prepare: false,
+      });
+      Database.instance = drizzle(connection, { schema });
+    }
+    return Database.instance;
+  }
 }
 
-export const client = postgres(connectionString, { prepare: false });
-export const dbDev = drizzle(client);
-
-// Supabase에서 발급받은 DATABASE_URL 사용
-const product = postgres(process.env.DATABASE_URL!, { prepare: false });
-export const db = drizzle(product);
+export const db = Database.getInstance();
