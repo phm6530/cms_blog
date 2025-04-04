@@ -63,6 +63,7 @@ export const withFetchRevaildationAction = async <T>({
     }
 
     const { result }: { result: T } = await response.json();
+
     return {
       success: true,
       result: result,

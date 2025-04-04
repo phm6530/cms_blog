@@ -10,7 +10,7 @@ export default async function PostPage({
 
   return (
     <>
-      <PostListNav />
+      <PostListNav selectGroup={subGroup} />
       <PostList subGroup={subGroup} />
     </>
   );

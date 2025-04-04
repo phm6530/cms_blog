@@ -2,6 +2,7 @@ import { REVALIDATE_TAGS } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 import PostItem from "./component/post-list-item";
+import SearchInput from "@/components/ui/search-input";
 
 export type PostItemModel = {
   post_id: number;
@@ -11,6 +12,7 @@ export type PostItemModel = {
   update_at: string;
   author_id: number;
   thumbnail_url: string;
+  sub_group_name: string;
   view: boolean;
 };
 
@@ -32,7 +34,8 @@ export default async function PostList({ subGroup }: { subGroup?: string }) {
   ///d
   return (
     <section className="py-10 flex flex-col gap-5">
-      <div className="border-b">test</div>
+      <div className="border-b">{isSubGroup}</div>
+      <SearchInput name="keyword" />
       {response.result.map((item, idx) => {
         return <PostItem {...item} key={idx} />;
       })}

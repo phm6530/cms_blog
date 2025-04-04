@@ -11,8 +11,8 @@ import { useEffect, useState } from "react";
 const navlist = [
   { href: "/", name: "Home" },
   { href: "/login", name: "로그인" },
-  { href: "/blog", name: "블로그" },
-  { href: "/guestbook", name: "방명록" },
+  { href: "/blog", name: "BLOG" },
+  { href: "/guestbook", name: "GUEST BOARD" },
 ];
 
 export default function Nav() {

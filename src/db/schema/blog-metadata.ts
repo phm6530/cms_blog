@@ -13,6 +13,7 @@ export const blogMetaSchema = pgTable("blog_metadata", {
   post_description: text("post_description").notNull(),
   create_at: timestamp().notNull(),
   update_at: timestamp().notNull(),
+  sub_group_id: integer("sub_group_id").notNull(),
   author_id: integer()
     .notNull()
     .references(() => usersTable.id, {

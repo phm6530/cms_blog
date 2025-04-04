@@ -1,15 +1,24 @@
 import { db } from "@/db/db";
+import { blogSubGroup } from "@/db/schema/blog-group";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const list = await db
+  const rows = await db
     .select()
     .from(blogMetaSchema)
+    .innerJoin(
+      blogSubGroup,
+      eq(blogMetaSchema.sub_group_id, blogSubGroup.sub_group_id)
+    )
     .orderBy(desc(blogMetaSchema.post_id))
     .limit(10)
     .offset(0);
 
-  return NextResponse.json({ success: true, result: list });
+  const flatRows = rows.map(({ blog_metadata, blog_sub_group }) => {
+    return { ...blog_metadata, sub_group_name: blog_sub_group.sub_group_name };
+  });
+
+  return NextResponse.json({ success: true, result: flatRows });
 }

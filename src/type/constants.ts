@@ -1,8 +1,18 @@
 export enum BLOG_TAGS {
   LIST = "BLOG_LIST",
   GROUPS = "BLOG_GROUPS",
+  DETAIL = "BLOG_DETAIL",
 }
 
 export const REVALIDATE_TAGS = {
   BLOG: BLOG_TAGS,
+  COMMENT: "COMMENT",
 };
+
+export const ENV = {
+  IMAGE_URL: process.env.IMAGE_URL,
+};
+
+export enum HTTP_METHOD {
+  POST = "POST",
+}

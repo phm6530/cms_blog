@@ -5,6 +5,7 @@ import Grid from "@/components/layout/grid";
 import ClientProvider from "@/provider/client-provider";
 import Nav from "@/components/layout/nav";
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/layout/footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -29,6 +30,7 @@ export default async function RootLayout({
         <ClientProvider>
           <Nav />
           <Grid className="mt-6">{children}</Grid> <Toaster />
+          <Footer />
         </ClientProvider>
       </body>
     </html>
