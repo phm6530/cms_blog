@@ -21,7 +21,7 @@ export default async function PostList({ subGroup }: { subGroup?: string }) {
   const response = await withFetchRevaildationAction<PostItemModel[]>({
     endPoint: `api/blog?group${isSubGroup}`,
     options: {
-      cache: "no-store",
+      cache: "force-cache",
       next: {
         tags: [REVALIDATE_TAGS.BLOG.LIST, isSubGroup],
       },
@@ -34,11 +34,15 @@ export default async function PostList({ subGroup }: { subGroup?: string }) {
   ///d
   return (
     <section className="py-10 flex flex-col gap-5">
-      <div className="border-b">{isSubGroup}</div>
+      <div className=" relative font-Poppins text-4xl font-semibold inline-block after:content-[''] after:absolute after:top-1/2 after:ml-5 after:h-px  after:bg-foreground after:translate-y-[-50%]">
+        {isSubGroup === "all" ? "Blog" : isSubGroup}
+      </div>
       <SearchInput name="keyword" />
-      {response.result.map((item, idx) => {
-        return <PostItem {...item} key={idx} />;
-      })}
+      <div className="flex flex-col gap-5">
+        {response.result.map((item, idx) => {
+          return <PostItem {...item} key={idx} />;
+        })}
+      </div>
     </section>
   );
 }

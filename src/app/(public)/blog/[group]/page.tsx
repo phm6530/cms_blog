@@ -9,9 +9,9 @@ export default async function PostPage({
   const { group: subGroup } = await params;
 
   return (
-    <>
+    <div className="mt-10">
       <PostListNav selectGroup={subGroup} />
       <PostList subGroup={subGroup} />
-    </>
+    </div>
   );
 }

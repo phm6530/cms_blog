@@ -26,8 +26,8 @@ export default function Nav() {
   const isLoading = status === "loading";
 
   return (
-    <nav className="border-b">
-      <Grid className="flex gap-5 py-3 items-center justify-center">
+    <nav className="border-b py-2">
+      <div className="grid-layout  flex items-center gap-4">
         {navlist.map((link, idx) => {
           if (link.href === "/login") {
             if (!isClient || isLoading) {
@@ -63,7 +63,7 @@ export default function Nav() {
         })}
 
         <ThemeHandler />
-      </Grid>
+      </div>
     </nav>
   );
 }

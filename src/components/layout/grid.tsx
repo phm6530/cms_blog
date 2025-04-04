@@ -8,5 +8,5 @@ export default function Grid({
   className?: string;
   children: ReactNode;
 }) {
-  return <div className={cn("w-[1200px] mx-auto", className)}>{children}</div>;
+  return <div className={cn(" mx-auto", className)}>{children}</div>;
 }

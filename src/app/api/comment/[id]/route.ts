@@ -15,8 +15,6 @@ export async function POST(
     parent_id?: number;
   } = await req.json();
 
-  console.log((await context.params).id, data);
-
   const { id } = await context.params;
 
   await WithTransaction.run(async (tx) => {

@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Grid from "@/components/layout/grid";
 import ClientProvider from "@/provider/client-provider";
 import Nav from "@/components/layout/nav";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/layout/footer";
+import Image from "next/image";
+import { Github, Hammer, MessageCircleMore } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import RecentPost from "@/components/weiget/recent-post";
+import RecentComment from "@/components/weiget/recent-comments";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,19 +20,51 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // try {
-  //   const result = await db.execute(sql`SELECT NOW() as now`);
-  //   console.log(result[0].now);
-  // } catch (error) {
-  //   console.error(error);
-  // }
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={` antialiased`}>
         <ClientProvider>
           <Nav />
-          <Grid className="mt-6">{children}</Grid> <Toaster />
+
+          <main className="grid-layout grid grid-cols-[1fr_4fr] gap-20">
+            <div className="mt-[40px] flex flex-col gap-7 ">
+              <div>
+                <div className="w-full relative aspect-[16/16] rounded-full overflow-hidden border-4  ">
+                  <Image
+                    src={"/img/my-dog.jpg"}
+                    fill
+                    alt=""
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+                <div className="text-sm text-center pt-2">
+                  @Web publisher <br /> @Front Developer
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                <Button variant={"outline"} className="flex-1">
+                  <MessageCircleMore className="w-6 h-6" />
+                </Button>
+                <Button variant={"outline"} className="flex-1">
+                  <Github />
+                </Button>
+                <Button variant={"outline"} className="flex-1">
+                  <Hammer />
+                </Button>
+                <Button className="col-span-3">글쓰기</Button>
+              </div>
+
+              <div className="flex items-end gap-3 border p-2 px-6 rounded-3xl">
+                Total /<h3 className="text-3xl"> 252,005</h3>
+              </div>
+              <RecentPost />
+              <RecentComment />
+            </div>
+
+            <div>{children}</div>
+          </main>
+          <Toaster />
           <Footer />
         </ClientProvider>
       </body>

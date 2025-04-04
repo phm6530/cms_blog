@@ -30,7 +30,7 @@ export default async function PostListNav({
     const isActive = selectGroup === subGroupName;
     return cn(
       "rounded-full text-xs border",
-      isActive ? "text-red-500 border-red-400" : "border-input"
+      isActive ? "text-primary border-primary" : "border-none"
     );
   };
 
