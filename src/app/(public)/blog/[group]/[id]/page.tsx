@@ -17,7 +17,7 @@
 import CommentSection from "@/components/comments/comment-section";
 import { Badge } from "@/components/ui/badge";
 import { BlogDetailResponse } from "@/type/blog.type";
-import { ENV, REVALIDATE_TAGS } from "@/type/constants";
+import { ENV, REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -62,7 +62,7 @@ export default async function PostDetail({
     options: {
       cache: "force-cache",
       next: {
-        tags: [REVALIDATE_TAGS.BLOG.DETAIL, id],
+        tags: [REVALIDATE.BLOG.DETAIL, id],
       },
     },
   });

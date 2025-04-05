@@ -1,8 +1,10 @@
-import { REVALIDATE_TAGS } from "@/type/constants";
+import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 import PostItem from "./component/post-list-item";
 import SearchInput from "@/components/ui/search-input";
+import { Button } from "@/components/ui/button";
+import { Pen } from "lucide-react";
 
 export type PostItemModel = {
   post_id: number;
@@ -19,11 +21,11 @@ export type PostItemModel = {
 export default async function PostList({ subGroup }: { subGroup?: string }) {
   const isSubGroup = subGroup ?? "all"; // 없으면 전체 다 가져오기
   const response = await withFetchRevaildationAction<PostItemModel[]>({
-    endPoint: `api/blog?group${isSubGroup}`,
+    endPoint: `api/blog?group=${isSubGroup}`,
     options: {
-      cache: "force-cache",
+      cache: "no-store",
       next: {
-        tags: [REVALIDATE_TAGS.BLOG.LIST, isSubGroup],
+        tags: [REVALIDATE.BLOG.LIST, isSubGroup],
       },
     },
   });
@@ -34,14 +36,18 @@ export default async function PostList({ subGroup }: { subGroup?: string }) {
   ///d
   return (
     <section className="py-10 flex flex-col gap-5">
-      <div className="grid grid-cols-[auto_1fr] items-center gap-5 ">
+      <div className="grid grid-cols-[auto_1fr] justify-between items-center gap-5 ">
         <span className="text-3xl font-Poppins font-extrabold">
           {isSubGroup === "all" ? "Blog" : isSubGroup}
         </span>
-        <span className="border-b border-white/40 w-[50px]"></span>
+        {/* <span className="border-b border-foreground/40 w-[50px]"></span> */}
+        <Button className="ml-auto text-xs" variant={"link"}>
+          <Pen />
+          글쓰기
+        </Button>
       </div>
       <SearchInput name="keyword" />
-      <div className="grid grid-cols-3 gap-10">
+      <div className="flex flex-col">
         {response.result.map((item, idx) => {
           return <PostItem {...item} key={idx} />;
         })}

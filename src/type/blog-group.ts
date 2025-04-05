@@ -5,5 +5,6 @@ export type BlogGroupModel = {
     subGroupId: number;
     subGroupName: string;
     thumb: string | null;
+    postCount: number;
   }[];
 };

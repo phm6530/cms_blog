@@ -11,6 +11,7 @@ const navlist = [
   { href: "/", name: "Home" },
   { href: "/login", name: "로그인" },
   { href: "/blog", name: "BLOG" },
+  { href: "/CODE", name: "CODE" },
   { href: "/guestbook", name: "GUEST BOARD" },
 ];
 

@@ -11,7 +11,7 @@ import { z } from "zod";
 import InputField from "../shared/inputField";
 import PasswordInputField from "../shared/inputPasswordField";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
-import { HTTP_METHOD, REVALIDATE_TAGS } from "@/type/constants";
+import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import { toast } from "sonner";
 import LoadingSpinnerWrapper from "../ui/loading-disabled-wrapper";
 import { useCallback } from "react";
@@ -63,7 +63,7 @@ export default function CommentForm({
               : data),
           }),
         },
-        tags: [REVALIDATE_TAGS.COMMENT, postId!],
+        tags: [REVALIDATE.COMMENT, postId!],
       });
 
       if (!reponse.success) {

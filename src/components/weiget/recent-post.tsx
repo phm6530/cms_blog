@@ -1,5 +1,5 @@
 import { PostItemModel } from "@/app/(public)/blog/[group]/post-list";
-import { REVALIDATE_TAGS } from "@/type/constants";
+import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
@@ -10,7 +10,7 @@ export default async function RecentPost() {
     options: {
       cache: "force-cache",
       next: {
-        tags: [REVALIDATE_TAGS.BLOG.LIST, "all"],
+        tags: [REVALIDATE.BLOG.LIST, "all"],
       },
     },
   });
@@ -24,17 +24,17 @@ export default async function RecentPost() {
             <Link
               href={`/blog/${post.sub_group_name}/${post.post_id}`}
               key={`${idx}-${post.post_id}`}
-              className="flex flex-col gap-2"
+              className="flex flex-col gap-1"
             >
-              <div className="flex gap-1">
+              <div className="flex flex-col gap-2">
                 <Badge variant={"outline"} className="text-xs">
                   {post.sub_group_name}
                 </Badge>
                 <p className="line-clamp-1 text-sm">{post.post_title}</p>
               </div>
-              <p className="text-xs line-clamp-1 opacity-50">
+              {/* <p className="text-xs line-clamp-1 opacity-50">
                 {post.post_description}
-              </p>
+              </p> */}
             </Link>
           );
         })}

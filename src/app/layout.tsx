@@ -26,10 +26,10 @@ export default async function RootLayout({
         <ClientProvider>
           <Nav />
 
-          <main className="grid-layout grid grid-cols-[1fr_4fr]">
-            <div className="mt-[40px] flex flex-col gap-7 border-r pr-10 mr-10">
-              <div>
-                <div className="w-full relative aspect-[16/16] rounded-full overflow-hidden border-4  ">
+          <main className="grid-layout grid grid-cols-[2fr_8fr] gap-16">
+            <div className="mt-[40px] flex flex-col gap-7  ">
+              <div className="flex items-center flex-col">
+                <div className="max-w-[180px] w-[90%] relative aspect-[16/16] rounded-full overflow-hidden border-4  ">
                   <Image
                     src={"/img/my-dog.jpg"}
                     fill
@@ -55,11 +55,11 @@ export default async function RootLayout({
                 <Button variant={"outline"} className="flex-1">
                   <Hammer />
                 </Button>
-                <Button className="col-span-3">글쓰기</Button>
+                <Button className="col-span-3 mt-5">글쓰기</Button>
               </div>
 
-              <div className="flex items-end gap-3 border p-2 px-6 rounded-3xl">
-                Total /<h3 className="text-3xl"> 252,005</h3>
+              <div className="flex items-end gap-3  rounded-3xl">
+                Total <h3 className="text-3xl"> 252,005</h3>
               </div>
               <RecentPost />
               <RecentComment />

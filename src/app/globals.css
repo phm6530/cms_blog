@@ -117,10 +117,10 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground  font-pretendard;
+    @apply bg-background text-foreground  font-SUIT-Regular;
   }
   input::placeholder {
-    @apply text-xs;
+    @apply text-sm;
   }
 
   @keyframes opacity {
@@ -186,7 +186,7 @@
   }
 
   .grid-layout {
-    @apply max-w-[1400px] mx-auto w-[calc(100%-20px)];
+    @apply max-w-[1300px] mx-auto w-[calc(100%-20px)];
   }
 }
 

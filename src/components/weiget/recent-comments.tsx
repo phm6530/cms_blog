@@ -1,5 +1,5 @@
 import { PostItemModel } from "@/app/(public)/blog/[group]/post-list";
-import { REVALIDATE_TAGS } from "@/type/constants";
+import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import Link from "next/link";
 
@@ -9,7 +9,7 @@ export default async function RecentComment() {
     options: {
       cache: "force-cache",
       next: {
-        tags: [REVALIDATE_TAGS.BLOG.LIST, "all"],
+        tags: [REVALIDATE.BLOG.LIST, "all"],
       },
     },
   });

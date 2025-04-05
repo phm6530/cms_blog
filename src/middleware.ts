@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const AUTH_REDIRECT_PATHS = ["/login"] as const;
-const AUTH_REQUIRED_PATHS = ["/made", "/mypage"] as const;
+const AUTH_REQUIRED_PATHS = ["/made", "/mypage", "/write"] as const;
 
 type Pathname = (typeof AUTH_REDIRECT_PATHS)[number];
 
@@ -31,5 +31,5 @@ export async function middleware(req: NextRequest, _res: NextResponse) {
 }
 
 export const config = {
-  matcher: ["/login"],
+  matcher: ["/login", "/write"],
 };

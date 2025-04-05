@@ -4,7 +4,7 @@ export enum BLOG_TAGS {
   DETAIL = "BLOG_DETAIL",
 }
 
-export const REVALIDATE_TAGS = {
+export const REVALIDATE = {
   BLOG: BLOG_TAGS,
   COMMENT: "COMMENT",
 };

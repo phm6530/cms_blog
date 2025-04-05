@@ -2,7 +2,7 @@ import { CommentItemModel } from "@/app/api/comment/route";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 import CommentItem from "./comment-item";
-import { REVALIDATE_TAGS } from "@/type/constants";
+import { REVALIDATE } from "@/type/constants";
 
 export default async function CommentList({ postId }: { postId: string }) {
   const response = await withFetchRevaildationAction<CommentItemModel[]>({
@@ -10,7 +10,7 @@ export default async function CommentList({ postId }: { postId: string }) {
     options: {
       cache: "force-cache",
       next: {
-        tags: [REVALIDATE_TAGS.COMMENT, postId],
+        tags: [REVALIDATE.COMMENT, postId],
       },
     },
   });

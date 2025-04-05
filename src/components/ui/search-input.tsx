@@ -13,7 +13,7 @@ export default function SearchInput({
   return (
     <div
       className={cn(
-        `border rounded-full dark:bg-custom-input overflow-hidden focus-within:border-primary
+        `border rounded-full dark:bg-black/10 overflow-hidden focus-within:border-primary
        focus-within:focus-within:bg-[hsl(var(--custom-color))] flex flex-1`,
         className
       )}
@@ -22,7 +22,7 @@ export default function SearchInput({
         type="text"
         autoComplete="off"
         name={name}
-        className="bg-transparent flex-1 h-full p-4 pl-4 md:text-sm text-[13px]"
+        className="bg-transparent flex-1 h-full p-4 pl-4 md:text-sm text-[13px] outline-0!"
         placeholder="검색어를 입력해주세요"
         {...props}
       />
