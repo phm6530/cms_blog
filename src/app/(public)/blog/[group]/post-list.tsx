@@ -5,6 +5,7 @@ import PostItem from "./component/post-list-item";
 import SearchInput from "@/components/ui/search-input";
 import { Button } from "@/components/ui/button";
 import { Pen } from "lucide-react";
+import Link from "next/link";
 
 export type PostItemModel = {
   post_id: number;
@@ -41,9 +42,11 @@ export default async function PostList({ subGroup }: { subGroup?: string }) {
           {isSubGroup === "all" ? "Blog" : isSubGroup}
         </span>
         {/* <span className="border-b border-foreground/40 w-[50px]"></span> */}
-        <Button className="ml-auto text-xs" variant={"link"}>
-          <Pen />
-          글쓰기
+        <Button className="ml-auto text-xs " variant={"default"}>
+          <Link className="flex" href={"/write"}>
+            <Pen />
+            글쓰기
+          </Link>
         </Button>
       </div>
       <SearchInput name="keyword" />

@@ -55,11 +55,18 @@ export default async function RootLayout({
                 <Button variant={"outline"} className="flex-1">
                   <Hammer />
                 </Button>
-                <Button className="col-span-3 mt-5">글쓰기</Button>
+                <Button className="col-span-3 mt-5 py-6">글쓰기</Button>
               </div>
 
-              <div className="flex items-end gap-3  rounded-3xl">
-                Total <h3 className="text-3xl"> 252,005</h3>
+              <div className="flex flex-col items-end gap-3  rounded-3xl">
+                <span className="text-xs opacity-50">전체 방문자</span>
+                <div className="flex gap-3 items-end">
+                  {/* <UserRound size={20} className="mb-1" /> */}
+                  <h3 className="text-3xl tracking-tighter font-Poppins">
+                    252,005
+                  </h3>
+                </div>
+                <span className="text-xs opacity-50">Today 0</span>
               </div>
               <RecentPost />
               <RecentComment />

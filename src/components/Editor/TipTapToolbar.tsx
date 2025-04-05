@@ -1,4 +1,4 @@
-import { Code2, Heading1, Heading2, Heading3 } from "lucide-react";
+import { Code2, Heading1, Heading2, Heading3, Link } from "lucide-react";
 
 import { Editor } from "@tiptap/react";
 export default function TipTapToolbar({ editor }: { editor: Editor }) {
@@ -89,8 +89,8 @@ export default function TipTapToolbar({ editor }: { editor: Editor }) {
 
         <div className="flex justify-center items-center">
           <button id="add" onClick={addYoutubeVideo} type="button">
-            <div className="w-5 h-5 flex justify-center items-center  [&>svg]:w-5 [&>svg]:h-5 [&>svg]:fill-white ">
-              {/* <YoutubeIcon /> */}
+            <div className="w-5 h-5 flex justify-center items-center  [&>svg]:w-5 [&>svg]:h-5  ">
+              {/* <YoutubeIcon /> */}Y
             </div>
           </button>
         </div>
@@ -98,8 +98,8 @@ export default function TipTapToolbar({ editor }: { editor: Editor }) {
         <div className="flex justify-center items-center">
           <div className="flex justify-center items-center">
             <button onClick={addLink} type="button">
-              <div className="w-5 h-5 flex justify-center items-center [&>svg]:w-5 [&>svg]:h-5 [&>svg]:fill-white">
-                Link
+              <div className="w-5 h-5 flex justify-center items-center ">
+                <Link />
               </div>
             </button>
           </div>

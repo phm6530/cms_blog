@@ -23,7 +23,7 @@ export async function middleware(req: NextRequest, _res: NextResponse) {
 
   if (authPath) {
     const encodedPath = encodeURIComponent(pathname);
-    const redirectPath = `/auth/login?redirect=${encodedPath}}`;
+    const redirectPath = `/login?redirect=${encodedPath}}`;
     //권한이 필요 한페이지인데 TOken이 없을떄 ,
     if (!token)
       return NextResponse.redirect(new URL(redirectPath, req.nextUrl.origin));
