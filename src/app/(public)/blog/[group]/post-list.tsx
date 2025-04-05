@@ -34,11 +34,14 @@ export default async function PostList({ subGroup }: { subGroup?: string }) {
   ///d
   return (
     <section className="py-10 flex flex-col gap-5">
-      <div className=" relative font-Poppins text-4xl font-semibold inline-block after:content-[''] after:absolute after:top-1/2 after:ml-5 after:h-px  after:bg-foreground after:translate-y-[-50%]">
-        {isSubGroup === "all" ? "Blog" : isSubGroup}
+      <div className="grid grid-cols-[auto_1fr] items-center gap-5 ">
+        <span className="text-3xl font-Poppins font-extrabold">
+          {isSubGroup === "all" ? "Blog" : isSubGroup}
+        </span>
+        <span className="border-b border-white/40 w-[50px]"></span>
       </div>
       <SearchInput name="keyword" />
-      <div className="flex flex-col gap-5">
+      <div className="grid grid-cols-3 gap-10">
         {response.result.map((item, idx) => {
           return <PostItem {...item} key={idx} />;
         })}

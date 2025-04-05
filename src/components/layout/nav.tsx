@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Grid from "./grid";
 import ThemeHandler from "./ThemeHandler";
 import { Button } from "../ui/button";
 import { signOut, useSession } from "next-auth/react";
@@ -26,8 +25,8 @@ export default function Nav() {
   const isLoading = status === "loading";
 
   return (
-    <nav className="border-b py-2">
-      <div className="grid-layout  flex items-center gap-4">
+    <nav className="border-b py-4">
+      <div className="grid-layout  flex items-center gap-5">
         {navlist.map((link, idx) => {
           if (link.href === "/login") {
             if (!isClient || isLoading) {

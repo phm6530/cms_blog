@@ -26,8 +26,8 @@ export default async function RootLayout({
         <ClientProvider>
           <Nav />
 
-          <main className="grid-layout grid grid-cols-[1fr_4fr] gap-20">
-            <div className="mt-[40px] flex flex-col gap-7 ">
+          <main className="grid-layout grid grid-cols-[1fr_4fr]">
+            <div className="mt-[40px] flex flex-col gap-7 border-r pr-10 mr-10">
               <div>
                 <div className="w-full relative aspect-[16/16] rounded-full overflow-hidden border-4  ">
                   <Image
@@ -37,9 +37,12 @@ export default async function RootLayout({
                     style={{ objectFit: "cover" }}
                   />
                 </div>
-                <div className="text-sm text-center pt-2">
+                <div className="text-sm text-center pt-5">
                   @Web publisher <br /> @Front Developer
                 </div>
+                {/* <div className="flex items-center justify-center h-40">
+                  <div className="w-8 h-8 border-4 border-t-transparent border-zinc-400 rounded-full animate-spin "></div>
+                </div> */}
               </div>
 
               <div className="grid grid-cols-3 gap-2">
