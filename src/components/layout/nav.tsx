@@ -9,10 +9,11 @@ import { useEffect, useState } from "react";
 
 const navlist = [
   { href: "/", name: "Home" },
-  { href: "/login", name: "로그인" },
+
   { href: "/blog", name: "BLOG" },
   { href: "/CODE", name: "CODE" },
   { href: "/guestbook", name: "GUEST BOARD" },
+  { href: "/login", name: "로그인" },
 ];
 
 export default function Nav() {
@@ -39,7 +40,10 @@ export default function Nav() {
               );
             } else if (session) {
               return (
-                <div key={`auth-${idx}`} className="flex items-center gap-2">
+                <div
+                  key={`auth-${idx}`}
+                  className="flex items-center ml-auto gap-2"
+                >
                   <Link href={"/admin"} className="text-sm">
                     관리자
                   </Link>

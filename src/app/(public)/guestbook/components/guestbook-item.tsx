@@ -1,54 +1,65 @@
 "use client";
-import { CommentItemModel } from "@/app/api/comment/route";
-import { Button } from "../ui/button";
-import CommentForm from "./comment-form";
+import CommentForm from "./guestbook-form";
 import useStore from "@/context/store";
-import { Reply } from "lucide-react";
+import { Reply, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DateUtils } from "@/util/date-uill";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { GuestBookModel } from "@/app/api/guestboard/route";
 
-export default function CommentItem({
+export default function GuestBookItem({
   id: commentId,
-  comment,
+  content,
   children,
   deps,
   created_at,
-  parent_id,
+  user_icon,
   author,
-}: CommentItemModel & { deps: number }) {
+}: GuestBookModel & { deps: number }) {
   const { commentsViewId, toggleFormView } = useStore(); // Zustand 상태 사용
 
-  const isReply = deps > 0;
   return (
     <div
       className={cn(
         "flex gap-2 justify-start",
-        deps === 0 && "mb-2 border-b py-3 "
+        deps === 0 && "mb-2 border-b py-3"
+        // deps === 1 && "border-l-2 pl-3"
       )}
-      style={{ marginLeft: `${!!isReply ? 20 : 0}px` }}
+      style={{ marginLeft: `${deps > 0 ? 20 : 0}px` }}
     >
-      {!!isReply && <Reply size={13} className="rotate-180 opacity-40 mt-2" />}
+      {deps > 0 && <Reply size={13} className="rotate-180 opacity-40 mt-2" />}
       <div className="flex flex-col gap-2 items-start">
-        <div className="flex gap-3 items-center">
-          <div className="size-10 border-3 border-border rounded-full flex justify-center items-center relative overflow-hidden">
+        <div className="grid grid-cols-[2fr_auto] items-start gap-3 ">
+          <div className="size-12 border-4  border-border rounded-full flex justify-center items-center relative overflow-hidden">
             {/* <PersonStanding /> */}
             <Image
-              src={"/img/my-dog.jpg"}
-              alt=""
+              src={`/img/guestbook/${user_icon}.jpg`}
+              alt={`${user_icon}`}
               fill
               style={{ objectFit: "cover" }}
             />
           </div>
           <div className="flex flex-col gap-1">
             <p className="text-sm flex items-center gap-3">
-              <span className="font-semibold ">{author.nickname}</span>
+              <span className="font-semibold flex gap-2 items-center">
+                {author.role === "super" && (
+                  <ShieldCheck
+                    className="fill-indigo-400 text-foreground shadow-2xl"
+                    size={20}
+                  />
+                )}
+
+                {author.role === "guest"
+                  ? author.guest_nickname
+                  : author.admin_name}
+              </span>
               <span className="text-xs opacity-40">
                 {DateUtils.fromNow(created_at)}
               </span>
             </p>
-            <div className="rounded-xl text-sm  text-secondary-foreground">
-              {comment}
+            <div className="rounded-xl text-sm  text-secondary-foreground break-words">
+              {content}
             </div>
           </div>
         </div>
@@ -68,21 +79,11 @@ export default function CommentItem({
             삭제
           </Button>
         </div>
-        {commentsViewId === commentId && (
-          <CommentForm parent_id={isReply ? parent_id : commentId} />
-        )}
+        {commentsViewId === commentId && <CommentForm parent_id={commentId} />}
 
-        {deps < 1 &&
-          children.map((e, idx) => {
-            return (
-              <CommentItem
-                key={idx}
-                {...e}
-                parent_id={commentId}
-                deps={deps + 1}
-              />
-            );
-          })}
+        {children.map((e, idx) => {
+          return <GuestBookItem key={idx} {...e} deps={deps + 1} />;
+        })}
       </div>
     </div>
   );

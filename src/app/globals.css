@@ -187,7 +187,7 @@
   }
 
   .grid-layout {
-    @apply max-w-[1300px] mx-auto w-[calc(100%-20px)];
+    @apply max-w-[1200px] mx-auto w-[calc(100%-20px)];
   }
 }
 

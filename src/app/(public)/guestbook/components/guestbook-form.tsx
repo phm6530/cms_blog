@@ -2,29 +2,28 @@
 
 import useThrottling from "@/hook/useThrottling";
 import { useMutation } from "@tanstack/react-query";
-import { Form } from "../ui/form";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import TextareaFormField from "../ui/textarea-field";
+import TextareaFormField from "@/components/ui/textarea-field";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import InputField from "../shared/inputField";
-import PasswordInputField from "../shared/inputPasswordField";
+import InputField from "@/components/shared/inputField";
+import PasswordInputField from "@/components/shared/inputPasswordField";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import { toast } from "sonner";
-import LoadingSpinnerWrapper from "../ui/loading-disabled-wrapper";
-import { useCallback } from "react";
+import LoadingSpinnerWrapper from "@/components/ui/loading-disabled-wrapper";
+import { useCallback, useEffect } from "react";
 import { dynamicSchema } from "./zod/comment.zod";
 import { useParams } from "next/navigation";
 import useStore from "@/context/store";
-import { useSession } from "next-auth/react";
+import { Form } from "@/components/ui/form";
+import GuestBookIcons from "./guestbook-icons";
 
 type CommentFormValues = z.infer<ReturnType<typeof dynamicSchema>>;
 
-export default function CommentForm({
+export default function GuestBookForm({
   postId,
-  userData,
   parent_id,
 }: {
   postId?: string;
@@ -34,13 +33,13 @@ export default function CommentForm({
   const { throttle } = useThrottling();
   const params = useParams();
   const { commentsViewOff } = useStore();
-  const session = useSession();
 
   const defaultValues = useCallback((parent_id?: number | null) => {
     return {
       guest: "",
       contents: "",
       password: "",
+      user_icon: "",
       ...(parent_id && { parent_id }),
     };
   }, []);
@@ -50,10 +49,14 @@ export default function CommentForm({
     resolver: zodResolver(dynamicSchema(!!parent_id)),
   });
 
+  useEffect(() => {
+    form.setValue("user_icon", "person_3");
+  }, [form]);
+
   const { isPending, mutate } = useMutation({
     mutationFn: async (data: CommentFormValues) => {
       const reponse = await withFetchRevaildationAction({
-        endPoint: `api/comment/${params.id}`, // post 기준
+        endPoint: `api/guestbook/${params.id}`, // post 기준
         options: {
           method: HTTP_METHOD.POST,
           body: JSON.stringify({
@@ -93,16 +96,16 @@ export default function CommentForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(submitHandler)}
-          className="grid gap-2"
+          className="grid gap-2 mt-4 items-start"
         >
-          {!session.data?.user && (
-            <>
-              {/* id */}
-              <InputField name="guest" placeholder="닉네임" />
-              {/* password */}
-              <PasswordInputField />
-            </>
-          )}
+          {/* <div className="w-full  col-span-6">
+            <GuestBookIcons />
+          </div> */}
+          {/* id */}
+          <InputField name="guest" placeholder="닉네임" />
+
+          {/* password */}
+          <PasswordInputField />
 
           {/* contents */}
           <div className="col-span-5">

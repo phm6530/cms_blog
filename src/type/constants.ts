@@ -4,9 +4,14 @@ export enum BLOG_TAGS {
   DETAIL = "BLOG_DETAIL",
 }
 
+export enum GUEST_BOARD {
+  GETBOARD = "GET_BOARD",
+}
+
 export const REVALIDATE = {
   BLOG: BLOG_TAGS,
   COMMENT: "COMMENT",
+  GUEST_BOARD: GUEST_BOARD,
 };
 
 export const ENV = {

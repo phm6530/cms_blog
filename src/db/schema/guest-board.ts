@@ -1,5 +1,4 @@
-import { pgTable, integer, text } from "drizzle-orm/pg-core";
-import { baseColumns } from "./base";
+import { pgTable, integer, text, timestamp } from "drizzle-orm/pg-core";
 
 //GUEST BOARD
 export const guestBoardSchema = pgTable("guest_board", {
@@ -8,5 +7,6 @@ export const guestBoardSchema = pgTable("guest_board", {
   user_icon: text("user_icon").notNull(),
   author_type: text("author_type").notNull(),
   author_id: text("author_id").notNull(),
-  ...baseColumns,
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  parent_id: integer("parent_id"),
 });

@@ -14,21 +14,20 @@ export default function CommentItem({
   children,
   deps,
   created_at,
-  parent_id,
   author,
 }: CommentItemModel & { deps: number }) {
   const { commentsViewId, toggleFormView } = useStore(); // Zustand 상태 사용
 
-  const isReply = deps > 0;
   return (
     <div
       className={cn(
         "flex gap-2 justify-start",
-        deps === 0 && "mb-2 border-b py-3 "
+        deps === 0 && "mb-2 border-b py-3"
+        // deps === 1 && "border-l-2 pl-3"
       )}
-      style={{ marginLeft: `${!!isReply ? 20 : 0}px` }}
+      style={{ marginLeft: `${deps > 0 ? 20 : 0}px` }}
     >
-      {!!isReply && <Reply size={13} className="rotate-180 opacity-40 mt-2" />}
+      {deps > 0 && <Reply size={13} className="rotate-180 opacity-40 mt-2" />}
       <div className="flex flex-col gap-2 items-start">
         <div className="flex gap-3 items-center">
           <div className="size-10 border-3 border-border rounded-full flex justify-center items-center relative overflow-hidden">
@@ -54,7 +53,7 @@ export default function CommentItem({
         </div>
         <div className="flex gap-2 items-center text-xs [&>span:cursor-pointer]">
           <Button
-            className="cursor-pointer text-xs p-0 text-muted-foreground"
+            className="cursor-pointer text-xs p-0 text-muted-foreground "
             variant={"link"}
             onClick={() => toggleFormView(commentId)} // 해당 댓글에 대한 폼을 토글
           >
@@ -68,21 +67,11 @@ export default function CommentItem({
             삭제
           </Button>
         </div>
-        {commentsViewId === commentId && (
-          <CommentForm parent_id={isReply ? parent_id : commentId} />
-        )}
+        {commentsViewId === commentId && <CommentForm parent_id={commentId} />}
 
-        {deps < 1 &&
-          children.map((e, idx) => {
-            return (
-              <CommentItem
-                key={idx}
-                {...e}
-                parent_id={commentId}
-                deps={deps + 1}
-              />
-            );
-          })}
+        {children.map((e, idx) => {
+          return <CommentItem key={idx} {...e} deps={deps + 1} />;
+        })}
       </div>
     </div>
   );

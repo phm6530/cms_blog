@@ -18,7 +18,6 @@ import { useCallback } from "react";
 import { dynamicSchema } from "./zod/comment.zod";
 import { useParams } from "next/navigation";
 import useStore from "@/context/store";
-import { useSession } from "next-auth/react";
 
 type CommentFormValues = z.infer<ReturnType<typeof dynamicSchema>>;
 
@@ -34,7 +33,6 @@ export default function CommentForm({
   const { throttle } = useThrottling();
   const params = useParams();
   const { commentsViewOff } = useStore();
-  const session = useSession();
 
   const defaultValues = useCallback((parent_id?: number | null) => {
     return {
@@ -95,14 +93,11 @@ export default function CommentForm({
           onSubmit={form.handleSubmit(submitHandler)}
           className="grid gap-2"
         >
-          {!session.data?.user && (
-            <>
-              {/* id */}
-              <InputField name="guest" placeholder="닉네임" />
-              {/* password */}
-              <PasswordInputField />
-            </>
-          )}
+          {/* id */}
+          <InputField name="guest" placeholder="닉네임" />
+
+          {/* password */}
+          <PasswordInputField />
 
           {/* contents */}
           <div className="col-span-5">

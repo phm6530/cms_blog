@@ -7,4 +7,5 @@ export const usersTable = pgTable("admin", {
   password: text("password").notNull(),
   admin_name: varchar({ length: 255 }).notNull(),
   role: userRoleEnum().notNull(),
+  profile_img: text("profile_img"),
 });
