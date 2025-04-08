@@ -11,6 +11,7 @@ type Author =
       admin_email: string;
       nickname: string;
       guest_id?: undefined;
+      profile_img: string;
     }
   | {
       role: "guest";
@@ -50,6 +51,7 @@ export async function GET(req: NextRequest) {
       admin_email: usersTable.email,
       admin_nickname: usersTable.nickname,
       author_role: commentSchema.author_type,
+      profile_img: usersTable.profile_img,
     })
     .from(commentSchema)
     .leftJoin(
@@ -69,8 +71,6 @@ export async function GET(req: NextRequest) {
     .where(eq(commentSchema.post_id, parseInt(postId, 10)))
     .orderBy(commentSchema.createdAt);
 
-  console.log(rows);
-
   // ✅ CommentItemModel[]로 가공
   const commentList: CommentItemModel[] = rows.map((data) => {
     const {
@@ -80,6 +80,7 @@ export async function GET(req: NextRequest) {
       guest_id,
       guest_nickname,
       created_at,
+      profile_img,
       ...rest
     } = data;
 
@@ -89,11 +90,13 @@ export async function GET(req: NextRequest) {
             role: author_role!,
             admin_email: admin_email!,
             nickname: admin_nickname!,
+            profile_img,
           }
         : {
             role: author_role!,
             guest_id: guest_id!,
             nickname: guest_nickname!,
+            profile_img: null, //guest는 일단 Null처리
           };
 
     // 구조 변경,

@@ -3,11 +3,18 @@ import { CommentItemModel } from "@/app/api/comment/route";
 import { Button } from "../ui/button";
 import CommentForm from "./comment-form";
 import useStore from "@/context/store";
-import { Reply } from "lucide-react";
+import { Reply, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 import ProfileUser from "../ui/profile-user";
 import { useSession } from "next-auth/react";
+import ConfirmButton from "../shared/confirm-button";
+import withClientFetch from "@/util/withClientFetch";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { HTTP_METHOD } from "@/type/constants";
+import { useForm } from "react-hook-form";
+import InputPassword from "../ui/password-input";
 
 export default function CommentItem({
   id: commentId,
@@ -17,42 +24,69 @@ export default function CommentItem({
   created_at,
   parent_id,
   author,
+  post_id,
 }: CommentItemModel & { deps: number }) {
-  const { commentsViewId, toggleFormView } = useStore(); // Zustand 상태 사용
+  const { passwordFomView, setPasswordFormId, commentsViewId, toggleFormView } =
+    useStore(); // Zustand로 공유
+
   const session = useSession();
-  console.log(author);
+  const router = useRouter();
+
+  const { mutate } = useMutation({
+    mutationFn: async (data?: { password?: string }) => {
+      return await withClientFetch({
+        endPoint: `api/comment/${post_id}?item=${commentId}`,
+        options: {
+          method: HTTP_METHOD.DELETE,
+        },
+        body:
+          author.role === "guest" && data?.password
+            ? { password: data.password }
+            : {},
+      });
+    },
+    onSuccess: () => {
+      toast.success("삭제 되었습니다", {
+        style: {
+          background: "#1e293b",
+          color: "#38bdf8",
+        },
+      });
+      router.refresh();
+    },
+  });
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({ defaultValues: { password: "" } });
+
+  const onDeleteHnadler = (data: { password: string }) => {
+    mutate(data);
+  };
+
   const isReply = deps > 0;
   return (
     <article
       className={cn(
         "flex gap-2 justify-start  animate-wiggle",
-        deps === 0 && "mb-2 border-b py-3 "
+        deps === 0 && "mb-2 border-b last:border-b-0 py-3 "
       )}
       style={{ marginLeft: `${!!isReply ? 20 : 0}px` }}
     >
       {!!isReply && <Reply size={13} className="rotate-180 opacity-40 mt-2" />}
       <div className="flex flex-col gap-2  w-full">
-        <div className="flex gap-3 items-center ">
-          <div className="size-10 border-3 border-border rounded-full flex justify-center items-center relative overflow-hidden">
-            {/* <PersonStanding /> */}
-            <Image
-              src={"/img/my-dog.jpg"}
-              alt=""
-              fill
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-          <div className="flex flex-col">
-            <ProfileUser
-              nickname={author.nickname}
-              role={author.role}
-              createAt={created_at}
-            />
-            <div className="flex flex-col gap-1">
-              <p className="text-sm flex items-center gap-3"></p>
-            </div>
-          </div>
-        </div>
+        <ProfileUser
+          profileImg={
+            author.role === "admin" || author.role === "super"
+              ? author.profile_img
+              : null
+          }
+          nickname={author.nickname}
+          role={author.role}
+          createAt={created_at}
+        />
         <pre className=" text-sm  text-secondary-foreground border-l-2 border-input pl-3 font-pretendard">
           {comment}
         </pre>
@@ -70,27 +104,60 @@ export default function CommentItem({
             // admin이면서 자기 댓글인 경우
             if (
               (author.role === "admin" || author.role === "super") &&
-              author.admin_email === session.data?.user.email
+              author.admin_email === session.data?.user?.email
             ) {
               return (
-                <Button
-                  className="cursor-pointer text-xs p-0 text-muted-foreground"
-                  variant={"link"}
+                <ConfirmButton
+                  title="댓글을 삭제하시겠습니까?"
+                  cb={() => mutate({})}
                 >
-                  삭제
-                </Button>
+                  <Button
+                    className="cursor-pointer animate-wiggle text-xs p-0 text-muted-foreground"
+                    variant={"link"}
+                  >
+                    삭제
+                  </Button>
+                </ConfirmButton>
               );
             }
 
             // guest인 경우, guest_id 비교
             if (author.role === "guest") {
               return (
-                <Button
-                  className="cursor-pointer text-xs p-0 text-muted-foreground"
-                  variant={"link"}
-                >
-                  삭제
-                </Button>
+                <>
+                  <Button
+                    className="cursor-pointer animate-wiggle text-xs p-0 text-muted-foreground"
+                    variant={"link"}
+                    onClick={() => setPasswordFormId(commentId)}
+                  >
+                    {passwordFomView === commentId ? <X /> : "삭제"}
+                  </Button>
+
+                  {passwordFomView === commentId && (
+                    <form
+                      className="flex gap-2"
+                      onSubmit={handleSubmit(onDeleteHnadler)}
+                    >
+                      <div className=" flex flex-col">
+                        <InputPassword
+                          {...register("password", {
+                            required: { value: true, message: "required" },
+                          })}
+                          className="py-1 placeholder:text-xs"
+                          placeholder="비밀번호"
+                          aria-invalid={!!errors.password}
+                        />
+                      </div>
+
+                      <Button
+                        variant={"outline"}
+                        className="cursor-pointer text-xs"
+                      >
+                        확인
+                      </Button>
+                    </form>
+                  )}
+                </>
               );
             }
 

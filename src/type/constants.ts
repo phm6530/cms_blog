@@ -20,4 +20,5 @@ export const ENV = {
 
 export enum HTTP_METHOD {
   POST = "POST",
+  DELETE = "DELETE",
 }

@@ -12,7 +12,12 @@ import {
 import { toast } from "sonner";
 
 const errorHandler = (error: Error) => {
-  toast.error(error.message);
+  toast.warning(error.message, {
+    style: {
+      background: "#7f1d1d", // tailwind red-900
+      color: "#fef2f2", // 거의 흰색에 가까운 연핑 (가독성 높음)
+    },
+  });
 };
 
 const queryClient = new QueryClient({

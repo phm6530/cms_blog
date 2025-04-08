@@ -17,7 +17,6 @@ import { dynamicSchema } from "./zod/comment.zod";
 import { useParams, useRouter } from "next/navigation";
 import useStore from "@/context/store";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import ProfileAdmin from "../ui/profile-user";
 import withClientFetch from "@/util/withClientFetch";
 import { HTTP_METHOD } from "@/type/constants";
@@ -105,18 +104,10 @@ export default function CommentForm({
                 </div>
               ) : (
                 <div className="flex items-center gap-3 animate-wiggle">
-                  <div className=" size-10 border-3 border-foreground/30 rounded-full flex justify-center items-center relative">
-                    <Image
-                      src={session.data?.user.image as string}
-                      alt="admin-Picture"
-                      fill
-                      style={{ objectFit: "cover" }}
-                      className="rounded-full"
-                    />
-                  </div>
                   <ProfileAdmin
-                    nickname={session.data.user.nickname as string}
-                    role={session.data.user.role as "super" | "admin"}
+                    profileImg={session.data.user.image}
+                    nickname={session.data.user.nickname}
+                    role={session.data.user.role}
                   />
                 </div>
               )}
