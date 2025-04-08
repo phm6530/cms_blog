@@ -71,7 +71,7 @@ export default async function PostDetail({
     notFound();
   }
 
-  const { blog_metadata, blog_contents } = data.result;
+  const { blog_metadata } = data.result;
 
   return (
     <main className="flex flex-col gap-6">
@@ -83,6 +83,7 @@ export default async function PostDetail({
             {blog_metadata.create_at}
           </div>
         </div>
+
         {blog_metadata.thumbnail_url && (
           <div className="w-full h-[300px]  rounded-xl relative overflow-hidden mb-5">
             <Image

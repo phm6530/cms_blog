@@ -22,8 +22,6 @@ import useStore from "@/context/store";
 type CommentFormValues = z.infer<ReturnType<typeof dynamicSchema>>;
 
 export default function CommentForm({
-  postId,
-  userData,
   parent_id,
 }: {
   postId?: string;
@@ -48,6 +46,7 @@ export default function CommentForm({
     resolver: zodResolver(dynamicSchema(!!parent_id)),
   });
 
+  console.log(REVALIDATE.COMMENT, params.id as string);
   const { isPending, mutate } = useMutation({
     mutationFn: async (data: CommentFormValues) => {
       const reponse = await withFetchRevaildationAction({
@@ -63,7 +62,7 @@ export default function CommentForm({
               : data),
           }),
         },
-        tags: [REVALIDATE.COMMENT, postId!],
+        tags: [REVALIDATE.COMMENT, params.id as string],
       });
 
       if (!reponse.success) {

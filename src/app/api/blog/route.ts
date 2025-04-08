@@ -15,7 +15,6 @@ export async function GET(req: NextRequest) {
       blogSubGroup,
       eq(blogMetaSchema.sub_group_id, blogSubGroup.sub_group_id)
     )
-
     .where(
       !QUERYSTRING_blogSubGroup || QUERYSTRING_blogSubGroup === "all"
         ? undefined

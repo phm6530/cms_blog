@@ -4,7 +4,6 @@ import useStore from "@/context/store";
 import { Reply, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DateUtils } from "@/util/date-uill";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { GuestBookModel } from "@/app/api/guestboard/route";
 
@@ -14,7 +13,6 @@ export default function GuestBookItem({
   children,
   deps,
   created_at,
-  user_icon,
   author,
 }: GuestBookModel & { deps: number }) {
   const { commentsViewId, toggleFormView } = useStore(); // Zustand 상태 사용
@@ -33,12 +31,12 @@ export default function GuestBookItem({
         <div className="grid grid-cols-[2fr_auto] items-start gap-3 ">
           <div className="size-12 border-4  border-border rounded-full flex justify-center items-center relative overflow-hidden">
             {/* <PersonStanding /> */}
-            <Image
+            {/* <Image
               src={`/img/guestbook/${user_icon}.jpg`}
               alt={`${user_icon}`}
               fill
               style={{ objectFit: "cover" }}
-            />
+            /> */}
           </div>
           <div className="flex flex-col gap-1">
             <p className="text-sm flex items-center gap-3">
@@ -52,7 +50,7 @@ export default function GuestBookItem({
 
                 {author.role === "guest"
                   ? author.guest_nickname
-                  : author.admin_name}
+                  : author.nickname}
               </span>
               <span className="text-xs opacity-40">
                 {DateUtils.fromNow(created_at)}

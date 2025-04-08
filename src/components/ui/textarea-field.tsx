@@ -1,26 +1,25 @@
 "use client";
 
-import { TextareaHTMLAttributes, useState } from "react";
+import { TextareaHTMLAttributes } from "react";
 import { FormControl, FormField, FormItem, FormLabel } from "./form";
 import { Textarea } from "./textarea";
 
 export default function TextareaFormField({
   name,
   label,
-
+  className,
   ...rest
 }: {
   name: string;
   label?: string;
 } & TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  const [] = useState();
   return (
     <>
       <FormField
         name={name}
         render={({ field }) => {
           return (
-            <FormItem>
+            <FormItem className={className}>
               {label && <FormLabel>{label}</FormLabel>}
               <FormControl>
                 <Textarea {...field} {...rest} />

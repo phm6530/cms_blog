@@ -29,6 +29,8 @@ export default async function LoginAction(data: loginProps) {
     await signIn("credentials", {
       email,
       role: user.role,
+      profile_img: user.profile_img,
+      nickname: user.nickname,
       redirect: false,
     });
 

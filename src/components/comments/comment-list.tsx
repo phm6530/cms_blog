@@ -10,7 +10,7 @@ export default async function CommentList({ postId }: { postId: string }) {
     options: {
       cache: "force-cache",
       next: {
-        tags: [REVALIDATE.COMMENT, postId],
+        tags: [`${REVALIDATE.COMMENT}:${postId}`],
       },
     },
   });
@@ -20,12 +20,12 @@ export default async function CommentList({ postId }: { postId: string }) {
   }
 
   return (
-    <article>
+    <>
       {response.result.map((comment) => {
         return (
           <CommentItem key={`${postId}-${comment.id}`} {...comment} deps={0} />
         );
       })}
-    </article>
+    </>
   );
 }

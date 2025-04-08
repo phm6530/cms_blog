@@ -10,21 +10,22 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import InputField from "../shared/inputField";
 import PasswordInputField from "../shared/inputPasswordField";
-import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
-import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import { toast } from "sonner";
 import LoadingSpinnerWrapper from "../ui/loading-disabled-wrapper";
 import { useCallback } from "react";
 import { dynamicSchema } from "./zod/comment.zod";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import useStore from "@/context/store";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
+import ProfileAdmin from "../ui/profile-user";
+import withClientFetch from "@/util/withClientFetch";
+import { HTTP_METHOD } from "@/type/constants";
+import { Skeleton } from "../ui/skeleton";
 
 type CommentFormValues = z.infer<ReturnType<typeof dynamicSchema>>;
 
 export default function CommentForm({
-  postId,
-  userData,
   parent_id,
 }: {
   postId?: string;
@@ -35,6 +36,7 @@ export default function CommentForm({
   const params = useParams();
   const { commentsViewOff } = useStore();
   const session = useSession();
+  const router = useRouter();
 
   const defaultValues = useCallback((parent_id?: number | null) => {
     return {
@@ -47,30 +49,18 @@ export default function CommentForm({
 
   const form = useForm<CommentFormValues>({
     defaultValues: defaultValues(parent_id),
-    resolver: zodResolver(dynamicSchema(!!parent_id)),
+    resolver: zodResolver(dynamicSchema(!!parent_id, !!session.data?.user)),
   });
 
   const { isPending, mutate } = useMutation({
     mutationFn: async (data: CommentFormValues) => {
-      const reponse = await withFetchRevaildationAction({
-        endPoint: `api/comment/${params.id}`, // post 기준
+      return await withClientFetch({
+        endPoint: `api/comment/${params.id}`,
         options: {
           method: HTTP_METHOD.POST,
-          body: JSON.stringify({
-            ...(!!parent_id
-              ? {
-                  ...data,
-                  parent_id,
-                }
-              : data),
-          }),
         },
-        tags: [REVALIDATE.COMMENT, postId!],
+        body: !!parent_id ? { ...data, parent_id } : data,
       });
-
-      if (!reponse.success) {
-        throw new Error(reponse.message);
-      }
     },
     onSuccess: () => {
       toast.success("등록 되었습니다.", {
@@ -79,7 +69,9 @@ export default function CommentForm({
           color: "#38bdf8",
         },
       });
+
       form.reset(defaultValues(parent_id));
+      router.refresh();
       if (!!parent_id) commentsViewOff();
     },
   });
@@ -93,28 +85,54 @@ export default function CommentForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(submitHandler)}
-          className="grid gap-2"
+          className="flex flex-col gap-2"
         >
-          {!session.data?.user && (
+          {session.status === "loading" ? (
+            <div className="flex gap-2 items-center">
+              <Skeleton className="size-10 rounded-full" />
+              <Skeleton className="h-6 w-32" />{" "}
+              <Skeleton className="h-6 w-32" />
+            </div>
+          ) : (
             <>
-              {/* id */}
-              <InputField name="guest" placeholder="닉네임" />
-              {/* password */}
-              <PasswordInputField />
+              {" "}
+              {!session.data?.user ? (
+                <div className="flex gap-2">
+                  {/* id */}
+                  <InputField name="guest" placeholder="닉네임" />
+                  {/* password */}
+                  <PasswordInputField />
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 animate-wiggle">
+                  <div className=" size-10 border-3 border-foreground/30 rounded-full flex justify-center items-center relative">
+                    <Image
+                      src={session.data?.user.image as string}
+                      alt="admin-Picture"
+                      fill
+                      style={{ objectFit: "cover" }}
+                      className="rounded-full"
+                    />
+                  </div>
+                  <ProfileAdmin
+                    nickname={session.data.user.nickname as string}
+                    role={session.data.user.role as "super" | "admin"}
+                  />
+                </div>
+              )}
             </>
           )}
 
-          {/* contents */}
-          <div className="col-span-5">
+          <div className="flex flex-1 gap-2 h-full items-stretch">
             <TextareaFormField
               name={"contents"}
               placeholder="남기실 메세지를 입력해주세요"
               maxLength={1000}
+              className="flex-1"
             />
+
+            <Button className=" h-auto!">댓글 작성</Button>
           </div>
-          <Button className="mt-3 md:mt-0 col-span-6  md:col-span-1 h-full order-2 md:order-none py-5">
-            댓글 작성
-          </Button>
           <div className="pt-2 text-sm flex gap-3 col-span-6 order-1 md:order-none">
             <span className="text-[11px] opacity-45">
               {form.watch("contents").length} / 1000 자

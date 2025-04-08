@@ -13,7 +13,7 @@ export default async function GuestBookPage() {
       next: {
         tags: [REVALIDATE.GUEST_BOARD.GETBOARD],
       },
-      cache: "force-cache",
+      cache: "no-cache",
     },
   });
 

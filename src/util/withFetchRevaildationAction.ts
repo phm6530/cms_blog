@@ -1,5 +1,6 @@
 "use server";
 import { revalidateTag } from "next/cache";
+import { cookies } from "next/headers";
 
 type ActionsProps = {
   endPoint: string;
@@ -25,11 +26,17 @@ type ErrorResponse = {
 export const withFetchRevaildationAction = async <T>({
   endPoint,
   tags,
+  requireAuth,
   options,
 }: ActionsProps): Promise<SuccessResponse<T> | ErrorResponse> => {
+  const cookieStore = await cookies();
+  const authCookie = cookieStore.get("authjs.session-token");
+
   // 헤더 구성
   const headers: HeadersInit = {
     ...(options?.body ? { "Content-Type": "application/json" } : {}),
+    ...(requireAuth &&
+      authCookie && { Authorization: `Bearer ${authCookie.value}` }),
     ...options?.headers,
   };
 

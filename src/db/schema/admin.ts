@@ -5,7 +5,7 @@ export const usersTable = pgTable("admin", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
-  admin_name: varchar({ length: 255 }).notNull(),
+  nickname: varchar({ length: 255 }).notNull(),
   role: userRoleEnum().notNull(),
   profile_img: text("profile_img"),
 });

@@ -8,7 +8,7 @@ import { NextResponse } from "next/server";
 type AdminComment = {
   role: "admin" | "super";
   admin_email: string;
-  admin_name: string;
+  nickname: string;
 };
 
 type GuestComment = {
@@ -23,7 +23,6 @@ export type GuestBookModel = {
   id: number;
   content: string;
   parent_id: number | null;
-  user_icon: null | string;
   created_at: string;
   author: Author;
   children: GuestBookModel[];
@@ -34,13 +33,12 @@ export async function GET() {
     .select({
       id: guestBoardSchema.idx,
       content: guestBoardSchema.contents,
-      user_icon: guestBoardSchema.user_icon,
       createAt: guestBoardSchema.createdAt,
       author_type: guestBoardSchema.author_type,
       guest_nickname: guestSchema.nickname,
       guest_id: guestSchema.id,
       admin_email: usersTable.email,
-      admin_nickname: usersTable.admin_name,
+      admin_nickname: usersTable.nickname,
       author_role: usersTable.role || "guest",
       parent_id: guestBoardSchema.parent_id,
     })
@@ -77,7 +75,7 @@ export async function GET() {
         ? {
             role: author_role,
             admin_email: admin_email!,
-            admin_name: admin_nickname!,
+            nickname: admin_nickname!,
           }
         : {
             role: "guest" as const,
