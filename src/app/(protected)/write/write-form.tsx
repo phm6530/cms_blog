@@ -1,17 +1,10 @@
 "use client";
 import InputField from "@/components/shared/inputField";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { wirtePostSchema } from "./schema";
 import { Button } from "@/components/ui/button";
-import Tiptap from "@/components/Editor/Tiptap";
 import SelectField from "@/components/ui/select-field";
 import { CheckField } from "@/components/ui/check-field";
 import { BlogGroupModel } from "@/type/blog-group";
@@ -31,7 +24,7 @@ export default function WirteForm({
     resolver: zodResolver(wirtePostSchema),
   });
 
-  const onSubmitHandler = (data) => {};
+  const onSubmitHandler = () => {};
 
   return (
     <Form {...form}>
@@ -44,7 +37,7 @@ export default function WirteForm({
           className="p-5"
         />
 
-        <FormField
+        {/* <FormField
           name="contents"
           control={form.control}
           render={({ field }) => {
@@ -57,7 +50,7 @@ export default function WirteForm({
               </FormItem>
             );
           }}
-        />
+        /> */}
       </div>
       <div className="flex gap-2 py-3 justify-end">
         <Button

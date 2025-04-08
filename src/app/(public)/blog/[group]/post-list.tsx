@@ -18,36 +18,26 @@ export type PostItemModel = {
   comment_count: number;
 };
 
-export default async function PostList({
-  subGroup,
-  searchKeyword,
-}: {
-  subGroup?: string;
-  searchKeyword: string | null;
-}) {
+export default async function PostList({ subGroup }: { subGroup?: string }) {
   const isSubGroup = subGroup ?? "all"; // 없으면 전체 다 가져오기
-  let endPoint = `api/blog?group=${isSubGroup}`;
-  if (!!searchKeyword) {
-    endPoint += `&keyword=${searchKeyword}`;
-  }
   const response = await withFetchRevaildationAction<PostItemModel[]>({
-    endPoint,
+    endPoint: `api/blog?group=${isSubGroup}`,
     options: {
-      cache: !!searchKeyword ? "no-store" : "force-cache",
+      cache: "force-cache",
       next: {
         tags: [REVALIDATE.BLOG.LIST, isSubGroup],
       },
     },
   });
-  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   if (!response.success) {
     notFound();
   }
+  console.count("test");
   ///d
   return (
-    <section className="py-10 flex flex-col gap-5">
-      <div className="grid grid-cols-[auto_1fr] justify-between items-center gap-5 ">
+    <section className="pt-10 flex flex-col">
+      <div className="grid grid-cols-[auto_1fr] justify-between items-center gap-5 border-b pb-4 py-10">
         <span className="text-3xl font-Poppins font-extrabold">
           {isSubGroup === "all" ? "Blog" : isSubGroup}
         </span>

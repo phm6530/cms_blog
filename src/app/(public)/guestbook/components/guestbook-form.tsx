@@ -18,7 +18,6 @@ import { dynamicSchema } from "./zod/comment.zod";
 import { useParams } from "next/navigation";
 import useStore from "@/context/store";
 import { Form } from "@/components/ui/form";
-import GuestBookIcons from "./guestbook-icons";
 
 type CommentFormValues = z.infer<ReturnType<typeof dynamicSchema>>;
 

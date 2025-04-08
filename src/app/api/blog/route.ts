@@ -10,6 +10,18 @@ export async function GET(req: NextRequest) {
   const QUERYSTRING_blogSubGroup = url.searchParams.get("group");
   const searchKeyword = url.searchParams.get("keyword");
 
+  // where..
+  const whereQuery = and(
+    QUERYSTRING_blogSubGroup && QUERYSTRING_blogSubGroup !== "all"
+      ? sql`LOWER(${
+          blogSubGroup.sub_group_name
+        }) = ${QUERYSTRING_blogSubGroup.toLowerCase()}`
+      : undefined,
+    searchKeyword
+      ? ilike(blogMetaSchema.post_title, `%${searchKeyword}%`)
+      : undefined
+  );
+
   const rows = await db
     .select({
       blog_metadata: blogMetaSchema,
@@ -22,24 +34,12 @@ export async function GET(req: NextRequest) {
       eq(blogMetaSchema.sub_group_id, blogSubGroup.sub_group_id)
     )
     .leftJoin(commentSchema, eq(commentSchema.post_id, blogMetaSchema.post_id))
-    .where(
-      and(
-        QUERYSTRING_blogSubGroup && QUERYSTRING_blogSubGroup !== "all"
-          ? sql`LOWER(${
-              blogSubGroup.sub_group_name
-            }) = ${QUERYSTRING_blogSubGroup.toLowerCase()}`
-          : undefined,
-        searchKeyword
-          ? ilike(blogMetaSchema.post_title, `%${searchKeyword}%`)
-          : undefined
-      )
-    )
-
+    .where(whereQuery)
     .groupBy(blogMetaSchema.post_id, blogSubGroup.sub_group_id)
     .orderBy(desc(blogMetaSchema.post_id))
     .limit(10)
     .offset(0);
-  console.log("ddd");
+
   const flatRows = rows.map(
     ({ blog_metadata, blog_sub_group, comment_count }) => {
       return {
@@ -49,6 +49,23 @@ export async function GET(req: NextRequest) {
       };
     }
   );
+  let searchCnt = 0;
+  if (!!searchKeyword) {
+    const [rows] = await db
+      .select({
+        count: sql<number>`COUNT(*)`.as("count"),
+      })
+      .from(blogMetaSchema)
+      .innerJoin(
+        blogSubGroup,
+        eq(blogMetaSchema.sub_group_id, blogSubGroup.sub_group_id)
+      )
+      .where(whereQuery);
+    searchCnt = rows.count;
+  }
 
-  return NextResponse.json({ success: true, result: flatRows });
+  return NextResponse.json({
+    success: true,
+    result: searchCnt !== undefined ? [...flatRows, +searchCnt] : flatRows,
+  });
 }

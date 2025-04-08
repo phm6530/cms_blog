@@ -1,10 +1,4 @@
-import {
-  ChartAreaIcon,
-  GithubIcon,
-  Hammer,
-  Mail,
-  MessageCircleMore,
-} from "lucide-react";
+import { GithubIcon, Hammer, MessageCircleMore } from "lucide-react";
 import { Button } from "../ui/button";
 
 export default function Footer() {

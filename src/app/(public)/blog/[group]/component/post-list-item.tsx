@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { PostItemModel } from "../post-list";
 import Link from "next/link";
-import { ENV } from "@/type/constants";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquareMore } from "lucide-react";
 import { DateUtils } from "@/util/date-uill";
+import { HighlightKeyword } from "@/util/keyword-highlist";
 
 export default function PostItem({
   post_title,
@@ -14,18 +14,16 @@ export default function PostItem({
   thumbnail_url,
   create_at,
   comment_count,
-}: PostItemModel) {
+  keyword,
+}: PostItemModel & { keyword?: string }) {
   return (
-    <div className="group cursor-pointer grid grid-cols-[4fr_1fr] gap-5 items-center py-4 border-b  last:border-b-0">
-      <div className="flex flex-col gap-3 py-3">
-        <div className="flex gap-2">
+    <div className="group cursor-pointer grid grid-cols-[4fr_1fr] gap-5 items-center py-5 border-b  last:border-b-0">
+      <div className="flex flex-col gap-4 py-3">
+        <div className="flex gap-3">
           <Badge variant={"secondary"} className="text-xs!">
             {sub_group_name}
           </Badge>
           <div className="relative inline-flex items-center justify-center">
-            {/* 뒤에 깔릴 ping 효과 */}
-            {/* <span className="absolute inline-flex h-full w-full rounded-full bg-purple-500 opacity-75 animate-caret-blink" /> */}
-
             {/* 실제 Badge 내용 */}
             {DateUtils.isNew(create_at) && (
               <Badge
@@ -39,10 +37,16 @@ export default function PostItem({
         </div>
         <Link href={`/blog/${sub_group_name}/${post_id}`}>
           <p className="group-hover:text-amber-200 text-2xl tracking-tight">
-            {post_title}
+            {!!keyword ? (
+              <HighlightKeyword text={post_title} keyword={keyword} />
+            ) : (
+              post_title
+            )}
+
+            {/* {post_title} */}
           </p>
         </Link>
-        <p className="line-clamp-2 text-xs text-muted-foreground leading-5 tracking-tight">
+        <p className="line-clamp-2 text-xs text-muted-foreground leading-6 tracking-tight">
           {post_description}
         </p>
         <p className="text-xs text-muted-foreground mt-1 flex gap-3">
@@ -62,7 +66,7 @@ export default function PostItem({
       <div className="max-w-[120px]  w-full ml-auto  aspect-[10/10]  rounded-md relative overflow-hidden ">
         {thumbnail_url && (
           <Image
-            src={`${ENV.IMAGE_URL}/${thumbnail_url}`}
+            src={`https://d33h8icwcso2tj.cloudfront.net/${thumbnail_url}`}
             alt=""
             fill
             style={{ objectFit: "cover" }}

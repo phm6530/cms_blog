@@ -11,7 +11,7 @@ type Author =
       admin_email: string;
       nickname: string;
       guest_id?: undefined;
-      profile_img: string;
+      profile_img: string | null;
     }
   | {
       role: "guest";

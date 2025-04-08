@@ -60,8 +60,6 @@ export async function GET() {
   }
   const tagGroups = [...hashMap.values(), count];
 
-  console.log(tagGroups);
-
   return NextResponse.json({
     success: true,
     result: tagGroups,

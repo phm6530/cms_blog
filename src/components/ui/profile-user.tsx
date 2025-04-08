@@ -29,7 +29,7 @@ export default function ProfileUser({
               </span>
             )}
           </div>
-          {role === "super" && (
+          {(role === "super" || role === "admin") && (
             <div className="relative ml-1">
               <BadgeCheck className="text-teal-500  shadow-2xl z-1" size={20} />{" "}
               <BadgeCheck

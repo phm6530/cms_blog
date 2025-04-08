@@ -28,6 +28,7 @@ export default async function GuestBookPage() {
         <Info /> 댓글 부탁드려요
       </p>
       <GuestBookForm />
+
       <hr />
       {response.result.map((item, idx) => {
         return <GuestBookItem deps={0} {...item} key={idx} />;

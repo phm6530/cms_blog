@@ -5,7 +5,8 @@ import ThemeHandler from "./ThemeHandler";
 import { Button } from "../ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { Skeleton } from "../ui/skeleton";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import SearchInput from "../ui/search-input";
 
 const navlist = [
   { href: "/", name: "Home" },
@@ -28,7 +29,7 @@ export default function Nav() {
 
   return (
     <nav className="border-b py-4">
-      <div className="grid-layout  flex items-center gap-5">
+      <div className="grid-layout flex items-center gap-5">
         {navlist.map((link, idx) => {
           if (link.href === "/login") {
             if (!isClient || isLoading) {
@@ -65,7 +66,9 @@ export default function Nav() {
             </Link>
           );
         })}
-
+        <Suspense fallback={<>loading..</>}>
+          <SearchInput name="keyword" className="placeholder:text-xs!" />
+        </Suspense>
         <ThemeHandler />
       </div>
     </nav>

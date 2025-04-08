@@ -75,7 +75,7 @@ export default function CommentItem({
       )}
       style={{ marginLeft: `${!!isReply ? 20 : 0}px` }}
     >
-      {!!isReply && <Reply size={13} className="rotate-180 opacity-40 mt-2" />}
+      {!!isReply && <Reply size={13} className="rotate-180 opacity-60 mt-2" />}
       <div className="flex flex-col gap-2  w-full">
         <ProfileUser
           profileImg={
@@ -87,84 +87,85 @@ export default function CommentItem({
           role={author.role}
           createAt={created_at}
         />
-        <pre className=" text-sm  text-secondary-foreground border-l-2 border-input pl-3 font-pretendard">
-          {comment}
-        </pre>
-        <div className="flex gap-2 items-center text-xs [&>span:cursor-pointer]">
-          <Button
-            className="cursor-pointer text-xs p-0 text-muted-foreground"
-            variant={"link"}
-            onClick={() => toggleFormView(commentId)} // 해당 댓글에 대한 폼을 토글
-          >
-            댓글쓰기
-          </Button>
+        <div className="pl-0">
+          <pre className=" text-sm py-1 text-secondary-foreground border-input border-l pl-3 font-pretendard">
+            {comment}
+          </pre>
+          <div className="flex gap-2 items-center text-xs [&>span:cursor-pointer]">
+            <Button
+              className="cursor-pointer text-xs p-0 text-muted-foreground"
+              variant={"link"}
+              onClick={() => toggleFormView(commentId)} // 해당 댓글에 대한 폼을 토글
+            >
+              댓글쓰기
+            </Button>
 
-          {/* Admin이랑 동일하면 */}
-          {(() => {
-            // admin이면서 자기 댓글인 경우
-            if (
-              (author.role === "admin" || author.role === "super") &&
-              author.admin_email === session.data?.user?.email
-            ) {
-              return (
-                <ConfirmButton
-                  title="댓글을 삭제하시겠습니까?"
-                  cb={() => mutate({})}
-                >
-                  <Button
-                    className="cursor-pointer animate-wiggle text-xs p-0 text-muted-foreground"
-                    variant={"link"}
+            {/* Admin이랑 동일하면 */}
+            {(() => {
+              // admin이면서 자기 댓글인 경우
+              if (
+                (author.role === "admin" || author.role === "super") &&
+                author.admin_email === session.data?.user?.email
+              ) {
+                return (
+                  <ConfirmButton
+                    title="댓글을 삭제하시겠습니까?"
+                    cb={() => mutate({})}
                   >
-                    삭제
-                  </Button>
-                </ConfirmButton>
-              );
-            }
-
-            // guest인 경우, guest_id 비교
-            if (author.role === "guest") {
-              return (
-                <>
-                  <Button
-                    className="cursor-pointer animate-wiggle text-xs p-0 text-muted-foreground"
-                    variant={"link"}
-                    onClick={() => setPasswordFormId(commentId)}
-                  >
-                    {passwordFomView === commentId ? <X /> : "삭제"}
-                  </Button>
-
-                  {passwordFomView === commentId && (
-                    <form
-                      className="flex gap-2"
-                      onSubmit={handleSubmit(onDeleteHnadler)}
+                    <Button
+                      className="cursor-pointer animate-wiggle text-xs p-0 text-muted-foreground"
+                      variant={"link"}
                     >
-                      <div className=" flex flex-col">
-                        <InputPassword
-                          {...register("password", {
-                            required: { value: true, message: "required" },
-                          })}
-                          className="py-1 placeholder:text-xs"
-                          placeholder="비밀번호"
-                          aria-invalid={!!errors.password}
-                        />
-                      </div>
+                      삭제
+                    </Button>
+                  </ConfirmButton>
+                );
+              }
 
-                      <Button
-                        variant={"outline"}
-                        className="cursor-pointer text-xs"
+              // guest인 경우, guest_id 비교
+              if (author.role === "guest") {
+                return (
+                  <>
+                    <Button
+                      className="cursor-pointer animate-wiggle text-xs p-0 text-muted-foreground"
+                      variant={"link"}
+                      onClick={() => setPasswordFormId(commentId)}
+                    >
+                      {passwordFomView === commentId ? <X /> : "삭제"}
+                    </Button>
+
+                    {passwordFomView === commentId && (
+                      <form
+                        className="flex gap-2"
+                        onSubmit={handleSubmit(onDeleteHnadler)}
                       >
-                        확인
-                      </Button>
-                    </form>
-                  )}
-                </>
-              );
-            }
+                        <div className=" flex flex-col">
+                          <InputPassword
+                            {...register("password", {
+                              required: { value: true, message: "required" },
+                            })}
+                            className="py-1 placeholder:text-xs"
+                            placeholder="비밀번호"
+                            aria-invalid={!!errors.password}
+                          />
+                        </div>
 
-            return null;
-          })()}
+                        <Button
+                          variant={"outline"}
+                          className="cursor-pointer text-xs"
+                        >
+                          확인
+                        </Button>
+                      </form>
+                    )}
+                  </>
+                );
+              }
+
+              return null;
+            })()}
+          </div>
         </div>
-
         {commentsViewId === commentId && (
           <CommentForm parent_id={isReply ? parent_id : commentId} />
         )}

@@ -19,7 +19,9 @@ export default function Page() {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof registerSchema>) => {};
+  const onSubmit = async (data: z.infer<typeof registerSchema>) => {
+    console.log(data);
+  };
 
   return (
     <>

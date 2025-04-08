@@ -18,6 +18,10 @@ export const ENV = {
   IMAGE_URL: process.env.IMAGE_URL,
 };
 
+export enum QUERYKEY {
+  SEARCH = "SEARCH",
+}
+
 export enum HTTP_METHOD {
   POST = "POST",
   DELETE = "DELETE",

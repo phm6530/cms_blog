@@ -1,4 +1,5 @@
 "use client";
+import useThrottling from "@/hook/useThrottling";
 import { cn } from "@/lib/utils";
 import { SearchIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -17,22 +18,28 @@ export default function SearchInput({
   const qs = useSearchParams();
   const currentValue = qs.get("search") || "";
   const [inputValue, setInputValue] = useState(currentValue);
+  const { throttle } = useThrottling();
   const searchHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const trimmed = inputValue.trim();
-    // 동일검색 금지
-    if (trimmed === currentValue.trim()) return;
 
-    if (trimmed === "") {
-      router.push(`${pathname}`);
-    } else {
-      router.push(`${pathname}?search=${trimmed.toLowerCase()}`);
-      router.refresh();
-    }
+    throttle(async () => {
+      const trimmed = inputValue.trim();
+
+      if (trimmed.length < 2) {
+        alert("2글자 이상 입력해주세요.");
+        return;
+      }
+      if (trimmed === "") {
+        router.push(`${pathname}`);
+      } else {
+        router.push(`/search/${trimmed.toLowerCase()}`);
+      }
+    }, 500);
   };
   const value = qs.get("search") || "";
+
   return (
-    <form onSubmit={searchHandler}>
+    <form onSubmit={searchHandler} className=" ml-auto">
       <div
         className={cn(
           `border rounded-full dark:bg-black/10 overflow-hidden focus-within:border-primary
@@ -46,13 +53,13 @@ export default function SearchInput({
           name={name}
           defaultValue={value}
           onChange={(e) => setInputValue(e.target.value)}
-          className="bg-transparent flex-1 h-full p-4 pl-4 md:text-sm text-[13px] outline-0!"
+          className="bg-transparent flex-1  p-2.5 pl-4 md:text-sm text-[13px] outline-0! placeholder:text-xs"
           placeholder="검색어를 입력해주세요"
           {...props}
         />
 
-        <button type="submit" className="flex items-center p-3 pr-3">
-          <SearchIcon />
+        <button type="submit" className="flex items-center p-1 pr-4">
+          <SearchIcon size={17} />
         </button>
       </div>
     </form>

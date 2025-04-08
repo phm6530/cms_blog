@@ -18,7 +18,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.id as string;
         session.user.nickname = token.nickname as string;
         session.user.image = token.picture as string;
-        session.user.role = token.role as string;
+        session.user.role = token.role as "admin" | "super";
       }
       return session;
     },
@@ -39,12 +39,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         >
       ): Promise<{
         email: string;
-        role: string;
+        role: "admin" | "super";
         image: string | null;
         nickname: string;
       } | null> {
         const email = credentials.email;
-        const role = credentials.role;
+        const role = credentials.role as "admin" | "super";
         const nickname = credentials.nickname as string;
         const profile_img = credentials.profile_img as string;
 
