@@ -55,7 +55,7 @@ export default async function RootLayout({
                 <Button variant={"outline"} className="flex-1">
                   <Hammer />
                 </Button>
-                <Button className="col-span-3 mt-5 py-6">글쓰기</Button>
+                <Button className="col-span-3 mt-5 py-5">글쓰기</Button>
               </div>
 
               <div className="flex flex-col items-end gap-3  rounded-3xl">

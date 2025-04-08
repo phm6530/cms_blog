@@ -2,7 +2,6 @@ import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 import PostItem from "./component/post-list-item";
-import SearchInput from "@/components/ui/search-input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -16,19 +15,31 @@ export type PostItemModel = {
   thumbnail_url: string;
   sub_group_name: string;
   view: boolean;
+  comment_count: number;
 };
 
-export default async function PostList({ subGroup }: { subGroup?: string }) {
+export default async function PostList({
+  subGroup,
+  searchKeyword,
+}: {
+  subGroup?: string;
+  searchKeyword: string | null;
+}) {
   const isSubGroup = subGroup ?? "all"; // 없으면 전체 다 가져오기
+  let endPoint = `api/blog?group=${isSubGroup}`;
+  if (!!searchKeyword) {
+    endPoint += `&keyword=${searchKeyword}`;
+  }
   const response = await withFetchRevaildationAction<PostItemModel[]>({
-    endPoint: `api/blog?group=${isSubGroup}`,
+    endPoint,
     options: {
-      cache: "no-store",
+      cache: !!searchKeyword ? "no-store" : "force-cache",
       next: {
         tags: [REVALIDATE.BLOG.LIST, isSubGroup],
       },
     },
   });
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   if (!response.success) {
     notFound();
@@ -47,7 +58,7 @@ export default async function PostList({ subGroup }: { subGroup?: string }) {
           </Link>
         </Button>
       </div>
-      <SearchInput name="keyword" />
+
       <div className="flex flex-col">
         {response.result.map((item, idx) => {
           return <PostItem {...item} key={idx} />;

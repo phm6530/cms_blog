@@ -3,7 +3,7 @@ import { PostItemModel } from "../post-list";
 import Link from "next/link";
 import { ENV } from "@/type/constants";
 import { Badge } from "@/components/ui/badge";
-import { Eye, MessageSquareMore } from "lucide-react";
+import { MessageSquareMore } from "lucide-react";
 import { DateUtils } from "@/util/date-uill";
 
 export default function PostItem({
@@ -11,12 +11,12 @@ export default function PostItem({
   post_id,
   post_description,
   sub_group_name,
-
   thumbnail_url,
   create_at,
+  comment_count,
 }: PostItemModel) {
   return (
-    <div className="group cursor-pointer grid grid-cols-[4fr_1fr] gap-5 items-center py-4 border-b  ">
+    <div className="group cursor-pointer grid grid-cols-[4fr_1fr] gap-5 items-center py-4 border-b  last:border-b-0">
       <div className="flex flex-col gap-3 py-3">
         <div className="flex gap-2">
           <Badge variant={"secondary"} className="text-xs!">
@@ -47,14 +47,14 @@ export default function PostItem({
         </p>
         <p className="text-xs text-muted-foreground mt-1 flex gap-3">
           <span className="flex gap-1 items-center">
-            <MessageSquareMore className="w-3.5 h-3.5" /> 1
+            <MessageSquareMore className="size-4" /> {comment_count}
           </span>
 
-          <span className="flex gap-1 items-center">
-            <Eye className="w-3.5 h-3.5" /> 1
-          </span>
+          {/* <span className="flex gap-1 items-center">
+            <Eye className="size-4" /> 1
+          </span> */}
 
-          <span className="ml-auto">
+          <span className="border-l-2 pl-3">
             {DateUtils.dateFormatKR(create_at, "YY. MM. DD")}
           </span>
         </p>

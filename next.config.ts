@@ -12,6 +12,14 @@ const nextConfig: NextConfig = {
       "d33h8icwcso2tj.cloudfront.net",
     ], // 내 포트폴리오
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
+  // experimental: {
+  //   ppr: false,
+  // },
 };
 
 export default nextConfig;

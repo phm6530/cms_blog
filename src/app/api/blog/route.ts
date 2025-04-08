@@ -1,32 +1,54 @@
 import { db } from "@/db/db";
 import { blogSubGroup } from "@/db/schema/blog-group";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
-import { desc, eq } from "drizzle-orm";
+import { commentSchema } from "@/db/schema/comments";
+import { and, desc, eq, ilike, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const QUERYSTRING_blogSubGroup = url.searchParams.get("group");
+  const searchKeyword = url.searchParams.get("keyword");
 
   const rows = await db
-    .select()
+    .select({
+      blog_metadata: blogMetaSchema,
+      blog_sub_group: blogSubGroup,
+      comment_count: sql<number>`COUNT(${commentSchema.id})`.as("comment_cnt"),
+    })
     .from(blogMetaSchema)
     .innerJoin(
       blogSubGroup,
       eq(blogMetaSchema.sub_group_id, blogSubGroup.sub_group_id)
     )
+    .leftJoin(commentSchema, eq(commentSchema.post_id, blogMetaSchema.post_id))
     .where(
-      !QUERYSTRING_blogSubGroup || QUERYSTRING_blogSubGroup === "all"
-        ? undefined
-        : eq(blogSubGroup.sub_group_name, QUERYSTRING_blogSubGroup)
+      and(
+        QUERYSTRING_blogSubGroup && QUERYSTRING_blogSubGroup !== "all"
+          ? sql`LOWER(${
+              blogSubGroup.sub_group_name
+            }) = ${QUERYSTRING_blogSubGroup.toLowerCase()}`
+          : undefined,
+        searchKeyword
+          ? ilike(blogMetaSchema.post_title, `%${searchKeyword}%`)
+          : undefined
+      )
     )
+
+    .groupBy(blogMetaSchema.post_id, blogSubGroup.sub_group_id)
     .orderBy(desc(blogMetaSchema.post_id))
     .limit(10)
     .offset(0);
-
-  const flatRows = rows.map(({ blog_metadata, blog_sub_group }) => {
-    return { ...blog_metadata, sub_group_name: blog_sub_group.sub_group_name };
-  });
+  console.log("ddd");
+  const flatRows = rows.map(
+    ({ blog_metadata, blog_sub_group, comment_count }) => {
+      return {
+        ...blog_metadata,
+        sub_group_name: blog_sub_group.sub_group_name,
+        comment_count: +comment_count,
+      };
+    }
+  );
 
   return NextResponse.json({ success: true, result: flatRows });
 }
