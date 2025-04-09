@@ -14,6 +14,8 @@ import { ChangeEvent, useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
 import { z } from "zod";
+import TextareaFormField from "@/components/ui/textarea-field";
+import PostTitleField from "@/components/shared/post-title-Field";
 
 const defaultValues = {
   title: "",
@@ -55,10 +57,10 @@ export default function WirteForm({
         <SelectField groups={postGroupItems} />
         {!!form.watch("postGroup") && <CheckField />}
 
-        <InputField
+        <PostTitleField
           name="title"
           placeholder="제목을 기재해주세요"
-          className="p-5"
+          className="p-0 mt-10"
         />
         {img && <Image src={img} alt="" fill />}
 

@@ -22,11 +22,6 @@ export default async function Page() {
     notFound();
   }
   const result = response.result;
-  const { data, error } = await SupabaseStorage.getInstance()
-    .storage.from("blog")
-    .list("blog");
-
-  console.log(data);
   return (
     <>
       <WirteForm postGroupItems={result} />

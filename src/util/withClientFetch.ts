@@ -11,7 +11,7 @@ export default async function withClientFetch<T>({
   endPoint,
   options = {},
   requireAuth = false,
-  body = {},
+  body,
 }: ClientFetchProps): Promise<T> {
   const headers: HeadersInit = {
     ...(options.body && { "Content-Type": "application/json" }),

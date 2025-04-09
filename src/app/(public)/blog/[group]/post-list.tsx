@@ -33,7 +33,7 @@ export default async function PostList({ subGroup }: { subGroup?: string }) {
   if (!response.success) {
     notFound();
   }
-  console.count("test");
+
   ///d
   return (
     <section className="pt-10 flex flex-col">

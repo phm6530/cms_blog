@@ -14,6 +14,7 @@ export default function LoadingSpinnerWrapper({
   return (
     <div style={{ position: "relative" }}>
       {loading && <LoadingSpiner />}
+
       <div
         className={cn(loading && "opacity-50 pointer-events-none", className)}
       >

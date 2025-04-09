@@ -6,7 +6,6 @@ const AUTH_REQUIRED_PATHS = ["/made", "/mypage", "/write"] as const;
 type Pathname = (typeof AUTH_REDIRECT_PATHS)[number];
 
 export async function middleware(req: NextRequest, res: NextResponse) {
-  console.log(res);
   const pathname = req.nextUrl.pathname as Pathname;
 
   // get Token
