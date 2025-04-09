@@ -56,6 +56,7 @@ export default function PostTitleField({
                 overflow: "hidden",
                 resize: "none", // 수동 resize 막기
               }}
+              rows={1}
             />
           </FormControl>
           <FormMessage />
