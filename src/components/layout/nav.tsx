@@ -29,7 +29,7 @@ export default function Nav() {
 
   return (
     <nav className="border-b py-4">
-      <div className="grid-layout flex items-center gap-5">
+      <div className="grid-layout flex items-center gap-5 ">
         {navlist.map((link, idx) => {
           if (link.href === "/login") {
             if (!isClient || isLoading) {

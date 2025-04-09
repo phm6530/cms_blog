@@ -3,6 +3,7 @@ import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 import WirteForm from "./write-form";
+import { SupabaseStorage } from "@/config/supabase-instance";
 
 export default async function Page() {
   const response = await withFetchRevaildationAction<
@@ -21,7 +22,11 @@ export default async function Page() {
     notFound();
   }
   const result = response.result;
+  const { data, error } = await SupabaseStorage.getInstance()
+    .storage.from("blog")
+    .list("blog");
 
+  console.log(data);
   return (
     <>
       <WirteForm postGroupItems={result} />

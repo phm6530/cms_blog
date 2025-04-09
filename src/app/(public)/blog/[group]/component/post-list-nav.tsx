@@ -31,13 +31,15 @@ export default async function PostListNav({
   const activeStyle = (subGroupName?: string) => {
     const isActive = selectGroup === subGroupName;
     return cn(
-      "rounded-full text-xs border text-indigo-100",
+      "rounded-full text-xs border dark:text-indigo-100 bg-zinc-100 border-transparent",
       isActive
         ? "text-primary text-indigo-300 border-red! border-indigo-400!"
-        : "border-none"
+        : "border"
     );
   };
+
   const total = result.pop() as number;
+
   return (
     <>
       {/* <div className="grid grid-cols-[auto_1fr] items-center gap-5  mb-5">

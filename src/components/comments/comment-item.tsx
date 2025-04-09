@@ -88,12 +88,12 @@ export default function CommentItem({
           createAt={created_at}
         />
         <div className="pl-0">
-          <pre className=" text-sm py-1 text-secondary-foreground border-input border-l pl-3 font-pretendard">
+          <div className="text-sm py-1 text-secondary-foreground whitespace-pre-wrap border-input border-l pl-3 font-pretendard leading-6">
             {comment}
-          </pre>
+          </div>
           <div className="flex gap-2 items-center text-xs [&>span:cursor-pointer]">
             <Button
-              className="cursor-pointer text-xs p-0 text-muted-foreground"
+              className=" cursor-pointer text-xs p-0 text-muted-foreground"
               variant={"link"}
               onClick={() => toggleFormView(commentId)} // 해당 댓글에 대한 폼을 토글
             >

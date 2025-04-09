@@ -8,10 +8,19 @@ import { Button } from "@/components/ui/button";
 import SelectField from "@/components/ui/select-field";
 import { CheckField } from "@/components/ui/check-field";
 import { BlogGroupModel } from "@/type/blog-group";
+import { TipTapEditor } from "@squirrel309/my-testcounter";
+import { imgUploader } from "@/util/uploader-handler";
+import { ChangeEvent, useState } from "react";
+import { toast } from "sonner";
+import Image from "next/image";
+import { z } from "zod";
 
 const defaultValues = {
   title: "",
   contents: "",
+  postGroup: "",
+  thumbnail: null,
+  defaultThumbNail: false,
 };
 
 export default function WirteForm({
@@ -19,23 +28,47 @@ export default function WirteForm({
 }: {
   postGroupItems: (BlogGroupModel | number)[];
 }) {
-  const form = useForm({
+  const [img, setImg] = useState<string | null>(null);
+  const form = useForm<z.infer<typeof wirtePostSchema>>({
     defaultValues,
     resolver: zodResolver(wirtePostSchema),
   });
 
   const onSubmitHandler = () => {};
 
+  const imgUploaderHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+    try {
+      const url = await imgUploader(e, "blog");
+      if (!!url) {
+        setImg(url);
+      }
+    } catch (error) {
+      if (error) {
+      }
+      toast.error("에러");
+    }
+  };
+
   return (
     <Form {...form}>
       <div className="flex flex-col gap-3">
         <SelectField groups={postGroupItems} />
-        <CheckField />
+        {!!form.watch("postGroup") && <CheckField />}
+
         <InputField
           name="title"
           placeholder="제목을 기재해주세요"
           className="p-5"
         />
+        {img && <Image src={img} alt="" fill />}
+
+        <input
+          type="file"
+          id="file"
+          className="hidden"
+          onChange={imgUploaderHandler}
+        />
+        <TipTapEditor setFontFailmy={["test"]} />
 
         {/* <FormField
           name="contents"

@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "./tiptap.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -80,7 +79,7 @@
 }
 
 .dark {
-  --background: oklch(0.23 0.0107 242.2);
+  --background: oklch(0.23 0.004 285);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
   --card-foreground: oklch(0.985 0 0);
@@ -124,6 +123,19 @@
     @apply text-sm;
   }
 
+  @keyframes fadeIn {
+    0% {
+      transform: translateY(-30px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  .animate-fadein {
+    animation: fadeIn 0.5s linear infinite alternate;
+  }
+
   @keyframes opacity {
     0% {
       opacity: 0;
@@ -132,6 +144,7 @@
       opacity: 1;
     }
   }
+
   .animate-opacity {
     animation: opacity 0.5s linear infinite alternate;
   }
@@ -193,6 +206,18 @@
 
 @theme {
   --animate-wiggle: wiggle 0.5s ease;
+  --animate-fadein: fadeIn 0.5s ease;
+
+  @keyframes fadeIn {
+    0% {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0px);
+      opacity: 1;
+    }
+  }
 
   @keyframes wiggle {
     0% {

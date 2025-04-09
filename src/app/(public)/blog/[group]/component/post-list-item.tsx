@@ -17,7 +17,7 @@ export default function PostItem({
   keyword,
 }: PostItemModel & { keyword?: string }) {
   return (
-    <div className="group cursor-pointer grid grid-cols-[4fr_1fr] gap-5 items-center py-5 border-b  last:border-b-0">
+    <div className="animate-fadein group cursor-pointer grid grid-cols-[4fr_1fr] gap-5 items-center py-5 border-b  last:border-b-0">
       <div className="flex flex-col gap-4 py-3">
         <div className="flex gap-3">
           <Badge variant={"secondary"} className="text-xs!">
