@@ -1,7 +1,7 @@
 import { integer, pgTable, text } from "drizzle-orm/pg-core";
 
 //Main Blog
-export const blogGroup = pgTable("blog_group", {
+export const categorySchema = pgTable("category", {
   group_id: integer("group_id").primaryKey().generatedAlwaysAsIdentity(),
   group_name: text("group_name").notNull(),
 });
@@ -14,7 +14,7 @@ export const blogSubGroup = pgTable("blog_sub_group", {
   sub_group_name: text("sub_group_name").notNull(),
   group_id: integer("group_id")
     .notNull()
-    .references(() => blogGroup.group_id, {
+    .references(() => categorySchema.group_id, {
       onDelete: "cascade",
       onUpdate: "cascade",
     }),

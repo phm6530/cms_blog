@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { DateUtils } from "@/util/date-uill";
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, UserRound } from "lucide-react";
 import Image from "next/image";
 
 export default function ProfileUser({
@@ -14,17 +14,20 @@ export default function ProfileUser({
   role: "super" | "admin" | "guest";
   createAt?: string;
 }) {
-  // const id = Math.floor((Math.random() * 6 ) + 1);
-  const img = profileImg || `/img/guestbook/person_4.jpg`;
+  const img = profileImg || `/img/guest.png`;
   return (
     <div className="flex gap-3 items-center ">
       <div
         className={cn(
-          "size-10 border-3 border-border rounded-full flex justify-center items-center relative overflow-hidden",
-          !profileImg && "grayscale-50"
+          "size-10  rounded-full bg-gray-500/10 flex justify-center items-center relative overflow-hidden",
+          profileImg && "border-3 border-border"
         )}
       >
-        <Image src={img} alt="" fill style={{ objectFit: "cover" }} />
+        {!profileImg ? (
+          <UserRound className="text-secondary-foreground/80" />
+        ) : (
+          <Image src={img} alt="" fill style={{ objectFit: "cover" }} />
+        )}
       </div>
       <div className="flex flex-col">
         <div className="col-span-2 flex items-start gap-2">

@@ -5,11 +5,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { BlogGroupModel } from "@/type/blog-group";
+import { CategoryModel } from "@/type/blog-group";
 import { FormField, FormItem, FormMessage } from "./form";
 import { useFormContext } from "react-hook-form";
 
-export default function SelectField<T extends (BlogGroupModel | number)[]>({
+export default function SelectField<T extends (CategoryModel | number)[]>({
   groups,
 }: {
   groups: T;

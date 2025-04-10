@@ -1,7 +1,7 @@
 import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
-import PostItem from "../../category/post-list-item";
+import PostItem from "./component/post-list-item";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 

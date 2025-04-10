@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
-import { blogSubGroup } from "@/db/schema/blog-group";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
+import { blogSubGroup } from "@/db/schema/category";
 import { commentSchema } from "@/db/schema/comments";
 import { and, desc, eq, ilike, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
@@ -66,6 +66,6 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({
     success: true,
-    result: searchCnt !== undefined ? [...flatRows, +searchCnt] : flatRows,
+    result: !!searchKeyword ? [...flatRows, +searchCnt] : flatRows,
   });
 }

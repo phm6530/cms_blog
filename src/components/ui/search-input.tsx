@@ -58,7 +58,7 @@ export default function SearchInput({
           {...props}
         />
 
-        <button type="submit" className="flex items-center p-1 pr-4">
+        <button type="submit" className="flex items-center pr-3 opacity-50">
           <SearchIcon size={17} />
         </button>
       </div>

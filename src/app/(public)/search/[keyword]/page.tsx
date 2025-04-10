@@ -2,7 +2,7 @@
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { PostItemModel } from "../../blog/[group]/post-list";
 import { QUERYKEY } from "@/type/constants";
-import PostItem from "../../blog/[group]/component/post-list-item";
+import PostItem from "../../category/post-list-item";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";

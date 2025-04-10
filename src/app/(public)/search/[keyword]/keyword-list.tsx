@@ -1,5 +1,5 @@
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
-import PostItem from "../../blog/[group]/component/post-list-item";
+import PostItem from "../../category/post-list-item";
 import { PostItemModel } from "../../blog/[group]/post-list";
 import { REVALIDATE } from "@/type/constants";
 type SearchResult = [...PostItemModel[], number];

@@ -1,6 +1,7 @@
-export type BlogGroupModel = {
-  groupId: number;
-  groupName: string;
+export type CategoryModel = {
+  id: number;
+  name: string;
+  postCnt: number;
   subGroups: {
     subGroupId: number;
     subGroupName: string;

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { PostItemModel } from "../post-list";
+import { PostItemModel } from "../blog/[group]/post-list";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquareMore } from "lucide-react";
@@ -35,7 +35,7 @@ export default function PostItem({
             )}
           </div>
         </div>
-        <Link href={`/blog/${sub_group_name}/${post_id}`}>
+        <Link href={`/post/${post_id}`}>
           <p className="group-hover:text-amber-200 text-2xl tracking-tight">
             {!!keyword ? (
               <HighlightKeyword text={post_title} keyword={keyword} />

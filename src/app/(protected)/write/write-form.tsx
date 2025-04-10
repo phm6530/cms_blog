@@ -1,5 +1,4 @@
 "use client";
-import InputField from "@/components/shared/inputField";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -7,14 +6,13 @@ import { wirtePostSchema } from "./schema";
 import { Button } from "@/components/ui/button";
 import SelectField from "@/components/ui/select-field";
 import { CheckField } from "@/components/ui/check-field";
-import { BlogGroupModel } from "@/type/blog-group";
+import { CategoryModel } from "@/type/blog-group";
 import { TipTapEditor } from "@squirrel309/my-testcounter";
 import { imgUploader } from "@/util/uploader-handler";
 import { ChangeEvent, useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
 import { z } from "zod";
-import TextareaFormField from "@/components/ui/textarea-field";
 import PostTitleField from "@/components/shared/post-title-Field";
 
 const defaultValues = {
@@ -28,7 +26,7 @@ const defaultValues = {
 export default function WirteForm({
   postGroupItems,
 }: {
-  postGroupItems: (BlogGroupModel | number)[];
+  postGroupItems: (CategoryModel | number)[];
 }) {
   const [img, setImg] = useState<string | null>(null);
   const form = useForm<z.infer<typeof wirtePostSchema>>({

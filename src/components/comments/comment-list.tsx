@@ -21,11 +21,21 @@ export default async function CommentList({ postId }: { postId: string }) {
 
   return (
     <>
-      {response.result.map((comment) => {
-        return (
-          <CommentItem key={`${postId}-${comment.id}`} {...comment} deps={0} />
-        );
-      })}
+      {response.result.length === 0 ? (
+        <>
+          <h3>댓글이 없습니다</h3>
+        </>
+      ) : (
+        response.result.map((comment) => {
+          return (
+            <CommentItem
+              key={`${postId}-${comment.id}`}
+              {...comment}
+              deps={0}
+            />
+          );
+        })
+      )}
     </>
   );
 }

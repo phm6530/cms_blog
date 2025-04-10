@@ -2,8 +2,6 @@ import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 import PostItem from "../../category/post-list-item";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 export type PostItemModel = {
   post_id: number;
@@ -18,14 +16,22 @@ export type PostItemModel = {
   comment_count: number;
 };
 
-export default async function PostList({ subGroup }: { subGroup?: string }) {
-  const isSubGroup = subGroup ?? "all"; // 없으면 전체 다 가져오기
+export default async function Category({
+  params,
+}: {
+  params: Promise<{ category: string[] }>;
+}) {
+  const { category: categoryList } = await params;
+  const [_, group] = categoryList;
+  void _;
+
+  const isSubGroup = group ?? "all"; // 없으면 전체 다 가져오기
   const response = await withFetchRevaildationAction<PostItemModel[]>({
     endPoint: `api/blog?group=${isSubGroup}`,
     options: {
       cache: "force-cache",
       next: {
-        tags: [REVALIDATE.BLOG.LIST, isSubGroup],
+        tags: [REVALIDATE.BLOG.LIST, group],
       },
     },
   });
@@ -34,21 +40,8 @@ export default async function PostList({ subGroup }: { subGroup?: string }) {
     notFound();
   }
 
-  ///d
   return (
-    <section className="pt-10 flex flex-col">
-      <div className="grid grid-cols-[auto_1fr] justify-between items-center gap-5 border-b pb-4 py-10">
-        <span className="text-3xl font-Poppins font-extrabold">
-          {isSubGroup === "all" ? "Blog" : isSubGroup}
-        </span>
-        {/* <span className="border-b border-foreground/40 w-[50px]"></span> */}
-        <Button className="ml-auto text-xs " variant={"outline"}>
-          <Link className="flex" href={"/write"}>
-            글쓰기
-          </Link>
-        </Button>
-      </div>
-
+    <section className=" flex flex-col">
       <div className="flex flex-col">
         {response.result.map((item, idx) => {
           return <PostItem {...item} key={idx} />;

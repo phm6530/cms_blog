@@ -1,13 +1,12 @@
-import { BlogGroupModel } from "@/type/blog-group";
+import { CategoryModel } from "@/type/blog-group";
 import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 import WirteForm from "./write-form";
-import { SupabaseStorage } from "@/config/supabase-instance";
 
 export default async function Page() {
   const response = await withFetchRevaildationAction<
-    (BlogGroupModel | number)[]
+    (CategoryModel | number)[]
   >({
     endPoint: "api/blogGroup",
     options: {

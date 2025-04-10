@@ -1,31 +1,31 @@
 import { db } from "@/db/db";
-import { blogGroup, blogSubGroup } from "@/db/schema/blog-group";
+import { categorySchema, blogSubGroup } from "@/db/schema/category";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
-import { BlogGroupModel } from "@/type/blog-group";
+import { CategoryModel } from "@/type/blog-group";
 import { eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const hashMap = new Map<string, BlogGroupModel>();
+  const hashMap = new Map<string, CategoryModel>();
 
   const rows = await db
     .select({
-      groupId: blogGroup.group_id,
-      groupName: blogGroup.group_name,
+      groupId: categorySchema.group_id,
+      groupName: categorySchema.group_name,
       subGroupId: blogSubGroup.sub_group_id,
       subGroupName: blogSubGroup.sub_group_name,
       thumb: blogSubGroup.default_thum,
       postCount: sql<number>`COUNT(${blogMetaSchema.post_id})`.as("postCount"),
     })
-    .from(blogGroup)
-    .leftJoin(blogSubGroup, eq(blogGroup.group_id, blogSubGroup.group_id))
+    .from(categorySchema)
+    .leftJoin(blogSubGroup, eq(categorySchema.group_id, blogSubGroup.group_id))
     .leftJoin(
       blogMetaSchema,
       eq(blogMetaSchema.sub_group_id, blogSubGroup.sub_group_id)
     )
     .groupBy(
-      blogGroup.group_id,
-      blogGroup.group_name,
+      categorySchema.group_id,
+      categorySchema.group_name,
       blogSubGroup.sub_group_id,
       blogSubGroup.sub_group_name,
       blogSubGroup.default_thum
@@ -33,15 +33,15 @@ export async function GET() {
 
   let count = 0;
   const countType = (
-    postCount: BlogGroupModel["subGroups"][number]["postCount"]
+    postCount: CategoryModel["subGroups"][number]["postCount"]
   ) => (typeof postCount === "string" ? parseInt(postCount, 10) : postCount);
 
   for (const items of rows) {
     if (!hashMap.has(items.groupName)) {
       hashMap.set(items.groupName, {
-        groupId: items.groupId,
-        groupName: items.groupName,
-
+        id: items.groupId,
+        name: items.groupName,
+        postCnt: 0,
         subGroups: [],
       });
     }
@@ -49,19 +49,24 @@ export async function GET() {
     if (items.subGroupId) {
       const idx = hashMap.get(items.groupName)!;
       const postCount = countType(items.postCount);
+
       idx.subGroups.push({
         subGroupId: items.subGroupId,
         subGroupName: items.subGroupName!,
         postCount,
         thumb: items.thumb,
       });
+
+      idx.postCnt += postCount; // category 별
       count += postCount;
     }
   }
-  const tagGroups = [...hashMap.values(), count];
-
+  console.log(Object.fromEntries(hashMap));
   return NextResponse.json({
     success: true,
-    result: tagGroups,
+    result: {
+      category: Object.fromEntries(hashMap),
+      count,
+    },
   });
 }

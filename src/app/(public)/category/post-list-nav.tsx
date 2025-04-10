@@ -1,20 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { BlogGroupModel } from "@/type/blog-group";
+import { CategoryModel } from "@/type/blog-group";
 import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export default async function PostListNav({
+  curCategory,
   selectGroup,
 }: {
+  curCategory: string;
   selectGroup?: string;
 }) {
-  const response = await withFetchRevaildationAction<
-    (BlogGroupModel | number)[]
-  >({
-    endPoint: "api/blogGroup",
+  const response = await withFetchRevaildationAction<{
+    category: { [key: string]: CategoryModel };
+    count: number;
+  }>({
+    endPoint: "api/category",
     options: {
       cache: "force-cache",
       next: {
@@ -26,7 +29,9 @@ export default async function PostListNav({
   if (!response.success) {
     notFound();
   }
-  const result = response.result;
+  const { category } = response.result;
+
+  const curNavList = category[curCategory];
 
   const activeStyle = (subGroupName?: string) => {
     const isActive = selectGroup === subGroupName;
@@ -38,35 +43,32 @@ export default async function PostListNav({
     );
   };
 
-  const total = result.pop() as number;
-
   return (
     <>
       {/* <div className="grid grid-cols-[auto_1fr] items-center gap-5  mb-5">
         <span className="text-md font-Poppins font-extrabold">label</span>
         <span className="border-b border-foreground/40 w-[100px]"></span>
       </div> */}
-      <section className=" w-full gap-3 flex flex-wrap">
+      <section className="w-full gap-3 flex flex-wrap">
         <Button variant={"outline"} asChild className={activeStyle()}>
-          <Link href={`/blog`}>전체보기 ({total})</Link>
+          <Link href={`/category/${curCategory}`}>
+            전체보기 ({curNavList.postCnt})
+          </Link>
         </Button>
 
-        {(result as BlogGroupModel[]).map((group) => {
-          return group.subGroups.map((e) => {
-            // console.log(e);
-            return (
-              <Button
-                variant={"outline"}
-                asChild
-                key={e.subGroupId}
-                className={activeStyle(e.subGroupName)}
-              >
-                <Link href={`/blog/${e.subGroupName}`}>
-                  {e.subGroupName} ({e.postCount})
-                </Link>
-              </Button>
-            );
-          });
+        {curNavList.subGroups.map((group) => {
+          return (
+            <Button
+              variant={"outline"}
+              asChild
+              key={group.subGroupId}
+              className={activeStyle(group.subGroupName)}
+            >
+              <Link href={`/category/${curCategory}/${group.subGroupName}`}>
+                {group.subGroupName} ({group.postCount})
+              </Link>
+            </Button>
+          );
         })}
       </section>
     </>
