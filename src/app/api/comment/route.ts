@@ -2,33 +2,11 @@ import { db } from "@/db/db";
 import { usersTable } from "@/db/schema";
 import { commentSchema } from "@/db/schema/comments";
 import { guestSchema } from "@/db/schema/guest";
+import { mapToCommentModel } from "@/lib/comment-bff";
+import { createCommentTree } from "@/lib/comment-mapping";
 import { and, eq, inArray } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-
-type Author =
-  | {
-      role: "admin" | "super";
-      admin_email: string;
-      nickname: string;
-      guest_id?: undefined;
-      profile_img: string | null;
-    }
-  | {
-      role: "guest";
-      guest_id: number;
-      nickname: string;
-      admin_email?: undefined;
-    };
-
-export type CommentItemModel = {
-  id: number;
-  comment: string;
-  parent_id: number | null;
-  created_at: string;
-  author: Author;
-  post_id: number;
-  children: CommentItemModel[]; //재귀 타입하기 ㅇㅇ
-};
 
 export async function GET(req: NextRequest) {
   const test = new URL(req.url);
@@ -71,69 +49,11 @@ export async function GET(req: NextRequest) {
     .where(eq(commentSchema.post_id, parseInt(postId, 10)))
     .orderBy(commentSchema.createdAt);
 
-  // ✅ CommentItemModel[]로 가공
-  const commentList: CommentItemModel[] = rows.map((data) => {
-    const {
-      author_role,
-      admin_email,
-      admin_nickname,
-      guest_id,
-      guest_nickname,
-      created_at,
-      profile_img,
-      ...rest
-    } = data;
-
-    const author =
-      author_role === "admin" || author_role === "super"
-        ? {
-            role: author_role!,
-            admin_email: admin_email!,
-            nickname: admin_nickname!,
-            profile_img,
-          }
-        : {
-            role: author_role!,
-            guest_id: guest_id!,
-            nickname: guest_nickname!,
-            profile_img: null, //guest는 일단 Null처리
-          };
-
-    // 구조 변경,
-    const obj: CommentItemModel = {
-      ...rest,
-      author,
-      created_at: created_at.toISOString(),
-      children: [],
-    };
-    return obj;
-  });
-
-  // ✅ O(n) 방식으로 트리 구성
-  function buildCommentTreeFast(list: CommentItemModel[]): CommentItemModel[] {
-    const map = new Map<number, CommentItemModel>();
-    const rootComments: CommentItemModel[] = [];
-
-    for (const item of list) {
-      map.set(item.id, { ...item, children: [] });
-    }
-
-    for (const item of list) {
-      const current = map.get(item.id)!;
-
-      if (item.parent_id) {
-        const parent = map.get(item.parent_id);
-        if (parent) parent.children.push(current);
-      } else {
-        rootComments.push(current);
-      }
-    }
-
-    return rootComments;
-  }
+  const commentList = mapToCommentModel(rows);
+  revalidatePath(`/category/blog`);
 
   return NextResponse.json({
     success: true,
-    result: buildCommentTreeFast(commentList),
+    result: createCommentTree(commentList),
   });
 }

@@ -1,18 +1,34 @@
 "use client";
 
-export default function Navsession() {
+import { signOut } from "next-auth/react";
+
+import { Button } from "../ui/button";
+import { Session } from "next-auth";
+import { useRouter } from "next/navigation";
+
+export default function Navsession({ session }: { session: Session | null }) {
+  const isLogin = !!session?.user;
+  const router = useRouter();
+  console.log(session);
   return (
-    <div key={`auth-${idx}`} className="flex items-center ml-auto gap-2">
-      <Link href={"/admin"} className="text-sm">
-        관리자
-      </Link>
-      <Button
-        variant={"outline"}
-        className="text-xs animate-wiggle"
-        onClick={async () => await signOut()}
-      >
-        로그아웃
-      </Button>
+    <div className="flex items-center ml-auto gap-2">
+      {isLogin ? (
+        <Button
+          variant={"outline"}
+          className="text-xs animate-wiggle"
+          onClick={async () => await signOut()}
+        >
+          로그아웃
+        </Button>
+      ) : (
+        <Button
+          variant={"outline"}
+          className="text-xs animate-wiggle"
+          onClick={() => router.push("/login")}
+        >
+          로그인
+        </Button>
+      )}
     </div>
   );
 }

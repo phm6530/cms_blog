@@ -25,8 +25,10 @@ import { Skeleton } from "../ui/skeleton";
 type CommentFormValues = z.infer<ReturnType<typeof dynamicSchema>>;
 
 export default function CommentForm({
+  targetSchema = "comment",
   parent_id,
 }: {
+  targetSchema?: "comment" | "guestbook";
   postId?: string;
   userData?: { email: string };
   parent_id?: null | number;
@@ -40,7 +42,7 @@ export default function CommentForm({
   const defaultValues = useCallback((parent_id?: number | null) => {
     return {
       guest: "",
-      contents: "",
+      comment: "",
       password: "",
       ...(parent_id && { parent_id }),
     };
@@ -54,7 +56,10 @@ export default function CommentForm({
   const { isPending, mutate } = useMutation({
     mutationFn: async (data: CommentFormValues) => {
       return await withClientFetch({
-        endPoint: `api/comment/${params.id}`,
+        endPoint:
+          targetSchema === "comment"
+            ? `api/comment/${params.id}`
+            : `api/guestboard`,
         options: {
           method: HTTP_METHOD.POST,
         },
@@ -114,22 +119,23 @@ export default function CommentForm({
             </>
           )}
 
-          <div className="flex flex-1 gap-2 h-full items-stretch">
+          <div className="flex flex-col gap-2 h-full w-full items-end">
             <TextareaFormField
-              name={"contents"}
+              name={"comment"}
               placeholder="남기실 메세지를 입력해주세요"
               maxLength={1000}
-              className="flex-1"
+              className="flex-1 min-h-[100px] w-full"
             />
+            <div className="flex justify-between w-full">
+              <div className="pt-2 text-sm flex gap-3 col-span-6 order-1 md:order-none">
+                <span className="text-[11px] opacity-45">
+                  {form.watch("comment").length} / 1000 자
+                </span>
 
-            <Button className=" h-auto!">댓글 작성</Button>
-          </div>
-          <div className="pt-2 text-sm flex gap-3 col-span-6 order-1 md:order-none">
-            <span className="text-[11px] opacity-45">
-              {form.watch("contents").length} / 1000 자
-            </span>
-
-            {/* <span className="text-destructive"> {errors[0]?.message}</span>*/}
+                {/* <span className="text-destructive"> {errors[0]?.message}</span>*/}
+              </div>
+              <Button className="py-3 px-5 h-auto!">댓글 작성</Button>
+            </div>
           </div>
         </form>
       </Form>

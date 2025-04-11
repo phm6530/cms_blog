@@ -3,7 +3,7 @@ import { z } from "zod";
 // 로그인 되었는지, 부모가있는지에 따라 스키마 다르게 처리
 export const dynamicSchema = (existParent: boolean, session: boolean) => {
   let schema = z.object({
-    contents: z
+    comment: z
       .string()
       .min(5)
       .max(1000, { message: "1000자 이하로 기재해주세요" }),

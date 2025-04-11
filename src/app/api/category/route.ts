@@ -51,7 +51,7 @@ export async function GET() {
       const postCount = countType(items.postCount);
 
       idx.subGroups.push({
-        subGroupId: items.subGroupId,
+        id: items.subGroupId,
         subGroupName: items.subGroupName!,
         postCount,
         thumb: items.thumb,
@@ -61,7 +61,7 @@ export async function GET() {
       count += postCount;
     }
   }
-  console.log(Object.fromEntries(hashMap));
+
   return NextResponse.json({
     success: true,
     result: {

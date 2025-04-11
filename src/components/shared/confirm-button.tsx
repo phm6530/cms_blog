@@ -21,7 +21,7 @@ export default function ConfirmButton({
   title: string;
   children: ReactElement<ButtonHTMLAttributes<HTMLButtonElement>>;
   description?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   cb: (..._arg: any) => Promise<void> | void;
 }) {
   const [view, setView] = useState<boolean>(false);

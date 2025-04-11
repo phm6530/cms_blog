@@ -1,5 +1,4 @@
 "use client";
-import { CommentItemModel } from "@/app/api/comment/route";
 import { Button } from "../ui/button";
 import CommentForm from "./comment-form";
 import useStore from "@/context/store";
@@ -15,6 +14,7 @@ import { toast } from "sonner";
 import { HTTP_METHOD } from "@/type/constants";
 import { useForm } from "react-hook-form";
 import InputPassword from "../ui/password-input";
+import { CommentItemModel } from "@/lib/comment-bff";
 
 export default function CommentItem({
   id: commentId,
@@ -67,11 +67,12 @@ export default function CommentItem({
   };
 
   const isReply = deps > 0;
+
   return (
     <article
       className={cn(
         "flex gap-2 justify-start  animate-wiggle",
-        deps === 0 && "mb-2 border-b last:border-b-0 py-3 "
+        deps === 0 && "mb-2 border-b last:border-b-0 py-5 "
       )}
       style={{ marginLeft: `${!!isReply ? 20 : 0}px` }}
     >

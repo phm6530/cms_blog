@@ -1,11 +1,12 @@
 import { pgTable, integer, text, timestamp } from "drizzle-orm/pg-core";
+import { authorTypeEnum } from "./base";
 
 //GUEST BOARD
 export const guestBoardSchema = pgTable("guest_board", {
-  idx: integer().primaryKey().generatedAlwaysAsIdentity(),
-  contents: text("contents").notNull(),
-  author_type: text("author_type").notNull(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  comment: text("comment").notNull(),
+  author_type: authorTypeEnum("author_type").notNull(),
   author_id: text("author_id").notNull(),
-  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  created_at: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   parent_id: integer("parent_id"),
 });

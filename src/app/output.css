@@ -54,7 +54,8 @@
   padding-left: 1rem;
 }
 .tiptap pre {
-  background: var(--color-secondary-foreground);
+  background: #151414;
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   color: #fff;
   font-family: JetBrainsMono, monospace;

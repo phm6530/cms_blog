@@ -24,7 +24,7 @@ export default async function RootLayout({
         <ClientProvider>
           <MouseClickEffect>
             <Nav />
-            <main className="grid-layout grid grid-cols-[2fr_8fr] gap-16 pt-15">
+            <main className="grid-layout grid grid-cols-[2fr_8fr] pt-15">
               <SideArea />
               <div>{children}</div>
             </main>

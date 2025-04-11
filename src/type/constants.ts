@@ -25,4 +25,5 @@ export enum QUERYKEY {
 export enum HTTP_METHOD {
   POST = "POST",
   DELETE = "DELETE",
+  PUT = "PUT",
 }

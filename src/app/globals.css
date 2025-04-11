@@ -119,6 +119,10 @@
   body {
     @apply bg-background text-foreground  font-SUIT-Regular;
   }
+
+  button {
+    cursor: pointer;
+  }
   input::placeholder {
     @apply text-sm;
   }

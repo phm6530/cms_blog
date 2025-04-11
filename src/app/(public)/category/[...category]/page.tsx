@@ -7,7 +7,7 @@ export type PostItemModel = {
   post_id: number;
   post_title: string;
   post_description: string;
-  create_at: string;
+  created_at: string;
   update_at: string;
   author_id: number;
   thumbnail_url: string;
@@ -22,16 +22,14 @@ export default async function Category({
   params: Promise<{ category: string[] }>;
 }) {
   const { category: categoryList } = await params;
-  const [_, group] = categoryList;
-  void _;
-
+  const [category, group] = categoryList;
   const isSubGroup = group ?? "all"; // 없으면 전체 다 가져오기
   const response = await withFetchRevaildationAction<PostItemModel[]>({
-    endPoint: `api/blog?group=${isSubGroup}`,
+    endPoint: `api/post?category=${category}&group=${isSubGroup}`,
     options: {
       cache: "force-cache",
       next: {
-        tags: [REVALIDATE.BLOG.LIST, group],
+        tags: [REVALIDATE.BLOG.LIST, category, group],
       },
     },
   });

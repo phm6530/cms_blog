@@ -3,7 +3,7 @@ export type CategoryModel = {
   name: string;
   postCnt: number;
   subGroups: {
-    subGroupId: number;
+    id: number;
     subGroupName: string;
     thumb: string | null;
     postCount: number;

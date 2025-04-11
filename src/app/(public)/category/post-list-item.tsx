@@ -12,7 +12,7 @@ export default function PostItem({
   post_description,
   sub_group_name,
   thumbnail_url,
-  create_at,
+  created_at,
   comment_count,
   keyword,
 }: PostItemModel & { keyword?: string }) {
@@ -25,7 +25,7 @@ export default function PostItem({
           </Badge>
           <div className="relative inline-flex items-center justify-center">
             {/* 실제 Badge 내용 */}
-            {DateUtils.isNew(create_at) && (
+            {DateUtils.isNew(created_at) && (
               <Badge
                 variant={"outline"}
                 className="relative text-xs border-rose-400 text-rose-400 animate-wiggle"
@@ -59,7 +59,7 @@ export default function PostItem({
           </span> */}
 
           <span className="border-l-2 pl-3">
-            {DateUtils.dateFormatKR(create_at, "YY. MM. DD")}
+            {DateUtils.dateFormatKR(created_at, "YY. MM. DD")}
           </span>
         </p>
       </div>

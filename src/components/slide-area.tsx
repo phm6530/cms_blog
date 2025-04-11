@@ -6,7 +6,7 @@ import RecentComment from "./weiget/recent-comments";
 import VisitorWiget from "./weiget/visitor-weiget";
 export default function SideArea() {
   return (
-    <div className="flex flex-col gap-7  ">
+    <div className="flex flex-col gap-7  pr-10 border-r mr-10">
       <div className="flex items-center flex-col">
         <div className="max-w-[180px] w-[90%] relative aspect-[16/16] rounded-full overflow-hidden border-4  ">
           <Image

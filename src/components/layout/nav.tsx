@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import SearchInput from "../ui/search-input";
 import ThemeHandler from "./ThemeHandler";
+import Navsession from "./nav-session";
+import { auth } from "@/auth";
 
 export default async function Nav() {
   const response = await withFetchRevaildationAction<{
@@ -20,6 +22,7 @@ export default async function Nav() {
       },
     },
   });
+  const session = await auth();
 
   if (!response.success) {
     notFound();
@@ -44,6 +47,8 @@ export default async function Nav() {
         <Link href={"/guestbook"} className="text-sm">
           GUEST BOARD
         </Link>
+
+        <Navsession session={session} />
 
         <Suspense fallback={<>loading..</>}>
           <SearchInput name="keyword" className="placeholder:text-xs!" />

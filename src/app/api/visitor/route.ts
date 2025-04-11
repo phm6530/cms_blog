@@ -39,7 +39,6 @@ export async function GET(req: NextRequest) {
     .from(visitorSchema)
     .where(sql`DATE(${visitorSchema.visited_at}) = CURRENT_DATE`);
 
-  console.log(today_cnt);
   const response = NextResponse.json({
     message: isNewVisitor ? "new visitor" : "already visited",
     result: {

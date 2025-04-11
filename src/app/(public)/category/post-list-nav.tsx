@@ -61,7 +61,7 @@ export default async function PostListNav({
             <Button
               variant={"outline"}
               asChild
-              key={group.subGroupId}
+              key={group.id}
               className={activeStyle(group.subGroupName)}
             >
               <Link href={`/category/${curCategory}/${group.subGroupName}`}>

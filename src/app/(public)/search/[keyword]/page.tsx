@@ -6,7 +6,6 @@ import PostItem from "../../category/post-list-item";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-import LoadingSpiner from "@/components/animation/loading-spiner";
 
 type SearchResult = [...PostItemModel[], number];
 
@@ -52,7 +51,7 @@ export default function Keyword() {
 
       <>
         {isLoading ? (
-          <LoadingSpiner />
+          <div className="mt-5">검색 중 .....</div>
         ) : (
           <>
             {arr.length === 0 ? (

@@ -1,6 +1,7 @@
 import { db } from "@/db/db";
 import { blogContentsSchema } from "@/db/schema/blog-contents";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
+import { blogSubGroup, categorySchema } from "@/db/schema/category";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -24,7 +25,15 @@ export async function GET(
       blogContentsSchema,
       eq(blogContentsSchema.post_id, blogMetaSchema.post_id)
     )
-    .where(eq(blogContentsSchema.post_id, id));
+    .leftJoin(
+      blogSubGroup,
+      eq(blogSubGroup.sub_group_id, blogMetaSchema.sub_group_id)
+    )
+    .leftJoin(
+      categorySchema,
+      eq(categorySchema.group_id, blogMetaSchema.category_id)
+    )
+    .where(eq(blogContentsSchema.post_id, +id));
 
   return NextResponse.json({ success: true, result: rows }, { status: 200 });
 }

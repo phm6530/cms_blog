@@ -1,9 +1,9 @@
 import CommentForm from "./comment-form";
 import CommentList from "./comment-list";
 
-export default async function sCommentSection({ postId }: { postId: string }) {
+export default async function CommentSection({ postId }: { postId: string }) {
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-col pt-4">
       <CommentForm />
       <CommentList postId={postId} />
     </section>

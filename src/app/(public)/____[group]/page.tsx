@@ -11,7 +11,6 @@ export default async function PostPage({
   searchParams?: Promise<{ search?: string }>;
 }) {
   const { group: subGroup } = await params;
-  // console.log(await params);
 
   return (
     <>

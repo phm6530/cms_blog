@@ -1,13 +1,13 @@
-import { GuestBookModel } from "@/app/api/guestboard/route";
 import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
-import GuestBookForm from "./components/guestbook-form";
 import GuestBookItem from "./components/guestbook-item";
-import { Info } from "lucide-react";
+import { BadgeInfo } from "lucide-react";
+import { CommentItemModel } from "@/lib/comment-bff";
+import CommentForm from "@/components/comments/comment-form";
 
 export default async function GuestBookPage() {
-  const response = await withFetchRevaildationAction<GuestBookModel[]>({
+  const response = await withFetchRevaildationAction<CommentItemModel[]>({
     endPoint: "api/guestboard",
     options: {
       next: {
@@ -25,14 +25,17 @@ export default async function GuestBookPage() {
     <div className="max-w-[800px] mx-auto pt-[50px]">
       <span className="text-3xl font-Poppins font-extrabold">Guest Book</span>
       <p className="pt-3 text-xs flex items-center gap-2 opacity-70">
-        <Info /> 댓글 부탁드려요
+        <BadgeInfo /> 방문
       </p>
-      <GuestBookForm />
+      <section className="my-6">
+        <CommentForm targetSchema="guestbook" />
+      </section>
 
-      <hr />
-      {response.result.map((item, idx) => {
-        return <GuestBookItem deps={0} {...item} key={idx} />;
-      })}
+      <section className="grid grid-cols-2 gap-4">
+        {response.result.map((item, idx) => {
+          return <GuestBookItem deps={0} {...item} key={idx} />;
+        })}
+      </section>
     </div>
   );
 }

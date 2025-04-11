@@ -17,6 +17,7 @@ export default async function Layout({
   return (
     <>
       <PostListNav curCategory={category} selectGroup={group} />
+
       <div className="grid grid-cols-[auto_1fr] justify-between items-center gap-5 border-b pb-4 py-10">
         <span className="text-3xl font-Poppins font-extrabold">
           {category} {group && `/${group}`}

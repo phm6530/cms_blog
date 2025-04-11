@@ -9,7 +9,7 @@ export type PostItemModel = {
   post_id: number;
   post_title: string;
   post_description: string;
-  create_at: string;
+  created_at: string;
   update_at: string;
   author_id: number;
   thumbnail_url: string;
