@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { MessageSquareMore } from "lucide-react";
 import { DateUtils } from "@/util/date-uill";
 import { HighlightKeyword } from "@/util/keyword-highlist";
+import BadgeNew from "@/components/shared/badge-new";
 
 export default function PostItem({
   post_title,
@@ -25,14 +26,7 @@ export default function PostItem({
           </Badge>
           <div className="relative inline-flex items-center justify-center">
             {/* 실제 Badge 내용 */}
-            {DateUtils.isNew(created_at) && (
-              <Badge
-                variant={"outline"}
-                className="relative text-xs border-rose-400 text-rose-400 animate-wiggle"
-              >
-                New
-              </Badge>
-            )}
+            {DateUtils.isNew(created_at) && <BadgeNew />}
           </div>
         </div>
         <Link href={`/post/${post_id}`}>

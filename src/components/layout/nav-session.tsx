@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 export default function Navsession({ session }: { session: Session | null }) {
   const isLogin = !!session?.user;
   const router = useRouter();
-  console.log(session);
+
   return (
     <div className="flex items-center ml-auto gap-2">
       {isLogin ? (

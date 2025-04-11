@@ -18,5 +18,5 @@ export const blogSubGroup = pgTable("blog_sub_group", {
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
-  default_thum: text("default_thum").notNull(),
+  default_thum: text("default_thum"),
 });

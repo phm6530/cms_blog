@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const AUTH_REDIRECT_PATHS = ["/login"] as const;
-const AUTH_REQUIRED_PATHS = ["/made", "/mypage", "/write"] as const;
+const AUTH_REQUIRED_PATHS = ["/made", "/mypage", "/write", "/admin"] as const;
 
 type Pathname = (typeof AUTH_REDIRECT_PATHS)[number];
 
-export async function middleware(req: NextRequest, res: NextResponse) {
+export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname as Pathname;
 
   // get Token
@@ -31,5 +31,5 @@ export async function middleware(req: NextRequest, res: NextResponse) {
 }
 
 export const config = {
-  matcher: ["/login", "/write"],
+  matcher: ["/login", "/write", "/admin"],
 };

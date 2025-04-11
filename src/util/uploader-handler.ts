@@ -1,6 +1,6 @@
 "use client";
 
-import { SupabaseStorage } from "@/config/supabase-instance";
+import { SupabaseStorage } from "@/lib/supabase-instance";
 
 export const imgUploader = async ({
   event,

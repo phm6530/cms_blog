@@ -8,10 +8,15 @@ export enum GUEST_BOARD {
   GETBOARD = "GET_BOARD",
 }
 
+export enum WEIGET {
+  COMMENT = "COMMENT_WEIGET",
+}
+
 export const REVALIDATE = {
   BLOG: BLOG_TAGS,
   COMMENT: "COMMENT",
   GUEST_BOARD: GUEST_BOARD,
+  WEIGET: WEIGET,
 };
 
 export const ENV = {

@@ -89,7 +89,7 @@ export default function GuestBookItem({
         <div className="pl-0">
           <div
             className={cn(
-              "text-sm  py-2 text-secondary-foreground whitespace-pre-wrap border-input font-pretendard leading-6 line-clamp-3"
+              "text-sm  leading-6 text-secondary-foreground whitespace-pre-wrap text-ellipsis border-input font-pretendard  line-clamp-3"
             )}
           >
             {comment}

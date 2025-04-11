@@ -48,6 +48,12 @@ export default async function Nav() {
           GUEST BOARD
         </Link>
 
+        {session?.user && (
+          <Link href={"/admin"} className="text-sm">
+            Admin
+          </Link>
+        )}
+
         <Navsession session={session} />
 
         <Suspense fallback={<>loading..</>}>
