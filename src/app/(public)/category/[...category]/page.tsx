@@ -29,7 +29,7 @@ export default async function Category({
     options: {
       cache: "force-cache",
       next: {
-        tags: [REVALIDATE.BLOG.LIST, category, group],
+        tags: [REVALIDATE.BLOG.LIST, category, isSubGroup],
       },
     },
   });

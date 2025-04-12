@@ -24,8 +24,12 @@ export default async function RootLayout({
         <ClientProvider>
           <MouseClickEffect>
             <Nav />
-            <main className="grid-layout grid grid-cols-[3fr_8fr] pt-15">
+            <main className="grid-layout">
+              <section className="py-5 border-b mb-5">
+                <h1 className="text-3xl">PHM{"'"} DEV BLOG</h1>
+              </section>
               <SideArea />
+
               <div>{children}</div>
             </main>
             <Toaster />

@@ -28,10 +28,10 @@ export default async function RecentComment() {
             <Link
               href={`/guestbook`}
               key={`${idx}-${post.post_id}`}
-              className="text-xs flex gap-2 hover:bg-primary/30 underline"
+              className="text-xs flex gap-6 hover:underline"
             >
               {/* {DateUtils.isNew(post.createdAt) && <BadgeNew />} */}
-              <p className="line-clamp-1">{post.comment}</p>
+              <p className="line-clamp-2 leading-5">{post.comment}</p>
             </Link>
           );
         })}

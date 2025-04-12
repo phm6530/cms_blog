@@ -24,6 +24,7 @@ import { TipTapEditor } from "@squirrel309/my-testcounter";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import PostHandler from "../post-handler";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 // export async function generateMetadata({
 //   params: { id },
@@ -101,13 +102,15 @@ export default async function PostDetail({
         </div>
 
         {blog_metadata.thumbnail_url && (
-          <div className="w-full h-[300px]  rounded-xl relative overflow-hidden mb-5">
-            <Image
-              src={`${ENV.IMAGE_URL}/${blog_metadata.thumbnail_url}`}
-              alt=""
-              fill
-              style={{ objectFit: "cover" }}
-            />
+          <div className="w-full   rounded-xl relative overflow-hidden mb-5">
+            <AspectRatio ratio={16 / 9}>
+              <Image
+                src={`${ENV.IMAGE_URL}/${blog_metadata.thumbnail_url}`}
+                alt=""
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </AspectRatio>
           </div>
         )}
       </section>
