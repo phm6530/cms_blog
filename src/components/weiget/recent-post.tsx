@@ -21,11 +21,11 @@ export default async function RecentPost() {
     <div className=" max-h-[50vh] flex flex-col gap-4">
       <p className=" border-b text-sm pb-2">최신 글</p>
       <div className="flex flex-col gap-3">
-        {response.result?.slice(0, 5)?.map((post, idx) => {
+        {response.result?.slice(0, 3)?.map((post, idx) => {
           return (
             <Link
               href={`/post/${post.post_id}`}
-              className="grid grid-cols-[1fr_auto] gap-5 hover:underline"
+              className="grid grid-cols-[1fr_auto] gap-2 hover:underline"
               key={idx}
             >
               <div className="flex flex-col gap-2 w-full">
