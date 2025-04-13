@@ -35,5 +35,7 @@ export async function GET(
     )
     .where(eq(blogContentsSchema.post_id, +id));
 
+  console.log(rows);
+
   return NextResponse.json({ success: true, result: rows }, { status: 200 });
 }

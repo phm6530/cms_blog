@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { PostItemModel } from "../blog/[group]/post-list";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Heart, MessageCircle } from "lucide-react";
 import { DateUtils } from "@/util/date-uill";
 import { HighlightKeyword } from "@/util/keyword-highlist";
 import BadgeNew from "@/components/shared/badge-new";
+import { PostItemModel } from "@/type/post.type";
 
 export default function PostItem({
   post_title,
@@ -16,7 +16,9 @@ export default function PostItem({
   created_at,
   comment_count,
   keyword,
+  like_cnt,
 }: PostItemModel & { keyword?: string }) {
+  console.log(like_cnt);
   return (
     <div className="animate-fadein group cursor-pointer grid grid-cols-[4fr_1fr] gap-5 items-center py-5 border-b  last:border-b-0">
       <div className="flex flex-col gap-4 py-3">
@@ -48,7 +50,7 @@ export default function PostItem({
             <MessageCircle className="size-4" /> {comment_count}
           </span>
           <span className="flex gap-1 items-center">
-            <Heart className="size-4" /> 0
+            <Heart className="size-4" /> {like_cnt}
           </span>
 
           <span className="border-l-2 pl-3">

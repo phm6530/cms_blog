@@ -10,6 +10,7 @@ export interface BlogMetadata {
   view: boolean;
   img_key: string;
   category_id: number;
+  like_cnt: number;
 }
 
 export interface BlogContents {

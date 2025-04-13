@@ -93,7 +93,6 @@ export async function GET(req: NextRequest) {
       .where(whereQuery);
     searchCnt = rows.count;
   }
-  console.log(flatRows);
 
   return NextResponse.json({
     success: true,

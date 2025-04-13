@@ -2,19 +2,7 @@ import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 import PostItem from "../../category/post-list-item";
-
-export type PostItemModel = {
-  post_id: number;
-  post_title: string;
-  post_description: string;
-  created_at: string;
-  update_at: string;
-  author_id: number;
-  thumbnail_url: string;
-  sub_group_name: string;
-  view: boolean;
-  comment_count: number;
-};
+import { PostItemModel } from "@/type/post.type";
 
 export default async function Category({
   params,
@@ -27,7 +15,7 @@ export default async function Category({
   const response = await withFetchRevaildationAction<PostItemModel[]>({
     endPoint: `api/post?category=${category}&group=${isSubGroup}`,
     options: {
-      cache: "force-cache",
+      cache: "no-store",
       next: {
         tags: [REVALIDATE.BLOG.LIST, category, isSubGroup],
       },

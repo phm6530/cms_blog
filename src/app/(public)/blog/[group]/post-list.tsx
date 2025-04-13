@@ -4,19 +4,7 @@ import { notFound } from "next/navigation";
 import PostItem from "../../category/post-list-item";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
-export type PostItemModel = {
-  post_id: number;
-  post_title: string;
-  post_description: string;
-  created_at: string;
-  update_at: string;
-  author_id: number;
-  thumbnail_url: string;
-  sub_group_name: string;
-  view: boolean;
-  comment_count: number;
-};
+import { PostItemModel } from "@/type/post.type";
 
 export default async function PostList({ subGroup }: { subGroup?: string }) {
   const isSubGroup = subGroup ?? "all"; // 없으면 전체 다 가져오기

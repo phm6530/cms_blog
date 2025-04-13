@@ -25,6 +25,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import PostHandler from "../post-handler";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import PostLikeHandler from "../post-like-hanlder";
 
 // export async function generateMetadata({
 //   params: { id },
@@ -119,13 +120,13 @@ export default async function PostDetail({
         <TipTapEditor mode="view" content={blog_contents.contents} />
 
         {/* <div
-          className="tiptap ProseMirror"
-          role="textbox"
+          className="tiptap ProseMirror" 
           translate="no"
           dangerouslySetInnerHTML={{ __html: blog_contents.contents }}
         /> */}
 
         {/* <div dangerouslySetInnerHTML={{ __html: blog_contents }} /> */}
+        <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt} />
         <PostHandler postId={id} category={category.group_name} />
       </section>
 

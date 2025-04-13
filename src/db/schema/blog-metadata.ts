@@ -24,4 +24,5 @@ export const blogMetaSchema = pgTable("blog_metadata", {
   thumbnail_url: text("thumbnail_url"),
   view: boolean("view").default(true),
   img_key: text("img_key").notNull(),
+  like_cnt: integer("like_cnt").default(0),
 });

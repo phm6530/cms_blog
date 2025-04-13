@@ -11,7 +11,7 @@ export default function SideArea() {
     <div className="grid grid-cols-[250px_1fr_1fr]  gap-10  mt-16">
       <div className="max-w-[250px] w-full border-r pr-5">
         <div className="flex items-center flex-col">
-          <div className="max-w-[180px] w-[90%] relative aspect-[16/16] rounded-full overflow-hidden  ">
+          <div className="max-w-[180px] w-[90%] relative aspect-[16/16] rounded-full overflow-hidden border-5 border-foreground/10">
             <Image
               src={"/img/my-dog.jpg"}
               fill
