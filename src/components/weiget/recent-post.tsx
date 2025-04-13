@@ -3,7 +3,7 @@ import { REVALIDATE } from "@/type/constants";
 import { DateUtils } from "@/util/date-uill";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import Link from "next/link";
-import BadgeNew from "../shared/badge-new";
+
 import Image from "next/image";
 
 export default async function RecentPost() {

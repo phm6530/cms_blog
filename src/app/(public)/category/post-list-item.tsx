@@ -2,7 +2,7 @@ import Image from "next/image";
 import { PostItemModel } from "../blog/[group]/post-list";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquareMore } from "lucide-react";
+import { Heart, MessageCircle } from "lucide-react";
 import { DateUtils } from "@/util/date-uill";
 import { HighlightKeyword } from "@/util/keyword-highlist";
 import BadgeNew from "@/components/shared/badge-new";
@@ -45,12 +45,11 @@ export default function PostItem({
         </p>
         <p className="text-xs text-muted-foreground mt-1 flex gap-3">
           <span className="flex gap-1 items-center">
-            <MessageSquareMore className="size-4" /> {comment_count}
+            <MessageCircle className="size-4" /> {comment_count}
           </span>
-
-          {/* <span className="flex gap-1 items-center">
-            <Eye className="size-4" /> 1
-          </span> */}
+          <span className="flex gap-1 items-center">
+            <Heart className="size-4" /> 0
+          </span>
 
           <span className="border-l-2 pl-3">
             {DateUtils.dateFormatKR(created_at, "YY. MM. DD")}

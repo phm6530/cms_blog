@@ -34,7 +34,7 @@ export default async function PinnedPosts() {
     options: {
       cache: "force-cache",
       next: {
-        tags: [`${REVALIDATE.BLOG.LIST}:all`],
+        tags: [REVALIDATE.BLOG.LIST],
       },
     },
   });

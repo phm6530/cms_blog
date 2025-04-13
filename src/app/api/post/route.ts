@@ -18,9 +18,10 @@ import { blogContentsSchema } from "@/db/schema/blog-contents";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
 import { blogSubGroup, categorySchema } from "@/db/schema/category";
 import { commentSchema } from "@/db/schema/comments";
+import { REVALIDATE } from "@/type/constants";
 import { WithTransaction } from "@/util/withTransaction";
 import { and, desc, eq, ilike, sql } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -139,6 +140,7 @@ export async function POST(req: NextRequest) {
       return +rows.id;
     });
     revalidatePath("/category/blog");
+    revalidateTag(REVALIDATE.BLOG.LIST);
 
     return NextResponse.json({
       success: true,
