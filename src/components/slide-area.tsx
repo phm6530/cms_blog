@@ -2,11 +2,12 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { Github, Hammer, MessageCircleMore } from "lucide-react";
 import CategoryWegiet from "./weiget/category-weiget";
+import VisitorWigetV2 from "./weiget/visitor-weiget-v2";
 
 export default function SideArea() {
   return (
-    <div className="max-w-[250px] w-full  pr-5 sticky top-0 ">
-      <div className="border py-5 rounded-lg">
+    <div className="max-w-[250px] w-full  border-r border-secondary-foreground/10 ">
+      <div className="rounded-lg">
         <div className="flex items-center flex-col">
           <div className="max-w-[180px] w-[90%] relative aspect-[16/16] rounded-full overflow-hidden border-5 border-foreground/10">
             <Image
@@ -35,6 +36,7 @@ export default function SideArea() {
       </div>
 
       <CategoryWegiet />
+      <VisitorWigetV2 />
       <div className="border-t leading-6 pt-5 text-xs opacity-50">
         <p>squirrel309@naver.com</p>
         <p> Copyright ⓒ p. Hyun</p>

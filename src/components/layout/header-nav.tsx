@@ -5,7 +5,7 @@ import VisitorWiget from "../weiget/visitor-weiget";
 
 export default function HeaderNav() {
   return (
-    <div className=" gap-5">
+    <div className=" gap-5 z-10">
       <div className="grid-layout flex items-center  py-2 ">
         <VisitorWiget />
 

@@ -4,6 +4,7 @@ import { Badge } from "../ui/badge";
 import { PostItemModel } from "@/type/post.type";
 import { Heart, MessageCircle, Pin } from "lucide-react";
 import { DateUtils } from "@/util/date-uill";
+import Image from "next/image";
 
 export default async function PinnedPosts() {
   const response = await withFetchRevaildationAction<PostItemModel[]>({
@@ -16,48 +17,58 @@ export default async function PinnedPosts() {
     },
   });
 
-  const data = response.result![2];
+  const data = response.result![3];
 
   return (
-    <div className="flex flex-col gap-3 relative">
-      <div className=" items-center gap-2 flex">
-        <Pin size={17} />
-        <h3 className="font-bold">Pinned Post </h3>
-      </div>
-
+    <div className="flex flex-col gap-1 relative">
       <div
-        className="w-full border border-border p-7 pt-24  rounded-xl flex flex-col gap-4 bg-cover bg-center overflow-hidden relative"
+        className="w-full grid grid-cols-[6fr_4fr] border-border gap-10 p-10 bg-[#f9f7f4] dark:bg-[#ffffff05] rounded-xl  flex-col  bg-cover bg-center overflow-hidden relative"
         style={{
-          backgroundImage: `url(${process.env.IMAGE_URL}/${data.thumbnail_url})`,
           backgroundClip: "padding-box",
         }}
       >
-        <div
-          className="w-full h-full absolute bottom-0 left-0 z-0 opacity-80 backdrop-blur-3xl"
-          style={{
-            background:
-              "linear-gradient(to bottom, rgba(90, 100, 110, 0.5), rgba(60, 70, 80, 0.7), rgba(30, 35, 40, 1))",
-          }}
-        />
-        <Badge variant={"outline"} className="z-1 text-white rounded-full">
-          {data.sub_group_name}
-        </Badge>
-        <h1 className="text-white z-10 text-2xl">{data.post_title}</h1>
-        <p className="text-xs leading-5 z-10 text-white line-clamp-2 max-w-[600px]">
-          {data.post_description}
-        </p>
-        <p className="text-xs text-white/60 mt-1 flex gap-3 z-1">
-          <span className="flex gap-1 items-center">
-            <MessageCircle className="size-4" /> {data.comment_count}
-          </span>
-          <span className="flex gap-1 items-center">
-            <Heart className="size-4" /> {data.like_cnt}
-          </span>
+        <div className="flex flex-col gap-8 items-start ">
+          <div className="flex gap-2">
+            <Badge variant={"outline"} className="z-1 rounded-full">
+              {data.sub_group_name}
+            </Badge>
+            <Badge
+              variant={"outline"}
+              className="z-1 rounded-full bg-purple-500 text-white"
+            >
+              pinned
+            </Badge>
+          </div>
 
-          <span className="border-l border-border/30 pl-3">
-            {DateUtils.dateFormatKR(data.created_at, "YY. MM. DD")}
-          </span>
-        </p>
+          <h1 className="text-shadow leading-9  z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] text-2xl w-[60%] break-keep ">
+            {data.post_title}
+          </h1>
+          <p className="text-sm leading-6 z-10  line-clamp-2 max-w-[300px] opacity-90">
+            {data.post_description}
+          </p>
+
+          <div className="text-xs  flex gap-3 z-1 mt-auto  opacity-60">
+            <span className="flex gap-1 items-center">
+              <MessageCircle className="size-4" /> {data.comment_count}
+            </span>
+            <span className="flex gap-1 items-center">
+              <Heart className="size-4" /> {data.like_cnt}
+            </span>
+
+            <span className="border-l border-border/30 pl-3">
+              {DateUtils.dateFormatKR(data.created_at, "YY. MM. DD")}
+            </span>
+          </div>
+        </div>
+
+        <div className="rounded-xl relative overflow-hidden aspect-[16/17]">
+          <Image
+            src={`${process.env.IMAGE_URL}/${data.thumbnail_url}`}
+            fill
+            alt=""
+            style={{ objectFit: "cover" }}
+          />
+        </div>
       </div>
     </div>
   );

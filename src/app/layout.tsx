@@ -27,7 +27,7 @@ export default async function RootLayout({
             <HeaderNav />
             <GlobalNav />
             <main className="grid-layout">
-              <div className="grid grid-cols-[250px_auto]  gap-10  mt-10">
+              <div className="grid grid-cols-[250px_auto]  gap-10  ">
                 {/* slide bar */}
                 <SideArea />
 

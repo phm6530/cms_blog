@@ -42,8 +42,8 @@ export default function SearchInput({
     <form onSubmit={searchHandler} className=" ml-auto">
       <div
         className={cn(
-          `border rounded-full dark:bg-black/10 overflow-hidden focus-within:border-primary
-       focus-within:focus-within:bg-[hsl(var(--custom-color))] flex flex-1`,
+          `rounded-full bg-muted-foreground/5  overflow-hidden 
+       flex flex-1`,
           className
         )}
       >

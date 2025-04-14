@@ -22,7 +22,7 @@ export default async function RecentComment() {
 
   return (
     <div className=" max-h-[50vh] flex flex-col gap-4 mt-6">
-      <p className=" border-b text-sm pb-2">최근 댓글</p>
+      <p className=" border-b border-foreground/20 text-sm pb-2">최근 댓글</p>
       <div className="flex flex-col gap-2">
         {response.result?.slice(0, 5)?.map((post, idx) => {
           return (

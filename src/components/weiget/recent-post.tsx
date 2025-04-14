@@ -21,28 +21,27 @@ export default async function RecentPost() {
 
   return (
     <div className=" flex flex-col gap-4">
-      <div className=" items-center gap-2 flex">
-        <h3>최신 글 </h3>
+      <div className=" items-center gap-2 flex ">
+        <h3 className="font-bold">POSTS </h3>
       </div>
 
       <div className="grid grid-cols-2 gap-5">
-        {response.result?.slice(0, 4)?.map((data, idx) => {
+        {response.result?.slice(0, 2)?.map((data, idx) => {
           return (
             <Link
               href={`/post/${data.post_id}`}
               key={idx}
-              className="w-full flex border bg-cover bg-center overflow-hidden relative rounded-lg group"
+              className="w-full flex  bg-center  p-5 overflow-hidden relative border-muted-foreground/30 group hover:border-purple-500 border"
             >
-              <div className="relative  size-20  overflow-hidden  m-5 mr-0 rounded-xl">
+              {/* <div className="relative  size-20  overflow-hidden  m-5 mr-0 rounded-xl">
                 <Image
                   src={`${process.env.IMAGE_URL}/${data.thumbnail_url}`}
                   alt=""
                   fill
                   style={{ objectFit: "cover" }}
                 />
-              </div>
-              <div className="flex flex-col gap-2 p-5 flex-1">
-                {" "}
+              </div> */}
+              <div className="flex flex-col gap-2  flex-1">
                 <div className="flex gap-2">
                   {DateUtils.isNew(data.created_at) && (
                     <Badge
@@ -59,11 +58,13 @@ export default async function RecentPost() {
                     {data.sub_group_name}
                   </Badge>{" "}
                 </div>
-                <h1 className="z-10 text-lg break-keep">{data.post_title}</h1>
-                <p className="text-[13px] text-muted-foreground   leading-5 z-10  line-clamp-2 max-w-[600px]">
+                <h1 className="z-10 text-lg break-keep mt-4 min-h-[60px]">
+                  {data.post_title}
+                </h1>
+                <p className="text-[13px] text-muted-foreground   leading-5 z-10  line-clamp-3 max-w-[600px]">
                   {data.post_description}
                 </p>
-                <p className="text-xs text-muted-foreground  flex gap-3 z-1 mt-5 ">
+                <p className="text-xs text-muted-foreground  flex gap-4 z-1 mt-7 ">
                   <span className="flex gap-1 items-center">
                     <MessageCircle className="size-4" /> {data.comment_count}
                   </span>
@@ -71,7 +72,7 @@ export default async function RecentPost() {
                     <Heart className="size-4" /> {data.like_cnt}
                   </span>
 
-                  <span className="border-l border-border/30 pl-3">
+                  <span className="border-l border-border/30 pl-3 ml-auto">
                     {DateUtils.dateFormatKR(data.created_at, "YY. MM. DD")}
                   </span>
                 </p>
