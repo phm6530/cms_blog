@@ -69,10 +69,11 @@ export default function GuestBookItem({
   return (
     <article
       className={cn(
-        "flex gap-2 justify-start  animate-wiggle border-muted-foreground/40 border p-5 rounded-xl hover:border-primary",
-        deps === 0 && "mb-2 border-b last:border-b-0 py-5 "
+        "flex gap-2 justify-start flex-1  animate-wiggle border-muted-foreground/40  hover:border-primary",
+        deps === 0 &&
+          "mb-2 py-5 p-5 shadow-lg border dark:border-foreground/20 border-border/50 bg-background   rounded-xl ",
+        deps === 1 && "border-t border-border/80 hover:border-border/80 pt-4"
       )}
-      style={{ marginLeft: `${!!isReply ? 20 : 0}px` }}
     >
       {!!isReply && <Reply size={13} className="rotate-180 opacity-60 mt-2" />}
       <div className="flex flex-col gap-2  w-full">
@@ -89,7 +90,7 @@ export default function GuestBookItem({
         <div className="pl-0">
           <div
             className={cn(
-              "text-sm  leading-6 text-secondary-foreground whitespace-pre-wrap text-ellipsis border-input font-pretendard  line-clamp-3"
+              "text-sm  leading-6 text-secondary-foreground whitespace-pre-wrap text-ellipsis border-input font-pretendard "
             )}
           >
             {comment}

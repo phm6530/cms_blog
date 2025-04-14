@@ -95,14 +95,12 @@ export default function Category() {
   const addCategoryHandler = ({ id }: { id?: number }) => {
     const item = prompt("카테고리 명을 입력해주세요");
     if (!item) return;
-    console.log(item);
     mutate({ item, id });
   };
 
   const deleteCategoryHandler = (id: number) => {
     const item = confirm("삭제하시겠습니까?");
     if (!item) return;
-    console.log(id);
     deleteMutate(id);
   };
 

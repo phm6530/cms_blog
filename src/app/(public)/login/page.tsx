@@ -15,7 +15,6 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import useThrottling from "@/hook/useThrottling";
 import LoadingSpinnerWrapper from "@/components/ui/loading-disabled-wrapper";
-import { useState } from "react";
 
 export default function Page() {
   const router = useRouter();
@@ -30,7 +29,6 @@ export default function Page() {
     },
   });
 
-  console.log();
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     const res = await throttle(() => LoginAction(data), 1500);
     if (!res) return;

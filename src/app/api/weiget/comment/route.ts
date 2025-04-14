@@ -2,17 +2,21 @@ import { db } from "@/db/db";
 import { commentSchema } from "@/db/schema/comments";
 import { guestBoardSchema } from "@/db/schema/guest-board";
 import { desc, eq } from "drizzle-orm";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-  const target = "guest";
-  const schema = target === "guest" ? guestBoardSchema : commentSchema;
+export async function GET(req: NextRequest) {
+  const qs = req.nextUrl.searchParams;
+  const target = qs.get("target");
+  const isGuest = target === "guest";
+  const schema = isGuest ? guestBoardSchema : commentSchema;
 
   try {
-    const rows = await db
-      .select()
-      .from(schema)
-      .where(eq(schema.author_type, "guest"))
+    const baseQuery = db.select().from(schema);
+
+    const rows = await (isGuest
+      ? baseQuery.where(eq(schema.author_type, "guest"))
+      : baseQuery
+    )
       .orderBy(desc(schema.id))
       .limit(5);
 

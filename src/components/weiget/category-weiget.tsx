@@ -1,6 +1,8 @@
 import { CategoryModel } from "@/type/blog-group";
 import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
+import { Dot } from "lucide-react";
+import Link from "next/link";
 
 export default async function CategoryWegiet() {
   const response = await withFetchRevaildationAction<{
@@ -17,16 +19,23 @@ export default async function CategoryWegiet() {
   });
 
   return (
-    <section>
+    <section className="py-5 mt-5 border-t border-border">
+      {" "}
+      <div className=" items-center gap-2 flex pb-4">
+        <h3>Category</h3>
+      </div>
       {Object.values(response?.result?.category ?? []).map((e, idx) => {
         return (
-          <div
+          <Link
+            href={`/category/${e.name}`}
             key={`${e.name}-${idx}`}
-            className="flex gap-3 py-1 text-sm cursor-pointer items-center"
+            className="flex gap-3 py-2 text-sm cursor-pointer items-center"
           >
-            <span>{e.name}</span>{" "}
-            <span className="opacity-70 text-xs">({e.postCnt})</span>
-          </div>
+            <span className="flex">{e.name}</span>{" "}
+            <span className="opacity-70 text-xs text-primary">
+              ({e.postCnt})
+            </span>
+          </Link>
         );
       })}
     </section>

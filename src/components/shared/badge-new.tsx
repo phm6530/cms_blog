@@ -6,7 +6,7 @@ export default function BadgeNew({ className }: { className?: string }) {
     <Badge
       variant={"outline"}
       className={cn(
-        "relative text-xs border-rose-400 text-rose-400 animate-wiggle",
+        "relative text-xs rounded-full border-rose-400 text-rose-400 animate-wiggle",
         className
       )}
     >

@@ -39,7 +39,7 @@ export default function VisitorWiget() {
             <div className="flex gap-3 items-end text-xs">
               <span className=" opacity-50">TOTAL</span>
               <span className="animate-wiggle">
-                {data?.result.allVisitor_cnt}
+                {(data?.result.allVisitor_cnt ?? 0).toLocaleString()}
               </span>
             </div>
           </>

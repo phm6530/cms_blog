@@ -1,9 +1,11 @@
-import { PostItemModel } from "@/app/(public)/blog/[group]/post-list";
 import { REVALIDATE } from "@/type/constants";
 import { DateUtils } from "@/util/date-uill";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
-import Link from "next/link";
 
+import { PostItemModel } from "@/type/post.type";
+import { Heart, MessageCircle } from "lucide-react";
+import { Badge } from "../ui/badge";
+import Link from "next/link";
 import Image from "next/image";
 
 export default async function RecentPost() {
@@ -18,33 +20,61 @@ export default async function RecentPost() {
   });
 
   return (
-    <div className=" max-h-[50vh] flex flex-col gap-4">
-      <p className=" border-b text-sm pb-2">최신 글</p>
-      <div className="flex flex-col gap-3">
-        {response.result?.slice(0, 3)?.map((post, idx) => {
+    <div className=" flex flex-col gap-4">
+      <div className=" items-center gap-2 flex">
+        <h3>최신 글 </h3>
+      </div>
+
+      <div className="grid grid-cols-2 gap-5">
+        {response.result?.slice(0, 4)?.map((data, idx) => {
           return (
             <Link
-              href={`/post/${post.post_id}`}
-              className="grid grid-cols-[1fr_auto] gap-2 hover:underline"
+              href={`/post/${data.post_id}`}
               key={idx}
+              className="w-full flex border bg-cover bg-center overflow-hidden relative rounded-lg group"
             >
-              <div className="flex flex-col gap-2 w-full">
-                <p className="line-clamp-2 text-xs max-w-[150px] leading-5">
-                  {post.post_title}
+              <div className="relative  size-20  overflow-hidden  m-5 mr-0 rounded-xl">
+                <Image
+                  src={`${process.env.IMAGE_URL}/${data.thumbnail_url}`}
+                  alt=""
+                  fill
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+              <div className="flex flex-col gap-2 p-5 flex-1">
+                {" "}
+                <div className="flex gap-2">
+                  {DateUtils.isNew(data.created_at) && (
+                    <Badge
+                      variant={"outline"}
+                      className="relative text-[10px] rounded-full border-rose-400 text-rose-400 animate-wiggle"
+                    >
+                      New
+                    </Badge>
+                  )}
+                  <Badge
+                    variant={"secondary"}
+                    className="text-[10px] rounded-full"
+                  >
+                    {data.sub_group_name}
+                  </Badge>{" "}
+                </div>
+                <h1 className="z-10 text-lg break-keep">{data.post_title}</h1>
+                <p className="text-[13px] text-muted-foreground   leading-5 z-10  line-clamp-2 max-w-[600px]">
+                  {data.post_description}
                 </p>
-                <span className="text-xs opacity-50">
-                  {DateUtils.dateFormatKR(post.created_at, "YYYY. MM. DD")}
-                </span>
-              </div>{" "}
-              <div className="relative size-13 overflow-hidden rounded-[4px]">
-                {post.thumbnail_url && (
-                  <Image
-                    src={`${process.env.IMAGE_URL}/${post.thumbnail_url}`}
-                    alt=""
-                    fill
-                    style={{ objectFit: "cover" }}
-                  />
-                )}
+                <p className="text-xs text-muted-foreground  flex gap-3 z-1 mt-5 ">
+                  <span className="flex gap-1 items-center">
+                    <MessageCircle className="size-4" /> {data.comment_count}
+                  </span>
+                  <span className="flex gap-1 items-center">
+                    <Heart className="size-4" /> {data.like_cnt}
+                  </span>
+
+                  <span className="border-l border-border/30 pl-3">
+                    {DateUtils.dateFormatKR(data.created_at, "YY. MM. DD")}
+                  </span>
+                </p>
               </div>
             </Link>
           );

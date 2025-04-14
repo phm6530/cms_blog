@@ -19,9 +19,15 @@ export default async function Layout({
       <PostListNav curCategory={category} selectGroup={group} />
 
       <div className="grid grid-cols-[auto_1fr] justify-between items-center gap-5 border-b pb-4 py-10">
-        <span className="text-3xl font-Poppins font-extrabold">
-          {category} {group && `/${group}`}
-        </span>
+        <div className="flex gap-2 items-end">
+          <span className="text-3xl font-Poppins">{category}</span>
+          {group && (
+            <>
+              <span className="opacity-30">/</span>
+              <span className="opacity-90"> {group}</span>
+            </>
+          )}
+        </div>
         {/* <span className="border-b border-foreground/40 w-[50px]"></span> */}
         <Button className="ml-auto text-xs " variant={"outline"}>
           <Link className="flex" href={"/write"}>

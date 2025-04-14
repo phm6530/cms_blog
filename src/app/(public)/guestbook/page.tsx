@@ -5,6 +5,7 @@ import GuestBookItem from "./components/guestbook-item";
 import { BadgeInfo } from "lucide-react";
 import { CommentItemModel } from "@/lib/comment-bff";
 import CommentForm from "@/components/comments/comment-form";
+import MasonryLayout from "@/components/shared/MasonryLayout";
 
 export default async function GuestBookPage() {
   const response = await withFetchRevaildationAction<CommentItemModel[]>({
@@ -23,19 +24,19 @@ export default async function GuestBookPage() {
 
   return (
     <div className="max-w-[800px] mx-auto pt-[50px]">
-      <span className="text-3xl font-Poppins font-extrabold">Guest Book</span>
-      <p className="pt-3 text-xs flex items-center gap-2 opacity-70">
-        <BadgeInfo /> 방문
+      <span className="text-3xl  font-SUIT-Regular">GUEST BOOK</span>
+      <p className="pt-3 text-xs flex items-center gap-2 opacity-70 ">
+        방문 감사합니다 !
       </p>
       <section className="my-6">
         <CommentForm targetSchema="guestbook" />
       </section>
 
-      <section className="grid grid-cols-2 gap-4">
+      <MasonryLayout gutter={50}>
         {response.result.map((item, idx) => {
           return <GuestBookItem deps={0} {...item} key={idx} />;
         })}
-      </section>
+      </MasonryLayout>
     </div>
   );
 }

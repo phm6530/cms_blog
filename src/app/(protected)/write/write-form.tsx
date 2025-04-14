@@ -77,7 +77,6 @@ export default function WirteForm({
     mutationFn: async (
       body: z.infer<typeof wirtePostSchema> & { description: string }
     ) => {
-      console.log(body);
       return await withClientFetch<{ result: { postId: string } }>({
         endPoint: !!editData
           ? `api/post/${editData.blog_metadata.post_id}`
