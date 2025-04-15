@@ -2,25 +2,26 @@
 
 import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
-import { notFound, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import PostItem from "../../category/post-list-item";
 import { PostItemModel } from "@/type/post.type";
 import { useInfiniteQuery } from "@tanstack/react-query";
-
-type InfinityResult<T> = {
-  success: boolean;
-  result: { list: Array<T>; isNextPage: boolean };
-};
+import PostItemSkeleton from "../post-item-skeleton";
+import { useEffect, useRef } from "react";
+import LoadingSpinerV2 from "@/components/ui/loading-spinner-v2";
 
 export default function CategoryPage() {
   const { category: categoryList }: { category: string[] } = useParams();
   const [category, group] = categoryList;
   const isSubGroup = group ?? "all"; // 없으면 전체 다 가져오기
 
-  const { data, fetchNextPage, isFetching, isPending } = useInfiniteQuery<
-    InfinityResult<PostItemModel>
-  >({
-    queryKey: [],
+  const ref = useRef<HTMLDivElement>(null);
+
+  const { data, fetchNextPage, isFetching, isPending } = useInfiniteQuery<{
+    list: PostItemModel[];
+    isNextPage: boolean;
+  }>({
+    queryKey: [REVALIDATE.BLOG.LIST, category, isSubGroup],
     queryFn: async ({ pageParam }) => {
       const limit = 10;
       const cursor = pageParam !== 0 ? pageParam : null; // 일단 초기 0, APi 변경후에 받을예정임
@@ -28,35 +29,90 @@ export default function CategoryPage() {
       let baseUrl = `api/post?category=${category}&group=${isSubGroup}`;
       baseUrl += `&cursor=${cursor}&limit=${limit}`;
 
-      return await withFetchRevaildationAction<InfinityResult<PostItemModel>>({
+      const response = await withFetchRevaildationAction<{
+        list: Array<PostItemModel>;
+        isNextPage: boolean;
+      }>({
         endPoint: baseUrl,
         options: {
-          cache: "no-store",
+          cache: "force-cache",
           next: {
             tags: [REVALIDATE.BLOG.LIST, category, isSubGroup],
           },
         },
       });
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+      return response.result;
     },
     getNextPageParam: (lastPage) => {
-      return lastPage.isNextPage;
+      if (lastPage.isNextPage) {
+        return lastPage.list.at(-1)?.post_id;
+      }
     },
     initialPageParam: 0,
   });
 
-  // if (!response.success) {
-  //   notFound();
-  // }
+  useEffect(() => {
+    if (!ref.current) return;
 
-  const flatPageDatas = data?.pages.flatMap((page) => page.result.list);
+    const currentRef = ref.current;
+
+    const io = new IntersectionObserver(
+      (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entity) => {
+          if (entity.isIntersecting) {
+            fetchNextPage();
+          }
+        });
+      },
+      { threshold: 1 }
+    );
+
+    io.observe(currentRef);
+
+    return () => {
+      io.unobserve(currentRef);
+      io.disconnect();
+    };
+  }, [data, fetchNextPage]);
+
+  const flatPageDatas = data?.pages.flatMap((page) => page.list);
+
+  if (isPending || !data) {
+    return (
+      <div className="flex flex-col gap-5 py-5">
+        {Array.from({ length: 10 }).map((_, idx) => {
+          return <PostItemSkeleton key={`skeleton-${idx}`} />;
+        })}
+      </div>
+    );
+  }
 
   return (
     <section className=" flex flex-col">
       <div className="flex flex-col">
-        {flatPageDatas?.map((item, idx) => {
-          return <PostItem {...item} key={`${item.post_id}-${idx}`} />;
-        })}
+        {flatPageDatas?.length === 0 ? (
+          <div>등록된 콘텐츠가 없습니다.</div>
+        ) : (
+          flatPageDatas?.map((item, idx) => {
+            const isLast = flatPageDatas.length - 2 === idx;
+            return (
+              <PostItem
+                {...item}
+                key={`${item?.post_id}-${idx}`}
+                ref={isLast ? ref : undefined}
+              />
+            );
+          })
+        )}
       </div>
+      {isFetching && (
+        <>
+          <LoadingSpinerV2 text="loading ..." />
+        </>
+      )}
     </section>
   );
 }

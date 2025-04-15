@@ -9,7 +9,10 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 export default async function RecentPost() {
-  const response = await withFetchRevaildationAction<PostItemModel[]>({
+  const { success, result } = await withFetchRevaildationAction<{
+    list: PostItemModel[];
+    isNextPage: boolean;
+  }>({
     endPoint: `api/post?category=all&group=all`,
     options: {
       cache: "force-cache",
@@ -18,6 +21,11 @@ export default async function RecentPost() {
       },
     },
   });
+  if (!success) {
+    throw new Error("에러...");
+  }
+
+  const firstObj = result.list;
 
   return (
     <div className=" flex flex-col ">
@@ -28,13 +36,13 @@ export default async function RecentPost() {
       <div
         className={cn(
           "flex flex-col",
-          response.result!.length !== 0 && "divide-y border-border"
+          firstObj.length !== 0 && "divide-y border-border"
         )}
       >
-        {response.result!.length === 0 ? (
+        {firstObj.length === 0 ? (
           <div>등록된 콘텐츠가 없습니다.</div>
         ) : (
-          response.result?.slice(0, 4)?.map((data, idx) => {
+          firstObj.slice(0, 4)?.map((data, idx) => {
             return (
               <Link
                 href={`/post/${data.post_id}`}

@@ -39,7 +39,7 @@ export default function SearchInput({
   const value = qs.get("search") || "";
 
   return (
-    <form onSubmit={searchHandler} className=" ml-auto">
+    <form onSubmit={searchHandler} className={cn("ml-auto", className)}>
       <div
         className={cn(
           `rounded-full bg-muted-foreground/5  overflow-hidden 

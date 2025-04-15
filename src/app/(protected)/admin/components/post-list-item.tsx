@@ -3,6 +3,7 @@ import PostViewHandler from "../post/post-view-handler";
 import { Badge } from "@/components/ui/badge";
 import { DateUtils } from "@/util/date-uill";
 import Link from "next/link";
+import PostPinnedHandler from "../post/post-pinned-hanlder";
 
 export default function PostListItem({
   post_id,
@@ -25,7 +26,10 @@ export default function PostListItem({
           </span>
         </div>
       </div>
-      <PostViewHandler defaultView={view} postId={post_id} />
+      <div className="wrapper flex gap-2">
+        <PostPinnedHandler post_id={post_id} view={view} />
+        <PostViewHandler defaultView={view} postId={post_id} />
+      </div>
     </article>
   );
 }

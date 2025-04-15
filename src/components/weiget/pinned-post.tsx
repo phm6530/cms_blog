@@ -5,19 +5,23 @@ import { PostItemModel } from "@/type/post.type";
 import { Heart, MessageCircle } from "lucide-react";
 import { DateUtils } from "@/util/date-uill";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 export default async function PinnedPosts() {
   const response = await withFetchRevaildationAction<PostItemModel[]>({
-    endPoint: `api/post?category=blog`,
+    endPoint: `api/pinned`,
     options: {
       cache: "no-store",
       next: {
-        tags: [REVALIDATE.BLOG.LIST],
+        tags: [REVALIDATE.BLOG.LIST, "pinneds"],
       },
     },
   });
 
-  const data = response.result![3];
+  if (!response.success) {
+    notFound();
+  }
+  const data = response.result[2];
 
   if (!data) {
     return "등록된 고정 콘텐츠가 없습니다.";
