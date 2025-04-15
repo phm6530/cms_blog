@@ -26,6 +26,7 @@ import { notFound } from "next/navigation";
 import PostHandler from "../post-handler";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import PostLikeHandler from "../post-like-hanlder";
+import SelectPage from "@/components/info-component/secrect-page";
 
 // export async function generateMetadata({
 //   params: { id },
@@ -80,7 +81,7 @@ export default async function PostDetail({
     data.result;
 
   if (!blog_metadata.view) {
-    notFound(); //View에따라 공개여부
+    return <SelectPage />; //View에따라 공개여부
   }
 
   return (

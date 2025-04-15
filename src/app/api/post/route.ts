@@ -31,9 +31,11 @@ export async function GET(req: NextRequest) {
   const category = url.searchParams.get("category");
   const searchKeyword = url.searchParams.get("keyword");
 
+  const session = await auth();
+
   // where..
   const whereQuery = and(
-    category
+    category && category !== "all"
       ? sql`LOWER(${categorySchema.group_name}) = ${category.toLowerCase()}`
       : undefined,
     group && group !== "all"
@@ -42,7 +44,7 @@ export async function GET(req: NextRequest) {
     searchKeyword
       ? ilike(blogMetaSchema.post_title, `%${searchKeyword}%`)
       : undefined,
-    eq(blogMetaSchema.view, true) // 공개된 글만
+    session ? undefined : eq(blogMetaSchema.view, true)
   );
 
   const rows = await db

@@ -2,7 +2,7 @@ import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { Badge } from "../ui/badge";
 import { PostItemModel } from "@/type/post.type";
-import { Heart, MessageCircle, Pin } from "lucide-react";
+import { Heart, MessageCircle } from "lucide-react";
 import { DateUtils } from "@/util/date-uill";
 import Image from "next/image";
 
@@ -18,6 +18,10 @@ export default async function PinnedPosts() {
   });
 
   const data = response.result![3];
+
+  if (!data) {
+    return "등록된 고정 콘텐츠가 없습니다.";
+  }
 
   return (
     <div className="flex flex-col gap-1 relative">

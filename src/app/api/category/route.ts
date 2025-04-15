@@ -23,7 +23,7 @@ export async function GET() {
       blogMetaSchema,
       eq(blogMetaSchema.sub_group_id, blogSubGroup.sub_group_id)
     )
-    .where(eq(blogMetaSchema.view, true))
+    // .where(eq(blogMetaSchema.view, true))
     .groupBy(
       categorySchema.group_id,
       categorySchema.group_name,

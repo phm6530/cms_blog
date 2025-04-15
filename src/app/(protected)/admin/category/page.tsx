@@ -34,7 +34,7 @@ export default function Category() {
   /**
    * @param id 유무에 따라 Category 추가 or Group 추가 분기
    */
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: async ({ id, item }: { id?: number; item: string }) => {
       return await withClientFetch<{
         category: { [key: string]: CategoryModel };

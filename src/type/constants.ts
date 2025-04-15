@@ -31,4 +31,5 @@ export enum HTTP_METHOD {
   POST = "POST",
   DELETE = "DELETE",
   PUT = "PUT",
+  PATCH = "PATCH",
 }

@@ -8,6 +8,7 @@ import {
 import { FormField, FormItem, FormMessage } from "./form";
 import { useFormContext } from "react-hook-form";
 import { cn } from "@/lib/utils";
+import { useEffect, useRef } from "react";
 
 export default function SelectField<
   T extends Array<{ value: any; label: string }>
@@ -15,14 +16,24 @@ export default function SelectField<
   name,
   valueArr,
   defaultValue,
+  onValueChange,
+  loading,
   className,
 }: {
   name: string;
   valueArr: T;
   defaultValue?: T[number]["value"];
+  loading?: boolean;
+  onValueChange?: (...arg: any) => Promise<boolean>;
   className?: string;
 }) {
-  const { control } = useFormContext();
+  const ref = useRef<string>(null);
+  const { control, getValues } = useFormContext();
+
+  useEffect(() => {
+    // 초기값 세팅
+    ref.current = getValues(name);
+  }, [getValues, name]);
 
   return (
     <FormField
@@ -33,14 +44,24 @@ export default function SelectField<
         return (
           <FormItem>
             <Select
-              onValueChange={(val) => {
+              value={String(field.value)}
+              onValueChange={async (val) => {
+                // Boolean으로 컨트롤 할거임
+                if (onValueChange) {
+                  const test = await onValueChange(val);
+                  if (!test) {
+                    field.onChange(ref.current);
+                    return;
+                  }
+                }
+
                 const parsed = valueArr.find((e) => e.value + "" === val);
                 if (parsed) field.onChange(parsed.value as T[number]["value"]);
               }}
               defaultValue={String(field.value ?? defaultValue)}
             >
               <SelectTrigger className={cn("text-xs", className)}>
-                <SelectValue />
+                {loading ? "변경 중 ..." : <SelectValue />}
               </SelectTrigger>
               <SelectContent>
                 {valueArr.map((e, idx) => (
