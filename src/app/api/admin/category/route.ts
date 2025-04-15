@@ -1,3 +1,4 @@
+import { DeleteCategoryProps } from "@/app/(protected)/admin/category/page";
 import { auth } from "@/auth";
 import { db } from "@/db/db";
 import { blogSubGroup, categorySchema } from "@/db/schema/category";
@@ -58,22 +59,38 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const body: { id: number } = await req.json();
+  const body: DeleteCategoryProps = await req.json();
   const session = await auth();
 
-  return await apiHandler(async () => {
-    if (!session?.user) {
-      throw new Error("권한 없음....");
-    }
-    const row = await db
-      .select()
-      .from(categorySchema)
-      .where(eq(categorySchema.group_id, body.id));
+  if (!session?.user) {
+    throw new Error("권한 없음....");
+  }
 
-    if (row.length === 0 || !row) {
+  const isSubGroup = !!body.subGroupId;
+  const schema = isSubGroup ? blogSubGroup : categorySchema;
+
+  const whereConditions = isSubGroup
+    ? and(
+        eq(blogSubGroup.group_id, body.categoryId),
+        eq(blogSubGroup.sub_group_id, body.subGroupId!)
+      )
+    : eq(categorySchema.group_id, body.categoryId);
+
+  const row = await db.select().from(schema).where(whereConditions);
+
+  return await apiHandler(async () => {
+    if (row.length === 0) {
       throw new Error("이미 삭제되었거나 잘못된 요청입니다.");
     }
-    await db.delete(categorySchema).where(eq(categorySchema.group_id, body.id));
+
+    await db
+      .delete(schema)
+      .where(
+        isSubGroup
+          ? eq(blogSubGroup.sub_group_id, body.subGroupId!)
+          : eq(categorySchema.group_id, body.categoryId)
+      );
+
     revalidateTag(REVALIDATE.BLOG.GROUPS);
   });
 }

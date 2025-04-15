@@ -27,6 +27,7 @@ import PostHandler from "../post-handler";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import PostLikeHandler from "../post-like-hanlder";
 import SelectPage from "@/components/info-component/secrect-page";
+import { auth } from "@/auth";
 
 // export async function generateMetadata({
 //   params: { id },
@@ -62,6 +63,7 @@ export default async function PostDetail({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const session = await auth();
 
   const data = await withFetchRevaildationAction<BlogDetailResponse>({
     endPoint: `api/blog/${id}`,
@@ -80,7 +82,7 @@ export default async function PostDetail({
   const { blog_metadata, blog_contents, blog_sub_group, category } =
     data.result;
 
-  if (!blog_metadata.view) {
+  if (!session && !blog_metadata.view) {
     return <SelectPage />; //View에따라 공개여부
   }
 
@@ -88,17 +90,20 @@ export default async function PostDetail({
     <main className="flex flex-col gap-6">
       <section className="border-b">
         <div className="py-5 flex flex-col gap-5">
-          <div>
+          <div className="flex gap-2">
             <Badge variant={"secondary"} className="">
               {blog_sub_group.sub_group_name}
             </Badge>{" "}
             {DateUtils.isNew(blog_metadata.created_at) && (
               <Badge
                 variant={"outline"}
-                className="relative text-xs border-rose-400 text-rose-400 animate-wiggle"
+                className="relative rounded-full text-xs border-rose-400 text-rose-400 animate-wiggle"
               >
                 New
               </Badge>
+            )}
+            {!blog_metadata.view && (
+              <Badge className="rounded-full">비공개</Badge>
             )}
           </div>
           <h1 className="text-3xl">{blog_metadata.post_title}</h1>

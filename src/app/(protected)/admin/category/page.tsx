@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 
+export type DeleteCategoryProps = { categoryId: number; subGroupId?: number };
+
 export default function Category() {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -66,7 +68,7 @@ export default function Category() {
   });
 
   const { mutate: deleteMutate } = useMutation({
-    mutationFn: async (id: number) => {
+    mutationFn: async ({ categoryId, subGroupId }: DeleteCategoryProps) => {
       return await withClientFetch<{
         category: { [key: string]: CategoryModel };
         count: number;
@@ -74,7 +76,7 @@ export default function Category() {
         endPoint: "api/admin/category",
         options: {
           method: HTTP_METHOD.DELETE,
-          body: JSON.stringify({ id }),
+          body: JSON.stringify({ categoryId, subGroupId }),
         },
       });
     },
@@ -98,10 +100,10 @@ export default function Category() {
     mutate({ item, id });
   };
 
-  const deleteCategoryHandler = (id: number) => {
+  const deleteCategoryHandler = (data: DeleteCategoryProps) => {
     const item = confirm("삭제하시겠습니까?");
     if (!item) return;
-    deleteMutate(id);
+    deleteMutate(data);
   };
 
   return (
@@ -141,7 +143,9 @@ export default function Category() {
                   </Button>
                   <Button
                     variant={"ghost"}
-                    onClick={() => deleteCategoryHandler(category.id)}
+                    onClick={() =>
+                      deleteCategoryHandler({ categoryId: category.id })
+                    }
                   >
                     삭제
                   </Button>
@@ -164,7 +168,16 @@ export default function Category() {
                         변경
                       </Button>
 
-                      <Button variant={"ghost"} size={"sm"}>
+                      <Button
+                        variant={"ghost"}
+                        size={"sm"}
+                        onClick={() =>
+                          deleteCategoryHandler({
+                            categoryId: category.id,
+                            subGroupId: sub.id,
+                          })
+                        }
+                      >
                         삭제
                       </Button>
                     </div>

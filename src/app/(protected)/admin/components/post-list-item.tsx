@@ -1,4 +1,3 @@
-import SelectField from "@/components/ui/select-field";
 import { PostItemModel } from "@/type/post.type";
 import PostViewHandler from "../post/post-view-handler";
 import { Badge } from "@/components/ui/badge";
@@ -9,11 +8,9 @@ export default function PostListItem({
   post_id,
   post_title,
   view,
-  post_description,
   sub_group_name,
   created_at,
 }: PostItemModel) {
-  console.log(view);
   return (
     <article className="flex p-4 hover:border-indigo-400 items-center justify-between">
       <div className="text-sm flex flex-col gap-1">

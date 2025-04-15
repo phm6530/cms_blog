@@ -23,6 +23,7 @@
     "@squirrel309/my-testcounter": "^0.0.14",
     "@supabase/supabase-js": "^2.49.4",
     "@tanstack/react-query": "^5.71.5",
+    "@tanstack/react-table": "^8.21.3",
     "@types/react-responsive-masonry": "^2.6.0",
     "@types/uuid": "^10.0.0",
     "bcryptjs": "^3.0.2",
