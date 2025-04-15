@@ -6,7 +6,7 @@ import { blogMetaSchema } from "@/db/schema/blog-metadata";
 import { REVALIDATE } from "@/type/constants";
 import { WithTransaction } from "@/util/withTransaction";
 import { eq } from "drizzle-orm";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { PostFormData } from "../route";
 
@@ -16,13 +16,12 @@ export async function PUT(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
-  console.log("안들어오는데 ?");
   const session = await auth();
   const body: PostFormData = await req.json();
   const { id } = await context.params;
   try {
     if (!session?.user) throw new Error("권한이 없습니다.");
-    console.log("들어앗나");
+
     await WithTransaction.run(async (tx) => {
       // 사용자 조회
       const [user] = await tx
@@ -42,6 +41,7 @@ export async function PUT(
           sub_group_id: +body.postGroup.group,
           img_key: body.imgKey,
           update_at: new Date(),
+          view: body.view,
         })
         .where(eq(blogMetaSchema.post_id, +id));
 
@@ -55,7 +55,9 @@ export async function PUT(
     });
 
     revalidateTag(`${REVALIDATE.BLOG.DETAIL}:${id}`);
-    revalidatePath("/category/blog");
+    revalidateTag(REVALIDATE.BLOG.LIST);
+    revalidateTag(REVALIDATE.BLOG.GROUPS);
+
     return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof Error)

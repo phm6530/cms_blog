@@ -66,7 +66,9 @@ export default async function PostListNav({
             >
               <Link href={`/category/${curCategory}/${group.subGroupName}`}>
                 {group.subGroupName}{" "}
-                <span className="text-indigo-300">({group.postCount})</span>
+                <span className="dark:text-indigo-300 dark:opacity-100 opacity-50">
+                  ({group.postCount})
+                </span>
               </Link>
             </Button>
           );

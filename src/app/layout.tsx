@@ -31,7 +31,7 @@ export default async function RootLayout({
                 {/* slide bar */}
                 <SideArea />
 
-                <div>{children}</div>
+                <div className="pt-10">{children}</div>
               </div>
             </main>
             <Toaster />

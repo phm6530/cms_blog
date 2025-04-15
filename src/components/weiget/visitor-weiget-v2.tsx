@@ -2,7 +2,7 @@
 import withClientFetch from "@/util/withClientFetch";
 
 import { useQuery } from "@tanstack/react-query";
-import { User } from "lucide-react";
+import { User, UserRound } from "lucide-react";
 
 export default function VisitorWigetV2() {
   // visitor...
@@ -32,14 +32,14 @@ export default function VisitorWigetV2() {
         ) : (
           <>
             <div className="flex  gap-1  text-xs">
-              <span className=" opacity-50">TOTAL</span>
+              {/* <span className=" opacity-50">TOTAL</span> */}
               <span className="animate-wiggle text-2xl flex items-center gap-2">
-                <User />
+                <UserRound size={17} />
                 {(data?.result.allVisitor_cnt ?? 0).toLocaleString()}
               </span>
             </div>
-            <div className="flex gap-3 items-end text-xs ">
-              <span className="opacity-50">TODAY</span>
+            <div className="flex gap-3 items-end  ">
+              <span className="opacity-50 text-[11px]">TODAY</span>
               <span className="animate-wiggle">
                 {data?.result.today_cnt ?? 0}
               </span>

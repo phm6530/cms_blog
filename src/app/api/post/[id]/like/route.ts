@@ -16,8 +16,6 @@ export async function GET(
   const { id } = await context.params;
   const actions = qs.get("action");
 
-  console.log(qs, id);
-
   return await apiHandler(async () => {
     if (!actions || !actionsType.includes(actions) || isNaN(+id)) {
       throw new Error("잘못된 요청입니다.");

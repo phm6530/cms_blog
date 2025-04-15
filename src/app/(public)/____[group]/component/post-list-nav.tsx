@@ -26,7 +26,6 @@ export default async function PostListNav({
     notFound();
   }
   const { category } = response.result;
-  console.log(category);
 
   const activeStyle = (subGroupName?: string) => {
     const isActive = selectGroup === subGroupName;

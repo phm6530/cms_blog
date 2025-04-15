@@ -6,7 +6,7 @@ import RecentPost from "@/components/weiget/recent-post";
 export default function Home() {
   return (
     <>
-      <div className="col-span-2 col-start-2 flex flex-col gap-10 w-full">
+      <div className="col-span-2  col-start-2 flex flex-col gap-10 w-full">
         {/* 고정 */}
         <PinnedPosts />
         {/* 최신글 */}

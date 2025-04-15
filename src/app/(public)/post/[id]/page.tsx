@@ -79,6 +79,10 @@ export default async function PostDetail({
   const { blog_metadata, blog_contents, blog_sub_group, category } =
     data.result;
 
+  if (!blog_metadata.view) {
+    notFound(); //View에따라 공개여부
+  }
+
   return (
     <main className="flex flex-col gap-6">
       <section className="border-b">

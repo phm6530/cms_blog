@@ -5,61 +5,52 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CategoryModel } from "@/type/blog-group";
 import { FormField, FormItem, FormMessage } from "./form";
 import { useFormContext } from "react-hook-form";
+import { cn } from "@/lib/utils";
 
 export default function SelectField<
-  T extends { [key: string]: CategoryModel }
->({ groups }: { groups: T }) {
-  const { control, setValue, trigger } = useFormContext();
-
-  const categories = Object.values(groups);
-  const totalPostCnt = categories.reduce((sum, cur) => {
-    return sum + cur.postCnt;
-  }, 0);
+  T extends Array<{ value: any; label: string }>
+>({
+  name,
+  valueArr,
+  defaultValue,
+  className,
+}: {
+  name: string;
+  valueArr: T;
+  defaultValue?: T[number]["value"];
+  className?: string;
+}) {
+  const { control } = useFormContext();
 
   return (
     <FormField
-      name="postGroup"
+      name={name}
       control={control}
+      defaultValue={defaultValue}
       render={({ field }) => {
         return (
           <FormItem>
             <Select
-              value={JSON.stringify(field.value)}
               onValueChange={(val) => {
-                const parsed = JSON.parse(val);
-
-                setValue("postGroup", {
-                  category: parsed.category,
-                  group: parsed.group,
-                });
-                trigger("postGroup");
+                const parsed = valueArr.find((e) => e.value + "" === val);
+                if (parsed) field.onChange(parsed.value as T[number]["value"]);
               }}
+              defaultValue={String(field.value ?? defaultValue)}
             >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={`전체 ( ${totalPostCnt} )`} />
+              <SelectTrigger className={cn("text-xs", className)}>
+                <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {categories.map((group, groupIdx) => (
-                  <div key={groupIdx} className="border-b py-2">
-                    <div className="px-3 py-1 text-muted-foreground text-sm font-semibold">
-                      {group.name} ({group.postCnt})
-                    </div>
-                    {group.subGroups.map((sub, subIdx: number) => (
-                      <SelectItem
-                        key={`${groupIdx}-${subIdx}`}
-                        value={JSON.stringify({
-                          category: group.id,
-                          group: sub.id,
-                        })}
-                        className="pl-5"
-                      >
-                        {sub.subGroupName} ({sub.postCount})
-                      </SelectItem>
-                    ))}
-                  </div>
+                {valueArr.map((e, idx) => (
+                  <SelectItem
+                    className="text-xs"
+                    key={idx}
+                    value={e.value + ""}
+                  >
+                    {e.label}
+                  </SelectItem>
                 ))}
               </SelectContent>
               <FormMessage />

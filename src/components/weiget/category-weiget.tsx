@@ -30,8 +30,8 @@ export default async function CategoryWegiet() {
             key={`${e.name}-${idx}`}
             className="flex gap-3 py-2 text-sm cursor-pointer items-center text-secondary-foreground"
           >
-            <span className="flex">{e.name}</span>{" "}
-            <span className="opacity-70 text-xs text-primary">
+            <span className="flex">{e.name}</span>
+            <span className="opacity-50 text-[11px] text-primary">
               ({e.postCnt})
             </span>
             {/* <span className="bg-orange-600 text-white text-[9px] size-3 items-center text-center rounded-[3px]">

@@ -24,12 +24,12 @@ export function CheckField() {
       if (!event.target.files) {
         throw new Error(""); //에러만 전달
       }
-      const thumbUrl = await imgUploader({
-        event,
-        path: "thumbnail",
-        filename: `${watch("postGroup")}`,
-      });
-      console.log(thumbUrl);
+      // const thumbUrl = await imgUploader({
+      //   event,
+      //   path: "thumbnail",
+      //   filename: `${watch("postGroup")}`,
+      // });
+      // console.log(thumbUrl);
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message);

@@ -10,7 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { wirtePostSchema } from "./schema";
 import { Button } from "@/components/ui/button";
-import SelectField from "@/components/ui/select-field";
 import { CheckField } from "@/components/ui/check-field";
 import { CategoryModel } from "@/type/blog-group";
 import { TipTapEditor } from "@squirrel309/my-testcounter";
@@ -27,6 +26,8 @@ import { v4 as uuidv4 } from "uuid";
 import transformHtmlToPlainText from "@/util/domParse";
 import { useRouter } from "next/navigation";
 import { BlogDetailResponse } from "@/type/blog.type";
+import WirteSelectCategory from "./write-select-category";
+import SelectField from "@/components/ui/select-field";
 
 const defaultValues = {
   title: "",
@@ -39,6 +40,7 @@ const defaultValues = {
   thumbnail: null,
   defaultThumbNail: false,
   imgKey: "",
+  view: true,
 };
 
 export default function WirteForm({
@@ -62,6 +64,7 @@ export default function WirteForm({
           ...defaultValues,
           title: editData.blog_metadata.post_title,
           contents: editData.blog_contents.contents,
+          view: editData.blog_metadata.view,
           postGroup: {
             category: editData.blog_metadata.category_id,
             group: editData.blog_metadata.sub_group_id,
@@ -72,6 +75,7 @@ export default function WirteForm({
     resolver: zodResolver(wirtePostSchema),
   });
 
+  console.log(form.watch());
   // mutate
   const { mutate } = useMutation({
     mutationFn: async (
@@ -110,7 +114,19 @@ export default function WirteForm({
   return (
     <Form {...form}>
       <div className="flex flex-col gap-3">
-        <SelectField groups={postGroupItems} />
+        <div className="flex items-center gap-3">
+          <WirteSelectCategory groups={postGroupItems} />
+          <SelectField
+            name="view"
+            valueArr={
+              [
+                { value: true, label: "공개" },
+                { value: false, label: "비 공개" },
+              ] as const
+            }
+            defaultValue={true}
+          />
+        </div>
         {!!form.watch("postGroup") && <CheckField />}
 
         <PostTitleField
@@ -148,6 +164,16 @@ export default function WirteForm({
         />
       </div>
       <div className="flex gap-2 py-3 justify-end">
+        <Button
+          className="p-6 mr-auto"
+          variant={"outline"}
+          type={"button"}
+
+          // onClick={form.handleSubmit(onSubmitHandler)}
+        >
+          설정
+        </Button>
+
         <Button
           className="p-6"
           variant={"outline"}

@@ -22,4 +22,5 @@ export const wirtePostSchema = z.object({
   thumbnail: z.string().nullable(),
   defaultThumbNail: z.boolean(),
   imgKey: z.string().min(1, { message: "필수항목 입니다" }),
+  view: z.boolean().default(true),
 });

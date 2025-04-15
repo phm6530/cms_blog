@@ -13,8 +13,6 @@ export async function DELETE(
   const { id } = await context.params; //post_id
   const session = await auth(); // Session get ..
   const body = await req.json();
-  console.log(session);
-  console.log(id);
 
   try {
     if (isNaN(Number(id))) {

@@ -9,6 +9,7 @@ export type PostFormData = {
   thumbnail: string | null;
   defaultThumbNail: boolean;
   imgKey: string;
+  view: boolean;
 };
 
 import { auth } from "@/auth";
@@ -40,7 +41,8 @@ export async function GET(req: NextRequest) {
       : undefined,
     searchKeyword
       ? ilike(blogMetaSchema.post_title, `%${searchKeyword}%`)
-      : undefined
+      : undefined,
+    eq(blogMetaSchema.view, true) // 공개된 글만
   );
 
   const rows = await db
@@ -79,6 +81,7 @@ export async function GET(req: NextRequest) {
       };
     }
   );
+
   let searchCnt = 0;
   if (!!searchKeyword) {
     const [rows] = await db
@@ -128,6 +131,7 @@ export async function POST(req: NextRequest) {
           sub_group_id: +body.postGroup.group,
           author_id: user.id,
           img_key: body.imgKey,
+          view: body.view,
         })
         .returning({ id: blogMetaSchema.post_id });
 

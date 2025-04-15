@@ -22,19 +22,19 @@ export default async function PinnedPosts() {
   return (
     <div className="flex flex-col gap-1 relative">
       <div
-        className="w-full grid grid-cols-[6fr_4fr] border-border gap-10 p-10 bg-[#f9f7f4] dark:bg-[#ffffff05] rounded-xl  flex-col  bg-cover bg-center overflow-hidden relative"
+        className="w-full grid grid-cols-[6fr_4fr] border-border gap-10 p-10 bg-[#f9f7f4] dark:bg-[#252526] rounded-xl  flex-col  bg-cover bg-center overflow-hidden relative"
         style={{
           backgroundClip: "padding-box",
         }}
       >
         <div className="flex flex-col gap-8 items-start ">
           <div className="flex gap-2">
-            <Badge variant={"outline"} className="z-1 rounded-full">
+            <Badge variant={"secondary"} className="z-1 rounded-full">
               {data.sub_group_name}
             </Badge>
             <Badge
               variant={"outline"}
-              className="z-1 rounded-full bg-purple-500 text-white"
+              className="z-1 rounded-full bg-yellow-400 text-black"
             >
               pinned
             </Badge>
