@@ -6,7 +6,6 @@ import { PostItemModel } from "@/type/post.type";
 import { Heart, MessageCircle } from "lucide-react";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 export default async function RecentPost() {
@@ -20,15 +19,18 @@ export default async function RecentPost() {
     },
   });
 
-  console.log(response.result);
-
   return (
-    <div className=" flex flex-col gap-4">
-      <div className=" items-center gap-2 flex ">
+    <div className=" flex flex-col ">
+      <div className=" items-center gap-2 flex border-b pb-2 ">
         <h3 className="font-bold">POSTS </h3>
       </div>
 
-      <div className="flex flex-col">
+      <div
+        className={cn(
+          "flex flex-col",
+          response.result!.length !== 0 && "divide-y border-border"
+        )}
+      >
         {response.result!.length === 0 ? (
           <div>등록된 콘텐츠가 없습니다.</div>
         ) : (
@@ -38,11 +40,11 @@ export default async function RecentPost() {
                 href={`/post/${data.post_id}`}
                 key={idx}
                 className={cn(
-                  "w-full  grid grid-cols-[3fr_6fr] gap-10   transition-all    bg-center  py-5 overflow-hidden relative border-muted-foreground/30 group hover:border-purple-500 ",
+                  "hover:pl-5 hover:border-l-5 hover:border-l-purple-500 w-full   gap-10   transition-all    bg-center  py-6 overflow-hidden relative border-muted-foreground/30 group  ",
                   !data.thumbnail_url && "grid-cols-1"
                 )}
               >
-                {data.thumbnail_url && (
+                {/* {data.thumbnail_url && (
                   <div className="relative   overflow-hidden  mr-0 rounded-lg aspect-[16/9]">
                     <Image
                       src={`${process.env.IMAGE_URL}/${data.thumbnail_url}`}
@@ -51,7 +53,7 @@ export default async function RecentPost() {
                       style={{ objectFit: "cover" }}
                     />
                   </div>
-                )}
+                )} */}
                 <div className="flex flex-col gap-2  flex-1">
                   <div className="flex gap-2">
                     {DateUtils.isNew(data.created_at) && (
@@ -69,10 +71,10 @@ export default async function RecentPost() {
                       {data.sub_group_name}
                     </Badge>{" "}
                   </div>
-                  <h1 className="z-10 text-base break-keep mt-1 text-shadow ">
+                  <h1 className="z-10 text-xl break-keep mt-1 text-shadow group-hover:text-purple-400 transition-all">
                     {data.post_title}
                   </h1>
-                  <p className="text-[13px] text-muted-foreground   leading-5 z-10  line-clamp-2 max-w-[600px]">
+                  <p className="text-[13px] text-muted-foreground   leading-5 z-10  line-clamp-2 max-w-[600px] w-[70%]">
                     {data.post_description}
                   </p>
                   <p className="text-xs text-muted-foreground  flex gap-4 z-1 mt-5 ">

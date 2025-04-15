@@ -31,7 +31,7 @@ export default function PostItem({
           </div>
         </div>
         <Link href={`/post/${post_id}`}>
-          <p className="group-hover:underline text-2xl tracking-tight ">
+          <p className="group-hover:underline text-xl tracking-tight ">
             {!!keyword ? (
               <HighlightKeyword text={post_title} keyword={keyword} />
             ) : (
@@ -57,7 +57,7 @@ export default function PostItem({
           </span>
         </p>
       </div>
-      <div className="max-w-[120px]  w-full ml-auto  aspect-[10/10]  rounded-md relative overflow-hidden ">
+      <div className="max-w-[150px]  w-full ml-auto  aspect-[16/11]  rounded-md relative overflow-hidden ">
         {thumbnail_url && (
           <Image
             src={`https://d33h8icwcso2tj.cloudfront.net/${thumbnail_url}`}

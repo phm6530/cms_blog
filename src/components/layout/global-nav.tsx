@@ -25,9 +25,9 @@ export default async function GlobalNav() {
   const { category } = response.result;
   return (
     <section className="py-3  flex justify-between  border-b  z-1">
-      <div className="grid-layout flex justify-between border-secondary-foreground/10 pb-3">
+      <div className="grid-layout flex justify-between border-secondary-foreground/10 pb-3 pt-5">
         <Link href={"/"}>
-          <h1 className="text-3xl font-SUIT-Regular">PHM{"'"} DEV BLOG</h1>
+          <h1 className="text-3xl font-Poppins">PHM{"'"} DEV BLOG</h1>
         </Link>
         <div className="flex items-center gap-5">
           {/* cateogry list */}

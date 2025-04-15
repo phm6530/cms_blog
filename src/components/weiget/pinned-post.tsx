@@ -31,9 +31,12 @@ export default async function PinnedPosts() {
           backgroundClip: "padding-box",
         }}
       >
-        <div className="flex flex-col gap-8 items-start ">
-          <div className="flex gap-2">
-            <Badge variant={"secondary"} className="z-1 rounded-full">
+        <div className="flex flex-col  items-start ">
+          <div className="flex gap-2 mt-5">
+            <Badge
+              variant={"outline"}
+              className="z-1 rounded-full border-foreground/50"
+            >
               {data.sub_group_name}
             </Badge>
             <Badge
@@ -44,10 +47,10 @@ export default async function PinnedPosts() {
             </Badge>
           </div>
 
-          <h1 className="text-shadow leading-9  z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] text-2xl w-[60%] break-keep ">
+          <h1 className="text-shadow leading-9 mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] text-2xl w-[60%] break-keep ">
             {data.post_title}
           </h1>
-          <p className="text-sm leading-6 z-10  line-clamp-2 max-w-[300px] opacity-90">
+          <p className="text-sm leading-6 z-10 mt-5 line-clamp-2 max-w-[300px] opacity-90 dark:text-[#cccccc]">
             {data.post_description}
           </p>
 

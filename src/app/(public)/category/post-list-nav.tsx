@@ -45,10 +45,6 @@ export default async function PostListNav({
 
   return (
     <>
-      {/* <div className="grid grid-cols-[auto_1fr] items-center gap-5  mb-5">
-        <span className="text-md font-Poppins font-extrabold">label</span>
-        <span className="border-b border-foreground/40 w-[100px]"></span>
-      </div> */}
       <section className="w-full gap-3 flex flex-wrap mb-6 ">
         <Button variant={"outline"} asChild className={activeStyle()}>
           <Link href={`/category/${curCategory}`}>

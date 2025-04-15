@@ -21,17 +21,23 @@ import { blogSubGroup, categorySchema } from "@/db/schema/category";
 import { commentSchema } from "@/db/schema/comments";
 import { REVALIDATE } from "@/type/constants";
 import { WithTransaction } from "@/util/withTransaction";
-import { and, desc, eq, ilike, sql } from "drizzle-orm";
+import { and, desc, eq, ilike, lt, sql } from "drizzle-orm";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const url = new URL(req.url);
-  const group = url.searchParams.get("group");
-  const category = url.searchParams.get("category");
-  const searchKeyword = url.searchParams.get("keyword");
+  const qs = req.nextUrl.searchParams;
+  const group = qs.get("group");
+  const category = qs.get("category");
+  const searchKeyword = qs.get("keyword");
 
   const session = await auth();
+
+  const cursorQuery = qs.get("cursor");
+  const cursor = cursorQuery ? Number(cursorQuery) : undefined;
+
+  const limitQuery = qs.get("limit");
+  const limit = limitQuery ? Number(limitQuery) : 10; // 기본값 10
 
   // where..
   const whereQuery = and(
@@ -44,7 +50,9 @@ export async function GET(req: NextRequest) {
     searchKeyword
       ? ilike(blogMetaSchema.post_title, `%${searchKeyword}%`)
       : undefined,
-    session ? undefined : eq(blogMetaSchema.view, true)
+    // session 있으면 비밀글도 가져오기
+    !!session ? undefined : eq(blogMetaSchema.view, true),
+    !!cursor ? lt(blogMetaSchema.post_id, cursor) : undefined
   );
 
   const rows = await db
@@ -71,18 +79,17 @@ export async function GET(req: NextRequest) {
       categorySchema.group_id
     )
     .orderBy(desc(blogMetaSchema.post_id))
-    .limit(10)
-    .offset(0);
+    .limit(limit + 1);
 
-  const flatRows = rows.map(
-    ({ blog_metadata, blog_sub_group, comment_count }) => {
+  const flatRows = rows
+    .slice(0, limit)
+    .map(({ blog_metadata, blog_sub_group, comment_count }) => {
       return {
         ...blog_metadata,
         sub_group_name: blog_sub_group.sub_group_name,
         comment_count: +comment_count,
       };
-    }
-  );
+    });
 
   let searchCnt = 0;
   if (!!searchKeyword) {
@@ -99,10 +106,17 @@ export async function GET(req: NextRequest) {
     searchCnt = rows.count;
   }
 
-  return NextResponse.json({
-    success: true,
-    result: !!searchKeyword ? [...flatRows, +searchCnt] : flatRows,
-  });
+  return NextResponse.json(
+    {
+      success: true,
+      result: {
+        list: flatRows,
+        isNextPage: rows.length > limit,
+        ...(!!searchKeyword && { total: searchCnt }),
+      },
+    },
+    { status: 200 }
+  );
 }
 
 export async function POST(req: NextRequest) {
