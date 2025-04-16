@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { db } from "@/db/db";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
+import { pinnedPostSchema } from "@/db/schema/post/pinned-post";
 import { REVALIDATE } from "@/type/constants";
 import { apiHandler } from "@/util/api-hanlder";
 import { eq } from "drizzle-orm";
@@ -26,10 +27,16 @@ export async function PATCH(
       .where(eq(blogMetaSchema.post_id, +id))
       .returning({ view: blogMetaSchema.view });
 
-    revalidateTag(`${REVALIDATE.BLOG.DETAIL}:${id}`);
-    revalidateTag(REVALIDATE.BLOG.LIST);
-    revalidateTag(REVALIDATE.BLOG.GROUPS);
+    if (!body.view && body.pinnedId) {
+      await db
+        .delete(pinnedPostSchema)
+        .where(eq(pinnedPostSchema.id, body.pinnedId));
+      revalidateTag(REVALIDATE.PINNED_POST); // Pin 했던거면 풀기
+    }
 
+    revalidateTag(`${REVALIDATE.BLOG.DETAIL}:${id}`); //해당 Post
+    revalidateTag(REVALIDATE.BLOG.LIST); //리스트
+    revalidateTag(REVALIDATE.BLOG.GROUPS); // 카테고리
     return test;
   });
 }

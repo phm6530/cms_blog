@@ -17,9 +17,13 @@ const viewSchema = z.object({
 export default function PostViewHandler({
   postId,
   defaultView,
+  pinId,
+  setPendingHandler,
 }: {
   postId: number;
   defaultView: boolean;
+  pinId: number | null;
+  setPendingHandler: (e: boolean) => void;
 }) {
   const queryClient = useQueryClient();
 
@@ -31,7 +35,14 @@ export default function PostViewHandler({
   });
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async (data: z.infer<typeof viewSchema>) => {
+    /**
+     *
+     * @param data Pin Id 존재하면 고정되어있는 콘텐츠임
+     * @returns
+     */
+    mutationFn: async (
+      data: z.infer<typeof viewSchema> & { pinnedId: number | null }
+    ) => {
       return await withClientFetch<{ success: boolean }>({
         endPoint: `api/admin/post/view/${postId}`,
         requireAuth: true,
@@ -41,10 +52,10 @@ export default function PostViewHandler({
         body: data,
       });
     },
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: async () => {
       toast.success("변경되었습니다.");
-      queryClient.invalidateQueries({
+      setPendingHandler(false);
+      await queryClient.invalidateQueries({
         queryKey: [REVALIDATE.BLOG.LIST],
       });
     },
@@ -58,8 +69,16 @@ export default function PostViewHandler({
 
       if (!isValid) return false;
 
-      const result = await mutateAsync({ view: parsed });
-      console.log(result);
+      if (
+        !!pinId &&
+        !confirm(
+          "고정 되어있는 POST를 미 공개 처리 할 경우 고정콘텐츠가 해제됩니다."
+        )
+      ) {
+        return false;
+      }
+      setPendingHandler(true);
+      const result = await mutateAsync({ view: parsed, pinnedId: pinId });
       return result.success;
     } catch (err: any) {
       void err;

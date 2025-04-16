@@ -11,3 +11,16 @@ export type PostItemModel = {
   view: boolean;
   comment_count: number;
 };
+
+export type AdminPostItemModel = PostItemModel & {
+  pin: {
+    is_pinned: boolean;
+    pin_id: number | null;
+  };
+};
+
+export type PinnedPostModel = PostItemModel & {
+  id: number;
+  order: number;
+  active: boolean;
+};

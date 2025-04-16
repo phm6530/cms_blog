@@ -1,44 +1,92 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import LoadingSpinerV2 from "@/components/ui/loading-spinner-v2";
 import useThrottling from "@/hook/useThrottling";
 import { cn } from "@/lib/utils";
-import { HTTP_METHOD } from "@/type/constants";
+import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import withClientFetch from "@/util/withClientFetch";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function PostPinnedHandler({
+  pin_id,
   post_id,
   view,
+  isPending: viewPending,
+  is_pinned,
 }: {
+  pin_id: number | null;
   post_id: number;
   view: boolean;
+  isPending: boolean;
+  is_pinned: boolean;
 }) {
   const { throttle } = useThrottling();
+  //옵티미스틱 용으로
+  const [opVal, setOpval] = useState(is_pinned);
+  const queryClient = useQueryClient();
 
-  const { mutate } = useMutation({
-    mutationFn: async (post_id: number) => {
+  const { mutate, isPending } = useMutation<
+    { post_id: number; toggleType: "on" | "off"; pin_id?: number }, // Input
+    Error, // Error 타입
+    { post_id: number; toggleType: "on" | "off"; pin_id?: number } // Variables 타입
+  >({
+    mutationFn: async ({ post_id, toggleType, pin_id }) => {
+      let baseUrl = `api/admin/post/pinned`;
+
+      const body = toggleType === "off" ? { pin_id } : { post_id };
+
+      if (toggleType === "off") {
+        if (!pin_id) {
+          throw new Error("잘못된 요청입니다.");
+        }
+        baseUrl += `/${pin_id}`;
+      }
+
       return await withClientFetch({
-        endPoint: "api/admin/post/pinned",
+        endPoint: baseUrl,
         options: {
-          method: HTTP_METHOD.POST,
+          method: toggleType === "on" ? HTTP_METHOD.POST : HTTP_METHOD.DELETE,
         },
         requireAuth: true,
-        body: { post_id },
+        body,
+      });
+    },
+    onSuccess: () => {
+      toast.success(!opVal ? "설정 되었습니다." : "해제 되었습니다.");
+      setOpval((prev) => !prev);
+      queryClient.invalidateQueries({
+        queryKey: [REVALIDATE.BLOG.LIST],
       });
     },
   });
+
+  useEffect(() => {
+    setOpval(is_pinned);
+  }, [is_pinned]);
 
   return (
     <>
       <Button
         variant={"outline"}
+        disabled={isPending || viewPending}
         className={cn(
           "text-xs opacity-50",
-          view ? "opacity-100" : "bg-transparent!"
+          view ? "opacity-100" : "bg-transparent! cursor-no-drop"
         )}
-        onClick={() => throttle(async () => mutate(post_id), 1500)}
+        onClick={() =>
+          throttle(async () => {
+            if (!view) return;
+            mutate({
+              pin_id: pin_id ?? undefined,
+              post_id,
+              toggleType: opVal ? "off" : "on",
+            });
+          }, 1500)
+        }
       >
-        고정
+        {isPending ? <LoadingSpinerV2 /> : opVal ? "고정 해제" : "고정"}
       </Button>
     </>
   );

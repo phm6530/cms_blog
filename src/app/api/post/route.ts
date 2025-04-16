@@ -19,6 +19,7 @@ import { blogContentsSchema } from "@/db/schema/blog-contents";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
 import { blogSubGroup, categorySchema } from "@/db/schema/category";
 import { commentSchema } from "@/db/schema/comments";
+import { pinnedPostSchema } from "@/db/schema/post/pinned-post";
 import { REVALIDATE } from "@/type/constants";
 import { WithTransaction } from "@/util/withTransaction";
 import { and, desc, eq, ilike, lt, sql } from "drizzle-orm";
@@ -61,6 +62,13 @@ export async function GET(req: NextRequest) {
       blog_sub_group: blogSubGroup,
       blog_category: categorySchema,
       comment_count: sql<number>`COUNT(${commentSchema.id})`.as("comment_cnt"),
+      ...(!!session?.user && {
+        is_pinned:
+          sql<boolean>`CASE WHEN ${pinnedPostSchema.post_id} IS NOT NULL THEN true ELSE false END`.as(
+            "is_pinned"
+          ),
+        pin_id: pinnedPostSchema.id,
+      }),
     })
     .from(blogMetaSchema)
     .innerJoin(
@@ -72,24 +80,37 @@ export async function GET(req: NextRequest) {
       categorySchema,
       eq(categorySchema.group_id, blogSubGroup.group_id)
     )
+    .leftJoin(
+      pinnedPostSchema,
+      eq(pinnedPostSchema.post_id, blogMetaSchema.post_id)
+    )
     .where(whereQuery)
     .groupBy(
       blogMetaSchema.post_id,
       blogSubGroup.sub_group_id,
-      categorySchema.group_id
+      categorySchema.group_id,
+      ...(!!session?.user
+        ? [pinnedPostSchema.post_id, pinnedPostSchema.id]
+        : [])
     )
     .orderBy(desc(blogMetaSchema.post_id))
     .limit(limit + 1);
 
   const flatRows = rows
     .slice(0, limit)
-    .map(({ blog_metadata, blog_sub_group, comment_count }) => {
-      return {
-        ...blog_metadata,
-        sub_group_name: blog_sub_group.sub_group_name,
-        comment_count: +comment_count,
-      };
-    });
+    .map(
+      ({ blog_metadata, blog_sub_group, comment_count, is_pinned, pin_id }) => {
+        return {
+          ...blog_metadata,
+          sub_group_name: blog_sub_group.sub_group_name,
+          comment_count: +comment_count,
+          pin: {
+            is_pinned,
+            pin_id,
+          },
+        };
+      }
+    );
 
   let searchCnt = 0;
   if (!!searchKeyword) {

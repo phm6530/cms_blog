@@ -1,17 +1,14 @@
 "use client";
 import { REVALIDATE } from "@/type/constants";
-import { PostItemModel } from "@/type/post.type";
+import { AdminPostItemModel } from "@/type/post.type";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import PostListItem from "../components/post-list-item";
-import { useState } from "react";
 import withClientFetch from "@/util/withClientFetch";
 import SearchInput from "@/components/ui/search-input";
 
 export default function Page() {
   const isSubGroup = "all";
   const category = "all";
-
-  const [page, setPage] = useState<number>(1);
 
   const { data, fetchNextPage, isFetching, isPending } = useInfiniteQuery({
     queryKey: [REVALIDATE.BLOG.LIST, category, isSubGroup],
@@ -25,7 +22,7 @@ export default function Page() {
       const response = await withClientFetch<{
         success: boolean;
         result: {
-          list: PostItemModel[];
+          list: Array<AdminPostItemModel>;
           isNextPage: boolean;
         };
       }>({
@@ -42,6 +39,7 @@ export default function Page() {
       }
     },
     initialPageParam: 0,
+    staleTime: 10000,
   });
 
   if (isPending) {

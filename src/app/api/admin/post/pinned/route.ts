@@ -1,8 +1,10 @@
 import { db } from "@/db/db";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
 import { pinnedPostSchema } from "@/db/schema/post/pinned-post";
+import { REVALIDATE } from "@/type/constants";
 import { apiHandler } from "@/util/api-hanlder";
 import { eq, sql } from "drizzle-orm";
+import { revalidateTag } from "next/cache";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -32,16 +34,20 @@ export async function POST(req: NextRequest) {
       throw new Error("이미 고정된 게시물입니다.");
     }
 
+    const [rows] = await db
+      .select({ cnt: sql<number>`COUNT(*)` })
+      .from(pinnedPostSchema);
+
+    if (Number(rows.cnt) >= 5) {
+      throw new Error("고정 콘텐츠는 최대 5개까지만 등록할 수 있습니다.");
+    }
+
     // 3. 현재 고정 콘텐츠 개수 확인
     const curOrderResult = await db
       .select({ maxOrder: sql<number>`MAX(${pinnedPostSchema.order})` })
       .from(pinnedPostSchema);
 
     const maxOrder = curOrderResult?.[0]?.maxOrder ?? 0;
-
-    if (Number(maxOrder) >= 3) {
-      throw new Error("고정 콘텐츠는 최대 3개까지만 등록할 수 있습니다.");
-    }
 
     // 4. 고정 콘텐츠 삽입
     const inserted = await db.insert(pinnedPostSchema).values({
@@ -50,6 +56,8 @@ export async function POST(req: NextRequest) {
       order: Number(maxOrder) + 1,
     });
 
+    // 초기화
+    revalidateTag(REVALIDATE.PINNED_POST);
     return inserted;
   });
 }

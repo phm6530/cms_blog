@@ -1,9 +1,11 @@
-import { PostItemModel } from "@/type/post.type";
+"use client";
+import { AdminPostItemModel } from "@/type/post.type";
 import PostViewHandler from "../post/post-view-handler";
 import { Badge } from "@/components/ui/badge";
 import { DateUtils } from "@/util/date-uill";
 import Link from "next/link";
 import PostPinnedHandler from "../post/post-pinned-hanlder";
+import { useState } from "react";
 
 export default function PostListItem({
   post_id,
@@ -11,7 +13,16 @@ export default function PostListItem({
   view,
   sub_group_name,
   created_at,
-}: PostItemModel) {
+  pin,
+}: AdminPostItemModel) {
+  const [isPending, setPending] = useState<boolean>(false);
+
+  const setPendingHandler = (e: boolean) => {
+    setPending(e);
+  };
+
+  console.log(isPending);
+
   return (
     <article className="flex p-4 hover:border-indigo-400 items-center justify-between">
       <div className="text-sm flex flex-col gap-1">
@@ -27,8 +38,19 @@ export default function PostListItem({
         </div>
       </div>
       <div className="wrapper flex gap-2">
-        <PostPinnedHandler post_id={post_id} view={view} />
-        <PostViewHandler defaultView={view} postId={post_id} />
+        <PostPinnedHandler
+          pin_id={pin.pin_id}
+          post_id={post_id}
+          view={view}
+          is_pinned={pin.is_pinned}
+          isPending={isPending}
+        />
+        <PostViewHandler
+          defaultView={view}
+          postId={post_id}
+          pinId={pin.pin_id}
+          setPendingHandler={setPendingHandler}
+        />
       </div>
     </article>
   );

@@ -55,7 +55,7 @@ export default function PostLikeHandler({
         setIsLike(false);
       }
       setIsLike(prevIsLike.current);
-      toast.error("좋아요 처리 실패");
+      toast.error("LIKE 처리 실패");
     },
   });
 

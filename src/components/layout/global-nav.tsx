@@ -18,6 +18,7 @@ export default async function GlobalNav() {
       },
     },
   });
+
   const session = await auth();
   if (!response.success) {
     notFound();

@@ -17,6 +17,7 @@ export const REVALIDATE = {
   COMMENT: "COMMENT",
   GUEST_BOARD: GUEST_BOARD,
   WEIGET: WEIGET,
+  PINNED_POST: "PIINED_POST",
 };
 
 export const ENV = {

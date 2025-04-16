@@ -21,6 +21,7 @@ export default async function RecentPost() {
       },
     },
   });
+
   if (!success) {
     throw new Error("에러...");
   }
