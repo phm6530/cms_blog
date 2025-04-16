@@ -49,16 +49,20 @@ export default function PostHandler({
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 mt-3.5">
       {session.data?.user && (
         <>
           <ConfirmButton title={"삭제하시겠습니까?"} cb={onDeleteHandler}>
-            <Button className="cursor-pointer" variant={"outline"}>
+            <Button className="text-xs cursor-pointer" variant={"outline"}>
               삭제
             </Button>
           </ConfirmButton>
 
-          <Button asChild className="cursor-pointer" variant={"outline"}>
+          <Button
+            asChild
+            className="text-xs cursor-pointer"
+            variant={"outline"}
+          >
             <Link href={`/write?mode=edit&postId=${postId}`}>수정</Link>
           </Button>
         </>

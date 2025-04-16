@@ -11,25 +11,49 @@ import {
 import { Button } from "./button";
 import { GlassWaterIcon, Upload } from "lucide-react";
 import { ChangeEvent, useRef } from "react";
-import { imgUploader } from "@/util/uploader-handler";
 import { toast } from "sonner";
 import { useFormContext } from "react-hook-form";
+import { wirtePostSchema } from "@/app/(protected)/write/schema";
+import { z } from "zod";
+import { uploadImageToS3 } from "@/util/s3-uploader";
 
 export function CheckField() {
   const ref = useRef<HTMLInputElement | null>(null);
-  const { control, watch } = useFormContext();
+  const { control, watch, setValue } =
+    useFormContext<z.infer<typeof wirtePostSchema>>();
+
+  // imgKey..
+  const imgKey = watch("imgKey");
+  console.log(watch());
 
   const thumbNailUPloader = async (event: ChangeEvent<HTMLInputElement>) => {
     try {
-      if (!event.target.files) {
-        throw new Error(""); //에러만 전달
+      const file = event.target.files?.[0];
+      if (!file) {
+        throw new Error("파일이 없습니다."); //에러만 전달
       }
+      const form = new FormData();
+      form.append("file", file);
+
+      const imgPath = await uploadImageToS3(form, imgKey);
+
+      if (!imgPath.success) {
+        throw new Error(imgPath.message);
+      }
+
       // const thumbUrl = await imgUploader({
-      //   event,
-      //   path: "thumbnail",
-      //   filename: `${watch("postGroup")}`,
+      //   event: file,
+      //   path: "post",
+      //   folderName: watch("imgKey"),
+      //   filename: new Date().toISOString(),
       // });
-      // console.log(thumbUrl);
+
+      // const imgPath = `${thumbUrl?.split("public/blog/")[1]}`;
+      if (imgPath.success && imgPath.url) {
+        setValue("thumbnail", imgPath.url);
+      }
+
+      toast.success("배너가 업로드 되었습니다.");
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message);
@@ -60,6 +84,7 @@ export function CheckField() {
               <Button variant={"outline"} className="text-xs cursor-pointer">
                 기본 썸네일 보기
               </Button>{" "}
+              {/* hidden - file */}
               <input
                 type="file"
                 name="file"

@@ -42,6 +42,7 @@ export async function PUT(
           img_key: body.imgKey,
           update_at: new Date(),
           view: body.view,
+          thumbnail_url: body.thumbnail,
         })
         .where(eq(blogMetaSchema.post_id, +id));
 

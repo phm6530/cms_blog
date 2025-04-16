@@ -31,7 +31,7 @@ export default async function RecentPost() {
   return (
     <div className=" flex flex-col ">
       <div className=" items-center gap-2 flex border-b pb-2 ">
-        <h3 className="font-bold">POSTS </h3>
+        <h3>최신 글</h3>
       </div>
 
       <div

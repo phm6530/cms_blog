@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import withClientFetch from "@/util/withClientFetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Check, Pin } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -72,8 +73,9 @@ export default function PostPinnedHandler({
         variant={"outline"}
         disabled={isPending || viewPending}
         className={cn(
-          "text-xs opacity-50",
-          view ? "opacity-100" : "bg-transparent! cursor-no-drop"
+          "text-xs opacity-50 min-w-[100px] justify-between",
+          view ? "opacity-100" : "bg-transparent! cursor-no-drop",
+          opVal && "border-indigo-400!"
         )}
         onClick={() =>
           throttle(async () => {
@@ -86,6 +88,7 @@ export default function PostPinnedHandler({
           }, 1500)
         }
       >
+        <Pin className={cn(opVal ? "text-indigo-400!" : "opacity-20")} />
         {isPending ? <LoadingSpinerV2 /> : opVal ? "고정 해제" : "고정"}
       </Button>
     </>

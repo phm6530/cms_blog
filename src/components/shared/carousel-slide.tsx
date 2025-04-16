@@ -38,7 +38,6 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
     <>
       <Carousel
         opts={{
-          align: "start",
           loop: true,
         }}
         setApi={setApi}
@@ -110,8 +109,8 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
             <div
               key={`nav-${idx}`}
               className={cn(
-                "w-5 h-2 rounded-full bg-secondary cursor-pointer",
-                idx + 1 === current && "bg-red-400"
+                " rounded-full bg-muted-foreground/40 cursor-pointer size-2 transition-all",
+                idx + 1 === current && "bg-violet-400 h-2 w-5"
               )}
               onClick={() => {
                 api?.scrollTo(idx);

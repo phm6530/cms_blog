@@ -29,7 +29,7 @@ export const PostItem = forwardRef<
     return (
       <div
         ref={ref}
-        className="animate-fadein group cursor-pointer grid grid-cols-[4fr_1fr] gap-5 items-center py-3 border-b  last:border-b-0"
+        className="transition-all hover:pl-5 hover:border-l-5 border-l-indigo-500 animate-fadein group cursor-pointer grid grid-cols-[4fr_1fr] gap-5 items-center py-3 border-b  last:border-b-0"
       >
         <div className="flex flex-col gap-2 py-3">
           <div className="flex gap-3 mb-2">

@@ -75,6 +75,8 @@ export default function WirteForm({
     resolver: zodResolver(wirtePostSchema),
   });
 
+  console.log(form.watch());
+
   // mutate
   const { mutate } = useMutation({
     mutationFn: async (

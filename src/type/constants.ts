@@ -22,6 +22,7 @@ export const REVALIDATE = {
 
 export const ENV = {
   IMAGE_URL: process.env.IMAGE_URL,
+  SUPABASE_IMAGE_URL: process.env.SUPABASE_IMAGE_URL,
 };
 
 export enum QUERYKEY {

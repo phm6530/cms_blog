@@ -8,8 +8,9 @@ export default function Home() {
     <>
       <div className="col-span-2  col-start-2 flex flex-col gap-10 w-full">
         {/* 고정 */}
-        <PinnedPosts />
+
         {/* 최신글 */}
+        <PinnedPosts />
         <RecentPost />
         {/* 방명록 */}
         <div className="grid grid-cols-2 gap-10">
