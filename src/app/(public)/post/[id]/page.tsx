@@ -147,6 +147,7 @@ export default async function PostDetail({
         <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt} />
         <PostHandler postId={id} category={category.group_name} />
       </section>
+
       {/* 댓글 Section */}
       <CommentSection postId={id} />
       <Suspense fallback={<>loading................</>}>

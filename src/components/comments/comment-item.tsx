@@ -2,7 +2,7 @@
 import { Button } from "../ui/button";
 import CommentForm from "./comment-form";
 import useStore from "@/context/store";
-import { Reply, X } from "lucide-react";
+import { ChevronUp, Reply, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ProfileUser from "../ui/profile-user";
 import { useSession } from "next-auth/react";
@@ -15,6 +15,7 @@ import { HTTP_METHOD } from "@/type/constants";
 import { useForm } from "react-hook-form";
 import InputPassword from "../ui/password-input";
 import { CommentItemModel } from "@/lib/comment-bff";
+import { useLayoutEffect, useRef, useState } from "react";
 
 export default function CommentItem({
   id: commentId,
@@ -28,6 +29,18 @@ export default function CommentItem({
 }: CommentItemModel & { deps: number }) {
   const { passwordFomView, setPasswordFormId, commentsViewId, toggleFormView } =
     useStore(); // Zustand로 공유
+  const ref = useRef<HTMLInputElement>(null);
+  const [lineClimp, setLineClimp] = useState<boolean>(false);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const oneLineHight = 34;
+    const height = el.scrollHeight;
+    if (height >= oneLineHight * 3) {
+      setLineClimp(true);
+    }
+  }, [ref]);
 
   const session = useSession();
   const router = useRouter();
@@ -89,10 +102,25 @@ export default function CommentItem({
           createAt={created_at}
         />
         <div className="pl-0">
-          <div className="text-sm py-1 text-secondary-foreground whitespace-pre-wrap border-input border-l pl-3 font-pretendard leading-6">
+          <div
+            ref={ref}
+            className={cn(
+              "text-sm py-1 text-secondary-foreground whitespace-pre-wrap border-input border-l pl-3 font-pretendard leading-6",
+              lineClimp && "line-clamp-3"
+            )}
+          >
             {comment}
-          </div>
-          <div className="flex gap-2 items-center text-xs [&>span:cursor-pointer]">
+          </div>{" "}
+          {lineClimp && (
+            <div
+              className="text-xs p-1 mt-3 items-center flex gap-1 cursor-pointer text-violet-400"
+              onClick={() => setLineClimp(false)}
+            >
+              <ChevronUp size={13} />
+              내용 펼치기
+            </div>
+          )}
+          <div className="flex gap-2 pt-4 items-center text-xs [&>span:cursor-pointer]">
             <Button
               className=" cursor-pointer text-xs p-0 text-muted-foreground"
               variant={"link"}
