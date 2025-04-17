@@ -26,7 +26,8 @@ export default function CommentItem({
   parent_id,
   author,
   post_id,
-}: CommentItemModel & { deps: number }) {
+  className,
+}: CommentItemModel & { deps: number; className?: string }) {
   const { passwordFomView, setPasswordFormId, commentsViewId, toggleFormView } =
     useStore(); // Zustand로 공유
   const ref = useRef<HTMLInputElement>(null);
@@ -79,13 +80,14 @@ export default function CommentItem({
     mutate(data);
   };
 
-  const isReply = deps > 0;
+  const isReply = (deps > 0) as any;
 
   return (
     <article
       className={cn(
         "flex gap-2 justify-start  animate-wiggle",
-        deps === 0 && "mb-2 border-b last:border-b-0 py-5 "
+        deps === 0 && "mb-2 border-b last:border-b-0 py-5 ",
+        className
       )}
       style={{ marginLeft: `${!!isReply ? 20 : 0}px` }}
     >
@@ -101,11 +103,11 @@ export default function CommentItem({
           role={author.role}
           createAt={created_at}
         />
-        <div className="pl-0">
+        <div className="pl-0 py-2">
           <div
             ref={ref}
             className={cn(
-              "text-sm py-1 text-secondary-foreground whitespace-pre-wrap border-input border-l pl-3 font-pretendard leading-6",
+              "text-sm  text-secondary-foreground whitespace-pre-wrap border-input border-l pl-3 font-pretendard leading-6",
               lineClimp && "line-clamp-3"
             )}
           >

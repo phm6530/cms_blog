@@ -1,12 +1,71 @@
 import { auth } from "@/auth";
 import { db } from "@/db/db";
+import { usersTable } from "@/db/schema";
 import { commentSchema } from "@/db/schema/comments";
+import { guestSchema } from "@/db/schema/guest";
+import { mapToCommentModel } from "@/lib/comment-bff";
 import { ComemntCreateService } from "@/lib/comment-create";
+import { createCommentTree } from "@/lib/comment-mapping";
 import { commentVerfiyDelete } from "@/lib/comment-verify-delete";
 import { REVALIDATE } from "@/type/constants";
-import { eq } from "drizzle-orm";
-import { revalidateTag } from "next/cache";
+import { apiHandler } from "@/util/api-hanlder";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  const qs = req.nextUrl.searchParams;
+  const { id: postId } = await context.params;
+
+  // 기본 10개 설정
+  const limit = Number(qs.get("limit")) ?? 10;
+
+  return await apiHandler(async () => {
+    if (!postId || isNaN(limit)) {
+      throw new Error("잘못된 요청입니다.");
+    }
+
+    const rows = await db
+      .select({
+        id: commentSchema.id,
+        post_id: commentSchema.post_id,
+        comment: commentSchema.comment,
+        created_at: commentSchema.createdAt,
+        parent_id: commentSchema.parent_id,
+
+        guest_nickname: guestSchema.nickname,
+        guest_id: guestSchema.id,
+        admin_email: usersTable.email,
+        admin_nickname: usersTable.nickname,
+        author_role: commentSchema.author_type,
+        profile_img: usersTable.profile_img,
+      })
+      .from(commentSchema)
+      .leftJoin(
+        guestSchema,
+        and(
+          eq(commentSchema.author_id, guestSchema.id),
+          eq(commentSchema.author_type, "guest")
+        )
+      )
+      .leftJoin(
+        usersTable,
+        and(
+          eq(commentSchema.author_id, usersTable.id),
+          inArray(commentSchema.author_type, ["admin", "super"])
+        )
+      )
+      .where(eq(commentSchema.post_id, parseInt(postId, 10)))
+      .orderBy(asc(commentSchema.createdAt));
+    const commentList = mapToCommentModel(rows);
+    revalidatePath(`/category/blog`);
+
+    return { success: true, result: createCommentTree(commentList) };
+  });
+}
 
 // Delete
 export async function DELETE(
