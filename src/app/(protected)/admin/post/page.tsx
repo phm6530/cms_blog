@@ -11,7 +11,7 @@ export default function Page() {
   const category = "all";
 
   const { data, fetchNextPage, isFetching, isPending } = useInfiniteQuery({
-    queryKey: [REVALIDATE.BLOG.LIST, category, isSubGroup],
+    queryKey: [REVALIDATE.POST.LIST, category, isSubGroup],
     queryFn: async ({ pageParam }) => {
       const limit = 10;
       const cursor = pageParam !== 0 ? pageParam : null; // 일단 초기 0, APi 변경후에 받을예정임

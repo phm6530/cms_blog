@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "5mb", // 업로드 5MB 로
+    },
+  },
   images: {
     domains: [
       "www.h-creations.com",

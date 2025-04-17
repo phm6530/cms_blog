@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { CheckField } from "@/components/ui/check-field";
 import { CategoryModel } from "@/type/blog-group";
 import { TipTapEditor } from "@squirrel309/my-testcounter";
-import { imgUploader } from "@/util/uploader-handler";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -21,13 +20,15 @@ import PostTitleField from "@/components/shared/post-title-Field";
 import { useMutation } from "@tanstack/react-query";
 import withClientFetch from "@/util/withClientFetch";
 import useThrottling from "@/hook/useThrottling";
-import { HTTP_METHOD } from "@/type/constants";
+import { ENV, HTTP_METHOD } from "@/type/constants";
 import { v4 as uuidv4 } from "uuid";
 import transformHtmlToPlainText from "@/util/domParse";
 import { useRouter } from "next/navigation";
 import { BlogDetailResponse } from "@/type/blog.type";
 import WirteSelectCategory from "./write-select-category";
 import SelectField from "@/components/ui/select-field";
+import { uploadImageToS3 } from "@/util/s3-uploader";
+import { HtmlContentNormalizer } from "@/util/baseurl-slice";
 
 const defaultValues = {
   title: "",
@@ -75,8 +76,6 @@ export default function WirteForm({
     resolver: zodResolver(wirtePostSchema),
   });
 
-  console.log(form.watch());
-
   // mutate
   const { mutate } = useMutation({
     mutationFn: async (
@@ -109,6 +108,8 @@ export default function WirteForm({
       ...data,
       description: transformHtmlToPlainText({ html: data.contents }), // 추출해서 descritpion화 시키기
     };
+
+    reqData.contents = HtmlContentNormalizer.getPost(reqData.contents);
     throttle(async () => mutate(reqData), 1000);
   };
 
@@ -147,14 +148,14 @@ export default function WirteForm({
                     {...field}
                     content={field.value}
                     uploadCallback={async (event: File) => {
-                      return (
-                        (await imgUploader({
-                          event,
-                          path: "post",
-                          folderName: imgKey,
-                          filename: `${new Date().toISOString()}`,
-                        })) ?? null
-                      );
+                      const form = new FormData();
+                      form.append("file", event);
+                      const imgPath = await uploadImageToS3(form, imgKey);
+
+                      if (!imgPath.success) {
+                        throw new Error(imgPath.message);
+                      }
+                      return `${ENV.IMAGE_URL_PUBLIC}${imgPath.url}`;
                     }}
                   />
                 </FormControl>
@@ -189,7 +190,7 @@ export default function WirteForm({
           type={"submit"}
           onClick={form.handleSubmit(onSubmitHandler)}
         >
-          {!!editData ? "수정하기" : "제출"}
+          {!!editData ? "수정하기" : "포스팅 하기"}
         </Button>
       </div>
     </Form>

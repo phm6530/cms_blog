@@ -34,9 +34,9 @@ export async function PATCH(
       revalidateTag(REVALIDATE.PINNED_POST); // Pin 했던거면 풀기
     }
 
-    revalidateTag(`${REVALIDATE.BLOG.DETAIL}:${id}`); //해당 Post
-    revalidateTag(REVALIDATE.BLOG.LIST); //리스트
-    revalidateTag(REVALIDATE.BLOG.GROUPS); // 카테고리
+    revalidateTag(`${REVALIDATE.POST.DETAIL}:${id}`); //해당 Post
+    revalidateTag(REVALIDATE.POST.LIST); //리스트
+    revalidateTag(REVALIDATE.POST.CATEGORY); // 카테고리
     return test;
   });
 }

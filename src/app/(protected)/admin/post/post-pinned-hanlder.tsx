@@ -58,7 +58,7 @@ export default function PostPinnedHandler({
       toast.success(!opVal ? "설정 되었습니다." : "해제 되었습니다.");
       setOpval((prev) => !prev);
       queryClient.invalidateQueries({
-        queryKey: [REVALIDATE.BLOG.LIST],
+        queryKey: [REVALIDATE.POST.LIST],
       });
     },
   });

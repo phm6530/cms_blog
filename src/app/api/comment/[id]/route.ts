@@ -38,7 +38,7 @@ export async function DELETE(
       .where(eq(commentSchema.id, Number(comment_id)));
 
     revalidateTag(`${REVALIDATE.COMMENT}:${post_id}`);
-    revalidateTag(REVALIDATE.BLOG.LIST);
+    revalidateTag(REVALIDATE.POST.LIST);
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {

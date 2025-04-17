@@ -15,6 +15,7 @@ import { Heart, MessageCircle } from "lucide-react";
 import { DateUtils } from "@/util/date-uill";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { ENV } from "@/type/constants";
 
 export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
   const [api, setApi] = React.useState<CarouselApi>();
@@ -90,7 +91,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
 
                 <div className="rounded-xl relative overflow-hidden aspect-[16/17]">
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${data.thumbnail_url}`}
+                    src={`${ENV.IMAGE_URL_PUBLIC}${data.thumbnail_url}`}
                     fill
                     alt=""
                     style={{ objectFit: "cover" }}

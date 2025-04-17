@@ -17,7 +17,7 @@ export default async function RecentPost() {
     options: {
       cache: "force-cache",
       next: {
-        tags: [REVALIDATE.BLOG.LIST, "all"],
+        tags: [REVALIDATE.POST.LIST, "all"],
       },
     },
   });

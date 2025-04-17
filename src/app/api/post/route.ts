@@ -22,8 +22,8 @@ import { commentSchema } from "@/db/schema/comments";
 import { pinnedPostSchema } from "@/db/schema/post/pinned-post";
 import { REVALIDATE } from "@/type/constants";
 import { WithTransaction } from "@/util/withTransaction";
-import { and, desc, eq, ilike, lt, sql } from "drizzle-orm";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { and, desc, eq, ilike, lt, not, sql } from "drizzle-orm";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -31,6 +31,7 @@ export async function GET(req: NextRequest) {
   const group = qs.get("group");
   const category = qs.get("category");
   const searchKeyword = qs.get("keyword");
+  const curPostId = qs.get("curPost"); //현재 보는 PostId
 
   const session = await auth();
 
@@ -53,7 +54,8 @@ export async function GET(req: NextRequest) {
       : undefined,
     // session 있으면 비밀글도 가져오기
     !!session ? undefined : eq(blogMetaSchema.view, true),
-    !!cursor ? lt(blogMetaSchema.post_id, cursor) : undefined
+    !!cursor ? lt(blogMetaSchema.post_id, cursor) : undefined,
+    !!curPostId ? not(eq(blogMetaSchema.post_id, +curPostId)) : undefined
   );
 
   const rows = await db
@@ -149,7 +151,7 @@ export async function POST(req: NextRequest) {
       throw new Error("권한이 없습니다.");
     }
 
-    const created_id = await WithTransaction.run(async (tx) => {
+    const resultTx = await WithTransaction.run(async (tx) => {
       const [user] = await tx
         .select()
         .from(usersTable)
@@ -169,23 +171,31 @@ export async function POST(req: NextRequest) {
           author_id: user.id,
           img_key: body.imgKey,
           view: body.view,
+          thumbnail_url: body.thumbnail,
         })
-        .returning({ id: blogMetaSchema.post_id });
+        .returning({
+          id: blogMetaSchema.post_id,
+          categoryName: blogMetaSchema.sub_group_id,
+        });
 
       await tx.insert(blogContentsSchema).values({
         post_id: +rows.id,
         contents: body.contents,
       });
 
-      return +rows.id;
+      return {
+        postId: +rows.id,
+        categoryName: rows.categoryName,
+      };
     });
-    revalidatePath("/category/blog");
-    revalidateTag(REVALIDATE.BLOG.LIST);
+
+    revalidateTag(REVALIDATE.POST.LIST);
+    revalidateTag(REVALIDATE.POST.CATEGORY);
 
     return NextResponse.json({
       success: true,
       result: {
-        postId: created_id,
+        postId: resultTx.postId,
       },
     });
   } catch (err) {

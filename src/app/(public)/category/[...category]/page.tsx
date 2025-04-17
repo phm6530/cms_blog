@@ -14,14 +14,14 @@ export default function CategoryPage() {
   const { category: categoryList }: { category: string[] } = useParams();
   const [category, group] = categoryList;
   const isSubGroup = group ?? "all"; // 없으면 전체 다 가져오기
-
+  console.log(`${category}:${isSubGroup}`);
   const ref = useRef<HTMLDivElement>(null);
 
   const { data, fetchNextPage, isFetching, isPending } = useInfiniteQuery<{
     list: PostItemModel[];
     isNextPage: boolean;
   }>({
-    queryKey: [REVALIDATE.BLOG.LIST, category, isSubGroup],
+    queryKey: [REVALIDATE.POST.LIST, category, isSubGroup],
     queryFn: async ({ pageParam }) => {
       const limit = 10;
       const cursor = pageParam !== 0 ? pageParam : null; // 일단 초기 0, APi 변경후에 받을예정임
@@ -37,7 +37,7 @@ export default function CategoryPage() {
         options: {
           cache: "force-cache",
           next: {
-            tags: [REVALIDATE.BLOG.LIST, category, isSubGroup],
+            tags: [REVALIDATE.POST.LIST, `list-${category}:${isSubGroup}`],
           },
         },
       });

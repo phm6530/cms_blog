@@ -41,7 +41,7 @@ export default function PinnedPage() {
       >({
         endPoint: `api/pinned`,
         options: {
-          cache: "no-store",
+          cache: "force-cache",
           next: {
             tags: [REVALIDATE.PINNED_POST, "pinneds"],
           },

@@ -17,7 +17,7 @@ export default function Keyword() {
     queryKey: [QUERYKEY.SEARCH, keyword],
     queryFn: async () => {
       const response = await withFetchRevaildationAction<SearchResult>({
-        endPoint: `api/blog?group=all&keyword=${decodeURIComponent(
+        endPoint: `api/post?group=all&keyword=${decodeURIComponent(
           keyword as string
         )}`,
       });

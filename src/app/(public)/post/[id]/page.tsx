@@ -28,6 +28,11 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import PostLikeHandler from "../post-like-hanlder";
 import SelectPage from "@/components/info-component/secrect-page";
 import { auth } from "@/auth";
+import { readingTImeKO } from "@/util/reading-timeKo";
+import { Scroll } from "lucide-react";
+import RelatedPosts from "../related-posts";
+import { Suspense } from "react";
+import { HtmlContentNormalizer } from "@/util/baseurl-slice";
 
 // export async function generateMetadata({
 //   params: { id },
@@ -66,11 +71,11 @@ export default async function PostDetail({
   const session = await auth();
 
   const data = await withFetchRevaildationAction<BlogDetailResponse>({
-    endPoint: `api/blog/${id}`,
+    endPoint: `api/post/${id}`,
     options: {
-      cache: "no-store",
+      cache: "force-cache",
       next: {
-        tags: [`${REVALIDATE.BLOG.DETAIL}:${id}`],
+        tags: [`${REVALIDATE.POST.DETAIL}:${id}`],
       },
     },
   });
@@ -110,6 +115,13 @@ export default async function PostDetail({
           <div className="text-xs text-muted-foreground">
             {DateUtils.dateFormatKR(blog_metadata.created_at, "YYYY. MM. DD")}
           </div>
+          <div className="flex gap-3 items-center">
+            <Scroll size={20} />{" "}
+            <span className="text-xs opacity-60">
+              {" "}
+              {readingTImeKO(blog_contents.contents)}분 이내 소요
+            </span>
+          </div>
         </div>
 
         {blog_metadata.thumbnail_url && (
@@ -127,21 +139,23 @@ export default async function PostDetail({
       </section>
 
       <section className="w-full overflow-hidden border-b pb-10">
-        <TipTapEditor mode="view" content={blog_contents.contents} />
-
-        {/* <div
-          className="tiptap ProseMirror" 
-          translate="no"
-          dangerouslySetInnerHTML={{ __html: blog_contents.contents }}
-        /> */}
-
-        {/* <div dangerouslySetInnerHTML={{ __html: blog_contents }} /> */}
+        {/* TipTap Editor - custom lib */}
+        <TipTapEditor
+          mode="view"
+          content={HtmlContentNormalizer.setImgUrl(blog_contents.contents)}
+        />
         <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt} />
         <PostHandler postId={id} category={category.group_name} />
       </section>
-
       {/* 댓글 Section */}
       <CommentSection postId={id} />
+      <Suspense fallback={<>loading................</>}>
+        <RelatedPosts
+          curPost={id}
+          categoryName={category.group_name}
+          subGroupName={blog_sub_group.sub_group_name}
+        />
+      </Suspense>
     </main>
   );
 }

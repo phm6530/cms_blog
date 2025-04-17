@@ -56,7 +56,12 @@ export function CheckField() {
       toast.success("배너가 업로드 되었습니다.");
     } catch (err) {
       if (err instanceof Error) {
-        toast.error(err.message);
+        toast.error(err.message, {
+          style: {
+            background: "#7f1d1d", // tailwind red-900
+            color: "#fef2f2", // 거의 흰색에 가까운 연핑 (가독성 높음)
+          },
+        });
       }
     }
   };

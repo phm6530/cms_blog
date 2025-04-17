@@ -56,7 +56,7 @@ export default function PostViewHandler({
       toast.success("변경되었습니다.");
       setPendingHandler(false);
       await queryClient.invalidateQueries({
-        queryKey: [REVALIDATE.BLOG.LIST],
+        queryKey: [REVALIDATE.POST.LIST],
       });
     },
   });

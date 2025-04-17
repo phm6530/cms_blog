@@ -16,15 +16,20 @@ export default async function Layout({
 
   return (
     <>
-      <PostListNav curCategory={category} selectGroup={group} />
+      <PostListNav
+        curCategory={decodeURIComponent(category)}
+        selectGroup={decodeURIComponent(group)}
+      />
 
       <div className="grid grid-cols-[auto_1fr] justify-between items-center gap-5 border-b pb-4 py-10">
         <div className="flex gap-2 items-end">
-          <span className="text-3xl font-Poppins">{category}</span>
+          <span className="text-3xl font-Poppins">
+            {decodeURIComponent(category)}
+          </span>
           {group && (
             <>
               <span className="opacity-30">/</span>
-              <span className="opacity-90"> {group}</span>
+              <span className="opacity-90"> {decodeURIComponent(group)}</span>
             </>
           )}
         </div>

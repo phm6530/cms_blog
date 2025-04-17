@@ -3,9 +3,9 @@
 import ConfirmButton from "@/components/shared/confirm-button";
 import { Button } from "@/components/ui/button";
 import useThrottling from "@/hook/useThrottling";
-import { HTTP_METHOD } from "@/type/constants";
+import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import withClientFetch from "@/util/withClientFetch";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,6 +20,7 @@ export default function PostHandler({
 }) {
   const router = useRouter();
   const session = useSession();
+  const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationFn: async () => {
@@ -32,13 +33,16 @@ export default function PostHandler({
         },
       });
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success("삭제되었습니다.", {
         style: {
           background: "#1e293b",
           color: "#38bdf8",
         },
       });
+      //삭제 후 리스트 초기화
+      await queryClient.invalidateQueries({ queryKey: [REVALIDATE.POST.LIST] });
+
       router.replace(`/category/${category}`);
     },
   });

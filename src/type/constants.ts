@@ -1,7 +1,7 @@
-export enum BLOG_TAGS {
-  LIST = "BLOG_LIST",
-  GROUPS = "BLOG_GROUPS",
-  DETAIL = "BLOG_DETAIL",
+export enum POST_KEY {
+  LIST = "POST_LIST",
+  CATEGORY = "POST_CATEGORY",
+  DETAIL = "POST_DETAIL",
 }
 
 export enum GUEST_BOARD {
@@ -13,7 +13,7 @@ export enum WEIGET {
 }
 
 export const REVALIDATE = {
-  BLOG: BLOG_TAGS,
+  POST: POST_KEY,
   COMMENT: "COMMENT",
   GUEST_BOARD: GUEST_BOARD,
   WEIGET: WEIGET,
@@ -22,6 +22,7 @@ export const REVALIDATE = {
 
 export const ENV = {
   IMAGE_URL: process.env.IMAGE_URL,
+  IMAGE_URL_PUBLIC: process.env.NEXT_PUBLIC_IMAGE_URL,
   SUPABASE_IMAGE_URL: process.env.SUPABASE_IMAGE_URL,
 };
 

@@ -29,7 +29,7 @@ export async function GET(
         }`,
       })
       .where(eq(blogMetaSchema.post_id, parseInt(id, 10)));
-    revalidateTag(`${REVALIDATE.BLOG.DETAIL}:${id}`);
+    revalidateTag(`${REVALIDATE.POST.DETAIL}:${id}`);
     return NextResponse.json({ message: "test..." });
   });
 }

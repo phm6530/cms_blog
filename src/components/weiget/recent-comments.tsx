@@ -13,7 +13,7 @@ export default async function RecentComment() {
   const response = await withFetchRevaildationAction<WeigetComemnt[]>({
     endPoint: `api/weiget/comment`,
     options: {
-      cache: "no-store",
+      cache: "force-cache",
       next: {
         tags: [REVALIDATE.WEIGET.COMMENT],
       },

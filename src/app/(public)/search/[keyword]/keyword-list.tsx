@@ -1,16 +1,16 @@
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import PostItem from "../../category/post-list-item";
-import { PostItemModel } from "../../blog/[group]/post-list";
 import { REVALIDATE } from "@/type/constants";
+import { PostItemModel } from "@/type/post.type";
 type SearchResult = [...PostItemModel[], number];
 
 export default async function KeywordList({ keyword }: { keyword: string }) {
   const response = await withFetchRevaildationAction<SearchResult>({
-    endPoint: `api/blog?group=all&keyword=${keyword}`,
+    endPoint: `api/post?group=all&keyword=${keyword}`,
     options: {
       cache: "no-store",
       next: {
-        tags: [REVALIDATE.BLOG.LIST],
+        tags: [REVALIDATE.POST.LIST],
       },
     },
   });

@@ -26,7 +26,7 @@ export default function Category() {
         options: {
           cache: "force-cache",
           next: {
-            tags: [REVALIDATE.BLOG.GROUPS],
+            tags: [REVALIDATE.POST.CATEGORY],
           },
         },
       });

@@ -28,7 +28,7 @@ export default async function Page(props: {
     options: {
       cache: "force-cache",
       next: {
-        tags: [REVALIDATE.BLOG.GROUPS],
+        tags: [REVALIDATE.POST.CATEGORY],
       },
     },
   });
@@ -36,16 +36,17 @@ export default async function Page(props: {
   if (mode === WirteMode.EDIT) {
     // 수저일떄
     const editResponse = await withFetchRevaildationAction<BlogDetailResponse>({
-      endPoint: `api/blog/${postId}`,
+      endPoint: `api/post/${postId}`,
       options: {
-        cache: "no-store",
+        cache: "force-cache",
         next: {
-          tags: [`${REVALIDATE.BLOG.DETAIL}:${postId}`],
+          tags: [`${REVALIDATE.POST.DETAIL}:${postId}`],
         },
       },
     });
 
     if (!editResponse.success) {
+      console.log("나 실행");
       notFound();
     }
 
@@ -55,11 +56,13 @@ export default async function Page(props: {
   if (!response.success) {
     notFound();
   }
+
   const { category } = response.result;
 
   return (
     <>
-      <WirteForm postGroupItems={category} editData={tempData} />
+      {" "}
+      <WirteForm postGroupItems={category} editData={tempData} />{" "}
     </>
   );
 }

@@ -13,7 +13,7 @@ export default async function CategoryWegiet() {
     options: {
       cache: "force-cache",
       next: {
-        tags: [REVALIDATE.BLOG.GROUPS],
+        tags: [REVALIDATE.POST.CATEGORY],
       },
     },
   });

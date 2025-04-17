@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    revalidateTag(REVALIDATE.BLOG.GROUPS);
+    revalidateTag(REVALIDATE.POST.CATEGORY);
   });
 }
 
@@ -91,6 +91,6 @@ export async function DELETE(req: NextRequest) {
           : eq(categorySchema.group_id, body.categoryId)
       );
 
-    revalidateTag(REVALIDATE.BLOG.GROUPS);
+    revalidateTag(REVALIDATE.POST.CATEGORY);
   });
 }
