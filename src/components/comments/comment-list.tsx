@@ -44,9 +44,8 @@ export default function CommentList({ postId }: { postId: string }) {
       return response.result;
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.isNextPage) {
-        return lastPage.list.at(-1)?.post_id;
-      }
+      console.log(lastPage);
+      return null;
     },
     initialPageParam: 0,
   });

@@ -9,7 +9,7 @@ import { createCommentTree } from "@/lib/comment-mapping";
 import { commentVerfiyDelete } from "@/lib/comment-verify-delete";
 import { REVALIDATE } from "@/type/constants";
 import { apiHandler } from "@/util/api-hanlder";
-import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { and, asc, eq, inArray } from "drizzle-orm";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 

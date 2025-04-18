@@ -12,22 +12,22 @@ import { wirtePostSchema } from "./schema";
 import { Button } from "@/components/ui/button";
 import { CheckField } from "@/components/ui/check-field";
 import { CategoryModel } from "@/type/blog-group";
-import { TipTapEditor } from "@squirrel309/my-testcounter";
-import { useMemo } from "react";
+import { MyEditor, useMyEditor } from "@squirrel309/my-testcounter";
+import React, { useMemo } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import PostTitleField from "@/components/shared/post-title-Field";
 import { useMutation } from "@tanstack/react-query";
 import withClientFetch from "@/util/withClientFetch";
 import useThrottling from "@/hook/useThrottling";
-import { ENV, HTTP_METHOD } from "@/type/constants";
+import { HTTP_METHOD } from "@/type/constants";
 import { v4 as uuidv4 } from "uuid";
 import transformHtmlToPlainText from "@/util/domParse";
 import { useRouter } from "next/navigation";
 import { BlogDetailResponse } from "@/type/blog.type";
 import WirteSelectCategory from "./write-select-category";
 import SelectField from "@/components/ui/select-field";
-import { uploadImageToS3 } from "@/util/s3-uploader";
+// import { uploadImageToS3 } from "@/util/s3-uploader";
 import { HtmlContentNormalizer } from "@/util/baseurl-slice";
 
 const defaultValues = {
@@ -56,6 +56,12 @@ export default function WirteForm({
   const imgKey = useMemo(() => {
     return !!editData ? editData.blog_metadata.img_key : uuidv4();
   }, [editData]);
+
+  const { editor, getHeadings } = useMyEditor({
+    editorMode: "editor",
+    enableImage: true,
+    enableYoutube: true,
+  });
 
   const rotuer = useRouter();
 
@@ -113,6 +119,10 @@ export default function WirteForm({
     throttle(async () => mutate(reqData), 1000);
   };
 
+  const getList = () => {
+    console.log(getHeadings());
+  };
+
   return (
     <Form {...form}>
       <div className="flex flex-col gap-3">
@@ -144,7 +154,12 @@ export default function WirteForm({
             return (
               <FormItem>
                 <FormControl>
-                  <TipTapEditor
+                  <MyEditor
+                    editor={editor}
+                    editorMode="editor"
+                    content={field.value}
+                  />
+                  {/* <TipTapEditor 
                     {...field}
                     content={field.value}
                     uploadCallback={async (event: File) => {
@@ -157,7 +172,7 @@ export default function WirteForm({
                       }
                       return `${ENV.IMAGE_URL_PUBLIC}${imgPath.url}`;
                     }}
-                  />
+                  /> */}
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -170,8 +185,7 @@ export default function WirteForm({
           className="p-6 mr-auto"
           variant={"outline"}
           type={"button"}
-
-          // onClick={form.handleSubmit(onSubmitHandler)}
+          onClick={() => getList()}
         >
           설정
         </Button>

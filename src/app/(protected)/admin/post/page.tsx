@@ -10,7 +10,7 @@ export default function Page() {
   const isSubGroup = "all";
   const category = "all";
 
-  const { data, fetchNextPage, isFetching, isPending } = useInfiniteQuery({
+  const { data, isPending } = useInfiniteQuery({
     queryKey: [REVALIDATE.POST.LIST, category, isSubGroup],
     queryFn: async ({ pageParam }) => {
       const limit = 10;

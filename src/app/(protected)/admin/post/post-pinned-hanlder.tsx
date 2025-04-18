@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import withClientFetch from "@/util/withClientFetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Check, Pin } from "lucide-react";
+import { Pin } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 

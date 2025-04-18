@@ -24,7 +24,6 @@ export function CheckField() {
 
   // imgKey..
   const imgKey = watch("imgKey");
-  console.log(watch());
 
   const thumbNailUPloader = async (event: ChangeEvent<HTMLInputElement>) => {
     try {

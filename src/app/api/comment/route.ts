@@ -13,7 +13,7 @@ export async function GET(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
-  const qs = req.nextUrl.searchParams;
+  // const qs = req.nextUrl.searchParams;
   const { id: postId } = await context.params;
 
   return await apiHandler(async () => {

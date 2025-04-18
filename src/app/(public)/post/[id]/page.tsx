@@ -20,7 +20,6 @@ import { BlogDetailResponse } from "@/type/blog.type";
 import { ENV, REVALIDATE } from "@/type/constants";
 import { DateUtils } from "@/util/date-uill";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
-import { TipTapEditor } from "@squirrel309/my-testcounter";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import PostHandler from "../post-handler";
@@ -32,7 +31,7 @@ import { readingTImeKO } from "@/util/reading-timeKo";
 import { Scroll } from "lucide-react";
 import RelatedPosts from "../related-posts";
 import { Suspense } from "react";
-import { HtmlContentNormalizer } from "@/util/baseurl-slice";
+// import { HtmlContentNormalizer } from "@/util/baseurl-slice";
 
 // export async function generateMetadata({
 //   params: { id },
@@ -140,10 +139,10 @@ export default async function PostDetail({
 
       <section className="w-full overflow-hidden border-b pb-10">
         {/* TipTap Editor - custom lib */}
-        <TipTapEditor
+        {/* <TipTapEditor
           mode="view"
           content={HtmlContentNormalizer.setImgUrl(blog_contents.contents)}
-        />
+        /> */}
         <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt} />
         <PostHandler postId={id} category={category.group_name} />
       </section>

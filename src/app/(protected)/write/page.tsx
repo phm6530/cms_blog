@@ -3,16 +3,15 @@ import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 import WirteForm from "./write-form";
-import { Params } from "next/dist/server/request/params";
 import { BlogDetailResponse } from "@/type/blog.type";
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export enum WirteMode {
+enum WirteMode {
   EDIT = "edit",
 }
 
 export default async function Page(props: {
-  params: Params;
+  params: any;
   searchParams: SearchParams;
 }) {
   const searchParams = await props.searchParams;
@@ -61,7 +60,6 @@ export default async function Page(props: {
 
   return (
     <>
-      {" "}
       <WirteForm postGroupItems={category} editData={tempData} />{" "}
     </>
   );

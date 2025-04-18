@@ -2,8 +2,8 @@ import { toast } from "sonner";
 
 export default function toastTrigger({
   alert,
-  status,
-}: {
+}: // status,
+{
   alert: string;
   status: "success" | "error" | "warning";
 }) {

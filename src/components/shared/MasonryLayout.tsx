@@ -14,7 +14,9 @@ export default function MasonryLayout({
 }) {
   return (
     <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 2 }}>
-      <Masonry gutter="50px">{loading ? <LoadingSpiner /> : children}</Masonry>
+      <Masonry gutter={`${gutter}px`}>
+        {loading ? <LoadingSpiner /> : children}
+      </Masonry>
     </ResponsiveMasonry>
   );
 }

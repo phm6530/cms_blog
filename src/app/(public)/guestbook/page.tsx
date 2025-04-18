@@ -2,7 +2,7 @@ import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 import GuestBookItem from "./components/guestbook-item";
-import { BadgeInfo } from "lucide-react";
+// import { BadgeInfo } from "lucide-react";
 import { CommentItemModel } from "@/lib/comment-bff";
 import CommentForm from "@/components/comments/comment-form";
 import MasonryLayout from "@/components/shared/MasonryLayout";
