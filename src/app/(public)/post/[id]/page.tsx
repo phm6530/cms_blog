@@ -31,6 +31,8 @@ import { readingTImeKO } from "@/util/reading-timeKo";
 import { Scroll } from "lucide-react";
 import RelatedPosts from "../related-posts";
 import { Suspense } from "react";
+import { useMyEditor } from "@squirrel309/my-testcounter";
+import PostView from "../post-view";
 // import { HtmlContentNormalizer } from "@/util/baseurl-slice";
 
 // export async function generateMetadata({
@@ -139,10 +141,7 @@ export default async function PostDetail({
 
       <section className="w-full overflow-hidden border-b pb-10">
         {/* TipTap Editor - custom lib */}
-        {/* <TipTapEditor
-          mode="view"
-          content={HtmlContentNormalizer.setImgUrl(blog_contents.contents)}
-        /> */}
+        <PostView contents={blog_contents.contents} />
         <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt} />
         <PostHandler postId={id} category={category.group_name} />
       </section>
