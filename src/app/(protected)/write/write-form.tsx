@@ -12,7 +12,7 @@ import { wirtePostSchema } from "./schema";
 import { Button } from "@/components/ui/button";
 import { CheckField } from "@/components/ui/check-field";
 import { CategoryModel } from "@/type/blog-group";
-import { MyEditor, useMyEditor } from "@squirrel309/my-testcounter";
+// import { MyEditor, useMyEditor } from "@squirrel309/my-testcounter";
 import React, { useMemo } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -29,6 +29,11 @@ import WirteSelectCategory from "./write-select-category";
 import SelectField from "@/components/ui/select-field";
 // import { uploadImageToS3 } from "@/util/s3-uploader";
 import { HtmlContentNormalizer } from "@/util/baseurl-slice";
+import {
+  MyEditorContent,
+  MyToolbar,
+  useMyEditor,
+} from "@squirrel309/my-testcounter";
 
 const defaultValues = {
   title: "",
@@ -52,16 +57,13 @@ export default function WirteForm({
   editData: BlogDetailResponse | undefined;
 }) {
   const { throttle } = useThrottling();
-
+  const { editor, configs, editorMode } = useMyEditor({
+    editorMode: "editor",
+    placeholder: "내용을 기재해주세요",
+  });
   const imgKey = useMemo(() => {
     return !!editData ? editData.blog_metadata.img_key : uuidv4();
   }, [editData]);
-
-  const { editor, getHeadings } = useMyEditor({
-    editorMode: "editor",
-    enableImage: true,
-    enableYoutube: true,
-  });
 
   const rotuer = useRouter();
 
@@ -119,10 +121,6 @@ export default function WirteForm({
     throttle(async () => mutate(reqData), 1000);
   };
 
-  const getList = () => {
-    console.log(getHeadings());
-  };
-
   return (
     <Form {...form}>
       <div className="flex flex-col gap-3">
@@ -153,12 +151,15 @@ export default function WirteForm({
           render={({ field }) => {
             return (
               <FormItem>
+                <MyToolbar editor={editor} {...configs} />
                 <FormControl>
-                  <MyEditor
+                  <MyEditorContent
                     editor={editor}
-                    editorMode="editor"
-                    content={field.value}
+                    editorMode={editorMode}
+                    {...field}
+                    className="border"
                   />
+
                   {/* <TipTapEditor 
                     {...field}
                     content={field.value}
@@ -185,7 +186,7 @@ export default function WirteForm({
           className="p-6 mr-auto"
           variant={"outline"}
           type={"button"}
-          onClick={() => getList()}
+          // onClick={() => getList()}
         >
           설정
         </Button>

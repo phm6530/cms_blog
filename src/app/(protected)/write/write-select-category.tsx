@@ -28,10 +28,11 @@ export default function WirteSelectCategory<
         return (
           <FormItem>
             <Select
-              value={((val) => {
-                if (!val) return;
-                return JSON.stringify(field.value);
-              })()}
+              value={
+                field.value && field.value.category && field.value.group
+                  ? JSON.stringify(field.value)
+                  : undefined
+              }
               onValueChange={(val) => {
                 const parsed = JSON.parse(val);
 

@@ -31,7 +31,6 @@ import { readingTImeKO } from "@/util/reading-timeKo";
 import { Scroll } from "lucide-react";
 import RelatedPosts from "../related-posts";
 import { Suspense } from "react";
-import { useMyEditor } from "@squirrel309/my-testcounter";
 import PostView from "../post-view";
 // import { HtmlContentNormalizer } from "@/util/baseurl-slice";
 

@@ -41,7 +41,10 @@ export default function PostHandler({
         },
       });
       //삭제 후 리스트 초기화
-      await queryClient.invalidateQueries({ queryKey: [REVALIDATE.POST.LIST] });
+      queryClient.removeQueries({
+        queryKey: [REVALIDATE.POST.LIST],
+        exact: false,
+      });
 
       router.replace(`/category/${category}`);
     },

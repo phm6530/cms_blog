@@ -13,7 +13,7 @@ export default async function RecentGuestBoard() {
   const response = await withFetchRevaildationAction<WeigetComemnt[]>({
     endPoint: `api/weiget/comment?target=guest`,
     options: {
-      cache: "no-store",
+      cache: "force-cache",
       next: {
         tags: [REVALIDATE.WEIGET.COMMENT],
       },

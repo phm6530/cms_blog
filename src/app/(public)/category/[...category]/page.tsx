@@ -52,6 +52,7 @@ export default function CategoryPage() {
       }
     },
     initialPageParam: 0,
+    placeholderData: undefined,
   });
 
   useEffect(() => {

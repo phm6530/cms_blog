@@ -12,7 +12,7 @@ export function HighlightKeyword({
     <>
       {parts.map((part, i) =>
         part.toLowerCase() === keyword.toLowerCase() ? (
-          <span className="bg-primary/30 dark:bg-primary/50" key={i}>
+          <span className="bg-violet-300 dark:bg-violet-600" key={i}>
             {part}
           </span>
         ) : (
