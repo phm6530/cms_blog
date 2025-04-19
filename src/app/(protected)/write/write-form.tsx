@@ -60,6 +60,7 @@ export default function WirteForm({
   const { editor, configs, editorMode } = useMyEditor({
     editorMode: "editor",
     placeholder: "내용을 기재해주세요",
+    enableCodeBlock: true,
   });
   const imgKey = useMemo(() => {
     return !!editData ? editData.blog_metadata.img_key : uuidv4();

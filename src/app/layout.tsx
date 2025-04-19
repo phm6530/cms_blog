@@ -8,6 +8,7 @@ import SideArea from "@/components/slide-area";
 import MouseClickEffect from "@/components/shared/mouse-clickeffect";
 import HeaderNav from "@/components/layout/header-nav";
 import GlobalNav from "@/components/layout/global-nav";
+import MainLayout from "@/components/layout/main-layout";
 
 export const metadata: Metadata = {
   title: "퍼블리셔와 개발자 그 어딘가",
@@ -27,12 +28,12 @@ export default async function RootLayout({
             <HeaderNav />
             <GlobalNav />
             <main className="grid-layout">
-              <div className="grid grid-cols-[250px_auto]  gap-10  ">
+              <MainLayout>
                 {/* slide bar */}
                 <SideArea />
 
                 <div className="pt-10 w-full ">{children}</div>
-              </div>
+              </MainLayout>
             </main>
             <Toaster />
             <Footer />
