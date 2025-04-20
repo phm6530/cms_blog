@@ -20,20 +20,20 @@ import PostTitleField from "@/components/shared/post-title-Field";
 import { useMutation } from "@tanstack/react-query";
 import withClientFetch from "@/util/withClientFetch";
 import useThrottling from "@/hook/useThrottling";
-import { HTTP_METHOD } from "@/type/constants";
+import { ENV, HTTP_METHOD } from "@/type/constants";
 import { v4 as uuidv4 } from "uuid";
 import transformHtmlToPlainText from "@/util/domParse";
 import { useRouter } from "next/navigation";
 import { BlogDetailResponse } from "@/type/blog.type";
 import WirteSelectCategory from "./write-select-category";
 import SelectField from "@/components/ui/select-field";
-// import { uploadImageToS3 } from "@/util/s3-uploader";
 import { HtmlContentNormalizer } from "@/util/baseurl-slice";
 import {
   MyEditorContent,
   MyToolbar,
   useMyEditor,
 } from "@squirrel309/my-testcounter";
+import { uploadImageToS3 } from "@/util/s3-uploader";
 
 const defaultValues = {
   title: "",
@@ -79,6 +79,7 @@ export default function WirteForm({
             category: editData.blog_metadata.category_id,
             group: editData.blog_metadata.sub_group_id,
           },
+          thumbnail: editData.blog_metadata.thumbnail_url,
           imgKey,
         }
       : { ...defaultValues, imgKey },
@@ -98,7 +99,9 @@ export default function WirteForm({
           method: !!editData ? HTTP_METHOD.PUT : HTTP_METHOD.POST,
         },
         requireAuth: true,
-        body,
+        body: !!editData
+          ? { ...body, pinnedPost: !!editData.pinned_post }
+          : body,
       });
     },
     onSuccess: (data) => {
@@ -152,7 +155,20 @@ export default function WirteForm({
           render={({ field }) => {
             return (
               <FormItem>
-                <MyToolbar editor={editor} {...configs} />
+                <MyToolbar
+                  editor={editor}
+                  {...configs}
+                  uploadCallback={async (event: File) => {
+                    const form = new FormData();
+                    form.append("file", event);
+                    const imgPath = await uploadImageToS3(form, imgKey);
+
+                    if (!imgPath.success) {
+                      throw new Error(imgPath.message);
+                    }
+                    return `${ENV.IMAGE_URL_PUBLIC}${imgPath.url}`;
+                  }}
+                />
                 <FormControl>
                   <MyEditorContent
                     editor={editor}
@@ -160,21 +176,6 @@ export default function WirteForm({
                     {...field}
                     className="border"
                   />
-
-                  {/* <TipTapEditor 
-                    {...field}
-                    content={field.value}
-                    uploadCallback={async (event: File) => {
-                      const form = new FormData();
-                      form.append("file", event);
-                      const imgPath = await uploadImageToS3(form, imgKey);
-
-                      if (!imgPath.success) {
-                        throw new Error(imgPath.message);
-                      }
-                      return `${ENV.IMAGE_URL_PUBLIC}${imgPath.url}`;
-                    }}
-                  /> */}
                 </FormControl>
                 <FormMessage />
               </FormItem>

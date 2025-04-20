@@ -1,6 +1,6 @@
 @charset "UTF-8";
 .tiptap p {
-  line-height: 1.7;
+  line-height: 1.9;
   letter-spacing: -0.01rem;
 }
 .tiptap :first-child {
@@ -23,18 +23,22 @@
   line-height: 1.7;
 }
 .tiptap h1 {
-  font-size: 2.4rem;
+  font-size: 2.25rem; /* text-4xl */
 }
 .tiptap h2 {
-  font-size: 2rem;
+  font-size: 1.75rem; /* text-2xl */
 }
 .tiptap h3 {
-  font-size: 1.1rem;
+  font-size: 1.5rem; /* text-xl  */
 }
-.tiptap h4,
-.tiptap h5,
+.tiptap h4 {
+  font-size: 1.25rem; /* text-lg  */
+}
+.tiptap h5 {
+  font-size: 1.125rem; /* text-base */
+}
 .tiptap h6 {
-  font-size: 1rem;
+  font-size: 1rem; /* text-sm  */
 }
 .tiptap p code {
   background: var(--color-secondary-foreground);

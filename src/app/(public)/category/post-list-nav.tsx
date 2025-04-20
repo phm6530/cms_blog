@@ -34,11 +34,13 @@ export default async function PostListNav({
   const curNavList = category[curCategory];
 
   const activeStyle = (subGroupName?: string) => {
-    const isActive = selectGroup === subGroupName;
+    console.log(selectGroup);
+    const isActive = selectGroup === subGroupName || selectGroup === undefined;
+
     return cn(
-      "rounded-full text-xs border-foreground  dark:border dark:text-indigo-100 bg-zinc-100 border-forground  bg-transparent",
+      "rounded-full text-xs border bg-transparent border-foreground dark:border dark:text-indigo-100",
       isActive
-        ? "text-primary  dark:text-indigo-300  border-muted-foreground dark:border-indigo-400!  "
+        ? "text-primary dark:text-indigo-300 border-muted-foreground dark:border-indigo-400!"
         : "border"
     );
   };
@@ -46,9 +48,12 @@ export default async function PostListNav({
   return (
     <>
       <section className="w-full gap-3 flex flex-wrap mb-6 ">
-        <Button variant={"outline"} asChild className={activeStyle()}>
+        <Button variant={"outline"} asChild className={activeStyle("all")}>
           <Link href={`/category/${curCategory}`}>
-            전체보기 ({curNavList.postCnt})
+            전체보기{" "}
+            <span className="dark:text-indigo-300 dark:opacity-100 opacity-50">
+              ({curNavList.postCnt})
+            </span>
           </Link>
         </Button>
 

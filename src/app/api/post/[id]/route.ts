@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { PostFormData } from "../route";
 import { blogSubGroup, categorySchema } from "@/db/schema/category";
 import { apiHandler } from "@/util/api-hanlder";
+import { pinnedPostSchema } from "@/db/schema/post/pinned-post";
 
 export async function GET(
   req: NextRequest,
@@ -41,12 +42,15 @@ export async function GET(
         categorySchema,
         eq(categorySchema.group_id, blogMetaSchema.category_id)
       )
+      .leftJoin(
+        pinnedPostSchema,
+        eq(pinnedPostSchema.post_id, blogMetaSchema.post_id)
+      )
       .where(eq(blogContentsSchema.post_id, +id));
 
     if (!rows) {
       throw new Error("이미 삭제되었거나 잘못된 요청입니다.");
     }
-
     return rows;
   });
 }
@@ -62,6 +66,8 @@ export async function PUT(
   const { id } = await context.params;
   try {
     if (!session?.user) throw new Error("권한이 없습니다.");
+
+    console.log(body);
 
     await WithTransaction.run(async (tx) => {
       // 사용자 조회
@@ -95,6 +101,11 @@ export async function PUT(
         })
         .where(eq(blogContentsSchema.post_id, +id));
     });
+
+    //고정콘텐츠 일경우는 메인 쪽도 초기화
+    if (!!body.pinnedPost) {
+      revalidateTag(REVALIDATE.PINNED_POST);
+    }
 
     revalidateTag(`${REVALIDATE.POST.DETAIL}:${id}`);
     revalidateTag(REVALIDATE.POST.LIST);

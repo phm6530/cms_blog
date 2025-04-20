@@ -16,11 +16,13 @@ import { DateUtils } from "@/util/date-uill";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { ENV } from "@/type/constants";
+import { useRouter } from "next/navigation";
 
 export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
+  const router = useRouter();
 
   React.useEffect(() => {
     if (!api) {
@@ -47,10 +49,11 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
           {postList.map((data, index) => (
             <CarouselItem key={index}>
               <div
-                className="w-full grid grid-cols-[6fr_4fr] border-border gap-10 p-10 bg-[#f9f7f4] dark:bg-[#252526] rounded-xl  flex-col  bg-cover bg-center overflow-hidden relative"
+                className="w-full cursor-pointer grid grid-cols-[6fr_4fr] border-border gap-10 p-10 bg-[#f9f7f4] dark:bg-[#252526] rounded-xl  flex-col  bg-cover bg-center overflow-hidden relative"
                 style={{
                   backgroundClip: "padding-box",
                 }}
+                onClick={() => router.push(`/post/${data.post_id}`)}
               >
                 <div className="flex flex-col  items-start ">
                   <div className="flex gap-2 mt-5">
@@ -68,7 +71,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                     </Badge>
                   </div>
 
-                  <h1 className="text-shadow leading-9 mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] text-2xl w-[60%] break-keep ">
+                  <h1 className="text-shadow  leading-9 mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] text-2xl w-[60%] break-keep ">
                     {data.post_title}
                   </h1>
                   <p className="text-sm leading-6 z-10 mt-5 line-clamp-2 max-w-[300px] opacity-90 dark:text-[#cccccc]">
@@ -90,12 +93,14 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                 </div>
 
                 <div className="rounded-xl relative overflow-hidden aspect-[16/17]">
-                  <Image
-                    src={`${ENV.IMAGE_URL_PUBLIC}${data.thumbnail_url}`}
-                    fill
-                    alt=""
-                    style={{ objectFit: "cover" }}
-                  />
+                  {data.thumbnail_url && (
+                    <Image
+                      src={`${ENV.IMAGE_URL_PUBLIC}${data.thumbnail_url}`}
+                      fill
+                      alt=""
+                      style={{ objectFit: "cover" }}
+                    />
+                  )}
                 </div>
               </div>
             </CarouselItem>

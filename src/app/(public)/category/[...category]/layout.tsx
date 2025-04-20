@@ -18,7 +18,11 @@ export default async function Layout({
     <>
       <PostListNav
         curCategory={decodeURIComponent(category)}
-        selectGroup={decodeURIComponent(group)}
+        selectGroup={
+          decodeURIComponent(group) === "undefined"
+            ? "all"
+            : decodeURIComponent(group)
+        }
       />
 
       <div className="grid grid-cols-[auto_1fr] justify-between items-center gap-5 border-b pb-4 py-10">

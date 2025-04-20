@@ -33,4 +33,11 @@ export interface BlogDetailResponse {
     group_id: number;
     group_name: string;
   };
+  pinned_post: null | {
+    id: number;
+    createdAt: string;
+    post_id: number;
+    active: boolean;
+    order: number;
+  };
 }

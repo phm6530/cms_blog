@@ -10,6 +10,7 @@ export type PostFormData = {
   defaultThumbNail: boolean;
   imgKey: string;
   view: boolean;
+  pinnedPost?: boolean;
 };
 
 import { auth } from "@/auth";

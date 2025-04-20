@@ -30,7 +30,7 @@ export default function CommentList({ postId }: { postId: string }) {
       }>({
         endPoint: baseEndpont,
         options: {
-          cache: "no-store",
+          cache: "force-cache",
           next: {
             tags: [`${REVALIDATE.COMMENT}:${postId}`],
           },
