@@ -162,7 +162,7 @@ export default async function PostDetail({
         </div>
       </section>
 
-      <div className="grid grid-cols-[auto_250px] pt-20 gap-5">
+      <div className="grid md:grid-cols-[auto_250px] pt-20 gap-5">
         <section className=" gap-5">
           <div>
             <div className="w-full  border-b pb-10 relative">

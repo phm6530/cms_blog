@@ -13,7 +13,7 @@ export default function Home() {
         <PinnedPosts />
         <RecentPost />
         {/* 방명록 */}
-        <div className="grid grid-cols-2 gap-10">
+        <div className="grid md:grid-cols-2 gap-10 mb-10">
           <RecentComment />
           <RecentGuestBoard />
         </div>

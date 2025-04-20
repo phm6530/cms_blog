@@ -14,12 +14,11 @@ export default function MainLayout({ children }: { children: ReactNode }) {
     /^\/post\/[^/]+$/.test(pathname); // /post/[id]에 대응
 
   const childrenArray = Children.toArray(children);
-
   return (
     <div
       className={cn(
-        "grid grid-cols-[250px_auto] gap-10",
-        hideSidebar && "grid-cols-1"
+        "grid md:grid-cols-[250px_auto] gap-10",
+        hideSidebar && "md:grid-cols-1"
       )}
     >
       {hideSidebar ? null : childrenArray[0]}

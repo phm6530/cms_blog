@@ -29,10 +29,9 @@ export default async function RootLayout({
             <GlobalNav />
             <main className="grid-layout">
               <MainLayout>
-                {/* slide bar */}
                 <SideArea />
 
-                <div className="pt-10 w-full ">{children}</div>
+                <div className="pt-5 md:pt-10 w-full ">{children}</div>
               </MainLayout>
             </main>
             <Toaster />

@@ -95,7 +95,7 @@ export default function CategoryPage() {
     <section className=" flex flex-col">
       <div className="flex flex-col">
         {flatPageDatas?.length === 0 ? (
-          <div>등록된 콘텐츠가 없습니다.</div>
+          <div className="py-5">등록된 콘텐츠가 없습니다.</div>
         ) : (
           flatPageDatas?.map((item, idx) => {
             const isLast = flatPageDatas.length - 2 === idx;

@@ -6,7 +6,7 @@ import VisitorWigetV2 from "./weiget/visitor-weiget-v2";
 
 export default function SideArea() {
   return (
-    <div className="max-w-[250px] w-full pt-15 border-r border-secondary-foreground/10 ">
+    <div className="max-w-[250px] md:block hidden w-full pt-15 border-r border-secondary-foreground/10 ">
       <div className="rounded-lg">
         <div className="flex items-center flex-col">
           <div className="max-w-[180px] w-[90%] relative aspect-[16/16] rounded-full overflow-hidden border-5 border-foreground/10">

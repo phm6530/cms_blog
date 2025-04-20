@@ -67,8 +67,6 @@ export async function PUT(
   try {
     if (!session?.user) throw new Error("권한이 없습니다.");
 
-    console.log(body);
-
     await WithTransaction.run(async (tx) => {
       // 사용자 조회
       const [user] = await tx

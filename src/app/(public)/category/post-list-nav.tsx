@@ -34,14 +34,13 @@ export default async function PostListNav({
   const curNavList = category[curCategory];
 
   const activeStyle = (subGroupName?: string) => {
-    console.log(selectGroup);
     const isActive = selectGroup === subGroupName || selectGroup === undefined;
 
     return cn(
       "rounded-full text-xs border bg-transparent border-foreground dark:border dark:text-indigo-100",
       isActive
         ? "text-primary dark:text-indigo-300 border-muted-foreground dark:border-indigo-400!"
-        : "border"
+        : "border border-border"
     );
   };
 

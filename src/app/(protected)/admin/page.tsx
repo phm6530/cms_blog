@@ -31,10 +31,14 @@ export default async function AdminPage() {
 
       <section className="flex gap-2">
         <div className="">
-          <Link href={"/admin/category"}>카테고리 관리</Link>
+          <Button asChild className="text-xs">
+            <Link href={"/admin/category"}>카테고리 관리</Link>
+          </Button>
         </div>
         <div className="">
-          <Link href={"/admin/post"}>내 글 관리</Link>
+          <Button asChild className="text-xs">
+            <Link href={"/admin/post"}>내 글 관리</Link>
+          </Button>
         </div>
       </section>
     </div>
