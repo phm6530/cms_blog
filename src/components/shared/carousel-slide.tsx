@@ -106,8 +106,8 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="left-[-15px]" />
+        <CarouselNext className="right-[-15px]" />
       </Carousel>
       <div className="mt-3 flex gap-1 justify-center">
         {Array.from({ length: count }).map((_, idx) => {

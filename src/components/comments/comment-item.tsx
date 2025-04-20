@@ -8,10 +8,10 @@ import ProfileUser from "../ui/profile-user";
 import { useSession } from "next-auth/react";
 import ConfirmButton from "../shared/confirm-button";
 import withClientFetch from "@/util/withClientFetch";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { HTTP_METHOD } from "@/type/constants";
+import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import { useForm } from "react-hook-form";
 import InputPassword from "../ui/password-input";
 import { CommentItemModel } from "@/lib/comment-bff";
@@ -32,7 +32,7 @@ export default function CommentItem({
     useStore(); // Zustand로 공유
   const ref = useRef<HTMLInputElement>(null);
   const [lineClimp, setLineClimp] = useState<boolean>(false);
-
+  const queryClient = useQueryClient();
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -65,6 +65,9 @@ export default function CommentItem({
           background: "#1e293b",
           color: "#38bdf8",
         },
+      });
+      queryClient.invalidateQueries({
+        queryKey: [`${REVALIDATE.COMMENT}:${post_id}`],
       });
       router.refresh();
     },
@@ -198,7 +201,10 @@ export default function CommentItem({
           </div>
         </div>
         {commentsViewId === commentId && (
-          <CommentForm parent_id={isReply ? parent_id : commentId} />
+          <CommentForm
+            postId={post_id + ""}
+            parent_id={isReply ? parent_id : commentId}
+          />
         )}
         {deps < 1 &&
           children.map((e, idx) => {

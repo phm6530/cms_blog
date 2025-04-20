@@ -86,7 +86,7 @@ export function CheckField() {
             </FormDescription>
             <div className="flex gap-3 mt-5">
               <Button variant={"outline"} className="text-xs cursor-pointer">
-                기본 썸네일 보기
+                배너 삭제
               </Button>{" "}
               {/* hidden - file */}
               <input
@@ -102,7 +102,7 @@ export function CheckField() {
                 className="text-xs cursor-pointer"
                 disabled={field.value === true}
               >
-                <Upload /> 썸네일 변경하기
+                <Upload /> 배너 Img 변경하기
               </Button>
               <Button
                 disabled={field.value === true}

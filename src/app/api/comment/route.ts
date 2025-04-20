@@ -6,7 +6,6 @@ import { mapToCommentModel } from "@/lib/comment-bff";
 import { createCommentTree } from "@/lib/comment-mapping";
 import { apiHandler } from "@/util/api-hanlder";
 import { and, eq, inArray } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -55,7 +54,6 @@ export async function GET(
       .orderBy(commentSchema.createdAt);
 
     const commentList = mapToCommentModel(rows);
-    revalidatePath(`/category/blog`);
 
     return { success: true, result: createCommentTree(commentList) };
   });

@@ -31,17 +31,17 @@ export default function VisitorWigetV2() {
           </div>
         ) : (
           <>
-            <div className="flex  gap-1  text-xs">
-              {/* <span className=" opacity-50">TOTAL</span> */}
-              <span className="animate-wiggle text-2xl flex items-center gap-2">
-                <UserRound size={17} />
-                {(data?.result.allVisitor_cnt ?? 0).toLocaleString()}
-              </span>
-            </div>
-            <div className="flex gap-3 items-end  ">
+            <div className="flex flex-col gap-3 ">
               <span className="opacity-50 text-[11px]">TODAY</span>
               <span className="animate-wiggle">
                 {data?.result.today_cnt ?? 0}
+              </span>
+            </div>
+            <div className="flex flex-col gap-1  text-xs">
+              <span className=" opacity-50">TOTAL</span>
+              <span className="animate-wiggle text-2xl flex items-center gap-2">
+                {/* <span className="opacity-50 text-[11px]">TOTAL</span> */}
+                {(data?.result.allVisitor_cnt ?? 0).toLocaleString()}
               </span>
             </div>
           </>

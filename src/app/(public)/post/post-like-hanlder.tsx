@@ -73,7 +73,7 @@ export default function PostLikeHandler({
   }, 1000);
 
   return (
-    <>
+    <div className="text-center">
       <Button
         className="cursor-pointer rounded-full bg-transparent! "
         onClick={() => {
@@ -95,6 +95,6 @@ export default function PostLikeHandler({
         />
         <span className="text-xs opacity-70">{likeCount}</span>
       </Button>
-    </>
+    </div>
   );
 }

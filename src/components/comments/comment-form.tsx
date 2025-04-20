@@ -1,7 +1,7 @@
 "use client";
 
 import useThrottling from "@/hook/useThrottling";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form } from "../ui/form";
 import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +19,7 @@ import useStore from "@/context/store";
 import { useSession } from "next-auth/react";
 import ProfileAdmin from "../ui/profile-user";
 import withClientFetch from "@/util/withClientFetch";
-import { HTTP_METHOD } from "@/type/constants";
+import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import { Skeleton } from "../ui/skeleton";
 
 type CommentFormValues = z.infer<ReturnType<typeof dynamicSchema>>;
@@ -27,9 +27,10 @@ type CommentFormValues = z.infer<ReturnType<typeof dynamicSchema>>;
 export default function CommentForm({
   targetSchema = "comment",
   parent_id,
+  postId,
 }: {
   targetSchema?: "comment" | "guestbook";
-  postId?: string;
+  postId: string;
   userData?: { email: string };
   parent_id?: null | number;
 }) {
@@ -38,6 +39,7 @@ export default function CommentForm({
   const { commentsViewOff } = useStore();
   const session = useSession();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const defaultValues = useCallback((parent_id?: number | null) => {
     return {
@@ -73,7 +75,9 @@ export default function CommentForm({
           color: "#38bdf8",
         },
       });
-
+      queryClient.invalidateQueries({
+        queryKey: [`${REVALIDATE.COMMENT}:${postId}`],
+      });
       form.reset(defaultValues(parent_id));
       router.refresh();
       if (!!parent_id) commentsViewOff();

@@ -45,7 +45,6 @@ export default async function Page(props: {
     });
 
     if (!editResponse.success) {
-      console.log("나 실행");
       notFound();
     }
 

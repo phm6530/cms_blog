@@ -96,7 +96,7 @@ export default async function PostDetail({
         className={cn(
           "relative flex items-end",
           hasThumbnail
-            ? "p-10 min-h-80 text-white outline outline-border rounded-2xl "
+            ? "p-10 min-h-90 text-white outline outline-border rounded-2xl "
             : "border-b"
         )}
         style={
@@ -139,7 +139,7 @@ export default async function PostDetail({
             className={cn(
               "text-3xl ",
               blog_metadata.thumbnail_url &&
-                " max-w-[400px] leading-11 break-keep drop-shadow-md"
+                " max-w-[500px] leading-13 break-keep drop-shadow-md"
             )}
             style={{
               textShadow: "1px 2px 5px #000000",

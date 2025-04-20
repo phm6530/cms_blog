@@ -98,7 +98,7 @@ export async function DELETE(
 
     revalidateTag(`${REVALIDATE.COMMENT}:${post_id}`);
     revalidateTag(REVALIDATE.POST.LIST);
-
+    revalidateTag(REVALIDATE.WEIGET.COMMENT);
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
     if (err instanceof Error) {
@@ -133,7 +133,7 @@ export async function POST(
       session,
       postId: id,
     });
-
+    revalidateTag(REVALIDATE.WEIGET.COMMENT);
     // 캐싱 초기화
     revalidateTag(`${REVALIDATE.COMMENT}:${id}`);
     return NextResponse.json({ success: true }, { status: 200 });

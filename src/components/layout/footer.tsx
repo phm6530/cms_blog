@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 
 export default function Footer() {
   return (
-    <footer className="w-full text-center items-center mt-20 grid-layout border-t py-12 flex flex-col gap-5">
+    <footer className="w-full text-center items-center  grid-layout border-t py-12 flex flex-col gap-5">
       <div className="flex gap-2">
         <Button
           variant={"outline"}
