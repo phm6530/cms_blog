@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import { CategoryModel } from "@/type/blog-group";
 import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
-import { Menu } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import NavWrapper from "./nav-wrapper";

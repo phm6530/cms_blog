@@ -23,6 +23,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <div id="backdrop-portal"></div>
         <ClientProvider>
           <MouseClickEffect>
             <HeaderNav />
