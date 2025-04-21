@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { PostItemModel } from "@/type/post.type";
 import { useEffect, useRef } from "react";
 import LoadingSpinerV2 from "@/components/ui/loading-spinner-v2";
+import PostItemSkeleton from "../../category/post-item-skeleton";
 
 export default function Keyword() {
   const { keyword } = useParams();
@@ -78,8 +79,6 @@ export default function Keyword() {
 
   const flatPageDatas = data?.pages.flatMap((page) => page.list) ?? [];
 
-  console.log(flatPageDatas);
-
   return (
     <>
       <div className="border-b pb-5 text-xl flex gap-3 items-center">
@@ -95,11 +94,18 @@ export default function Keyword() {
 
       <>
         {isPending ? (
-          <div className="mt-5">검색 중 .....</div>
+          <div className="mt-5">
+            {" "}
+            <div className="flex flex-col gap-5 py-5">
+              {Array.from({ length: 10 }).map((_, idx) => {
+                return <PostItemSkeleton key={`skeleton-${idx}`} />;
+              })}
+            </div>
+          </div>
         ) : (
           <>
             {flatPageDatas.length === 0 ? (
-              <div className="mt-5">검색어가 없습니다.</div>
+              <div className="my-10 ">검색어가 없습니다.</div>
             ) : (
               <>
                 <section className=" flex flex-col">

@@ -29,9 +29,9 @@ export const PostItem = forwardRef<
     return (
       <div
         ref={ref}
-        className="transition-all hover:pl-5 hover:border-l-5 border-l-indigo-500 animate-fadein group cursor-pointer grid grid-cols-[4fr_1fr] gap-5 items-center py-3 border-b  last:border-b-0"
+        className="transition-all  border-l-indigo-500 animate-fadein group cursor-pointer grid grid-cols-[5fr_minmax(100px,_2fr)] gap-5 items-center py-3 border-b  last:border-b-0"
       >
-        <div className="flex flex-col gap-2 py-3">
+        <div className="flex flex-col gap-2 py-1 md:py-3!">
           <div className="flex gap-3 mb-2">
             <Badge variant={"secondary"} className="text-[10px] rounded-full">
               {sub_group_name}
@@ -42,17 +42,15 @@ export const PostItem = forwardRef<
             </div>
           </div>
           <Link href={`/post/${post_id}`}>
-            <p className="group-hover:underline text-xl tracking-tight ">
+            <p className="group-hover:underline text-base md:text-xl! tracking-tight">
               {!!keyword ? (
                 <HighlightKeyword text={post_title} keyword={keyword} />
               ) : (
                 post_title
               )}
-
-              {/* {post_title} */}
             </p>
           </Link>
-          <p className="line-clamp-2 text-[13px] text-muted-foreground leading-6 tracking-tight mb-4">
+          <p className="line-clamp-2  text-xs md:text-[13px]! text-muted-foreground leading-5 tracking-tight md:mb-4">
             {post_description}
           </p>
           <p className="text-xs text-muted-foreground mt-1 flex gap-3">
@@ -68,7 +66,7 @@ export const PostItem = forwardRef<
             </span>
           </p>
         </div>
-        <div className="max-w-[150px]  w-full ml-auto  aspect-[16/11]  rounded-md relative overflow-hidden ">
+        <div className="max-w-[150px] w-full ml-auto  aspect-[1/1] md:aspect-[16/11]  rounded-xl relative overflow-hidden ">
           {thumbnail_url && (
             <Image
               src={`https://d33h8icwcso2tj.cloudfront.net/${thumbnail_url}`}

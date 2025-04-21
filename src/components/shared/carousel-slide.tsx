@@ -42,6 +42,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
       <Carousel
         opts={{
           loop: true,
+          // dragFree: true,
         }}
         setApi={setApi}
       >

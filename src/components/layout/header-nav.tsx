@@ -10,7 +10,10 @@ export default function HeaderNav() {
         <VisitorWiget />
 
         <Suspense fallback={<>loading..</>}>
-          <SearchInput name="keyword" className="placeholder:text-xs! mr-3" />
+          <SearchInput
+            name="keyword"
+            className="placeholder:text-xs! mr-3 md:flex! hidden"
+          />
         </Suspense>
         <ThemeHandler />
       </div>

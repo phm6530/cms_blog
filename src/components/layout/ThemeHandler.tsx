@@ -12,7 +12,7 @@ export default function ThemeHandler() {
     <Button
       onClick={() => setTheme(curTheme)}
       variant={"outline"}
-      className="size-10 rounded-full"
+      className="size-10 rounded-full md:ml-0 ml-auto"
     >
       {curTheme === "dark" ? <Moon /> : <Sun />}
     </Button>

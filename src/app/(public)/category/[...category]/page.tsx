@@ -13,8 +13,7 @@ import LoadingSpinerV2 from "@/components/ui/loading-spinner-v2";
 export default function CategoryPage() {
   const { category: categoryList }: { category: string[] } = useParams();
   const [category, group] = categoryList;
-  const isSubGroup = group ?? "all"; // 없으면 전체 다 가져오기
-  console.log(`${category}:${isSubGroup}`);
+  const isSubGroup = group ?? "all";
   const ref = useRef<HTMLDivElement>(null);
 
   const { data, fetchNextPage, isFetching, isPending } = useInfiniteQuery<{

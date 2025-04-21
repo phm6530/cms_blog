@@ -1,40 +1,39 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
+  CarouselApi,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { CategoryModel } from "@/type/blog-group";
 import { REVALIDATE } from "@/type/constants";
-import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default async function PostListNav({
+export default function ClientCaraousel({
   curCategory,
   selectGroup,
 }: {
   curCategory: string;
   selectGroup?: string;
 }) {
-  const response = await withFetchRevaildationAction<{
-    category: { [key: string]: CategoryModel };
-    count: number;
-  }>({
-    endPoint: "api/category",
-    options: {
-      cache: "force-cache",
-      next: {
-        tags: [REVALIDATE.POST.CATEGORY],
-      },
-    },
-  });
+  const [api, setApi] = useState<CarouselApi>();
+  const queryclient = useQueryClient();
+  const category = queryclient.getQueryData<{ [key: string]: CategoryModel }>([
+    REVALIDATE.POST.CATEGORY,
+  ]);
 
-  if (!response.success) {
-    notFound();
-  }
-  const { category } = response.result;
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+  }, [api]);
+
+  if (!category) return;
+
   const curNavList = category[curCategory];
   const activeStyle = (subGroupName?: string) => {
     const isActive = selectGroup === subGroupName || selectGroup === undefined;
@@ -50,12 +49,11 @@ export default async function PostListNav({
   return (
     <>
       <Carousel
-        className="md:hidden block"
         opts={{
           dragFree: true,
         }}
       >
-        <CarouselContent className="pl-5 md:pl-0 md:flex md:flex-wrap">
+        <CarouselContent className="pl-5 md:pl-0 md:flex md:flex-wrap md:gap-2">
           <CarouselItem className="basis-auto shrink-0">
             <Button variant={"outline"} asChild className={activeStyle("all")}>
               <Link href={`/category/${curCategory}`}>
@@ -93,35 +91,6 @@ export default async function PostListNav({
           <CarouselItem className="basis-auto shrink-0 w-4" />
         </CarouselContent>
       </Carousel>
-
-      <section className="w-full gap-3 hidden flex-wrap mb-6 md:flex">
-        <Button variant={"outline"} asChild className={activeStyle("all")}>
-          <Link href={`/category/${curCategory}`}>
-            전체보기{" "}
-            <span className="dark:text-indigo-300 dark:opacity-100 opacity-50">
-              ({curNavList.postCnt})
-            </span>
-          </Link>
-        </Button>
-
-        {curNavList.subGroups.map((group) => {
-          return (
-            <Button
-              variant={"outline"}
-              asChild
-              key={group.id}
-              className={activeStyle(group.subGroupName)}
-            >
-              <Link href={`/category/${curCategory}/${group.subGroupName}`}>
-                {group.subGroupName}{" "}
-                <span className="dark:text-indigo-300 dark:opacity-100 opacity-50">
-                  ({group.postCount})
-                </span>
-              </Link>
-            </Button>
-          );
-        })}
-      </section>
     </>
   );
 }

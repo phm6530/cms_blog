@@ -140,6 +140,11 @@
     animation: fadeIn 0.5s linear infinite alternate;
   }
 
+  .my-transtion {
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
+      left 0.75s cubic-bezier(0.77, 0.2, 0.05, 1);
+  }
+
   @keyframes opacity {
     0% {
       opacity: 0;
@@ -204,7 +209,7 @@
   }
 
   .grid-layout {
-    @apply max-w-[1100px] mx-auto w-[calc(100%-30px)];
+    @apply max-w-[1100px] mx-auto w-[calc(100%-2.5rem)] md:w-[calc(100%-30px)];
   }
 
   /*Mobile */
@@ -214,6 +219,14 @@
 
   .nav-pc {
     @apply flex-row!;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }
 
