@@ -64,6 +64,7 @@ export default function WirteForm({
     enableImage: true,
     enableYoutube: true,
   });
+
   const imgKey = useMemo(() => {
     return !!editData ? editData.blog_metadata.img_key : uuidv4();
   }, [editData]);
@@ -148,7 +149,8 @@ export default function WirteForm({
         <PostTitleField
           name="title"
           placeholder="제목을 기재해주세요"
-          className="p-0 mt-10"
+          className="p-0 mt-10 "
+          placeholderLg
         />
 
         <FormField

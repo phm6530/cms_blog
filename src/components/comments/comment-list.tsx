@@ -15,7 +15,7 @@ export default function CommentList({ postId }: { postId: string }) {
   const { data, isLoading } = useInfiniteQuery({
     queryKey: [`${REVALIDATE.COMMENT}:${postId}`],
     queryFn: async ({ pageParam }: { pageParam: number }) => {
-      const limit = 10; //댓글 일단 1개ㅐ씩씩
+      const limit = 10;
       const cursor = pageParam !== 0 ? pageParam : null;
 
       let baseEndpont = `api/comment/${postId}`;
@@ -41,7 +41,7 @@ export default function CommentList({ postId }: { postId: string }) {
       return response.result;
     },
     getNextPageParam: (lastPage) => {
-      console.log(lastPage);
+      void lastPage;
       return null;
     },
     initialPageParam: 0,

@@ -17,7 +17,7 @@
 import CommentSection from "@/components/comments/comment-section";
 import { Badge } from "@/components/ui/badge";
 import { BlogDetailResponse } from "@/type/blog.type";
-import { ENV, REVALIDATE } from "@/type/constants";
+import { REVALIDATE } from "@/type/constants";
 import { DateUtils } from "@/util/date-uill";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
@@ -33,6 +33,7 @@ import PostView from "../post-view";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 import PostVanner from "../post-vanner-bg";
+import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
 
 export async function generateMetadata({
   params,
@@ -61,7 +62,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${blog_metadata.post_title}`,
       description: `${blog_metadata.post_description}`,
-      images: `${ENV.IMAGE_URL_PUBLIC}${blog_metadata.thumbnail_url}`,
+      images: unsplashS3Mapping(blog_metadata.thumbnail_url) ?? "",
     },
   };
 }
@@ -126,7 +127,7 @@ export default async function PostDetail({
           </div>
           <h1
             className={cn(
-              "text-2xl md:text-4xl mb-5",
+              "text-2xl md:text-3xl mb-9",
               blog_metadata.thumbnail_url &&
                 " max-w-[900px] leading-10 md:leading-13 break-keep drop-shadow-md"
             )}

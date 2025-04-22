@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { Github, Hammer, MessageCircleMore } from "lucide-react";
 import CategoryWegiet from "./weiget/category-weiget";
 import VisitorWigetV2 from "./weiget/visitor-weiget-v2";
+import Link from "next/link";
 
 export default function SideArea() {
   return (
@@ -22,16 +23,21 @@ export default function SideArea() {
           </div>
         </div>
         <div className="flex items-center justify-center gap-2">
-          <Button variant={"ghost"}>
-            <MessageCircleMore />
+          <Button asChild variant={"ghost"}>
+            <Link href={"https://open.kakao.com/o/sq4skkTf"} target="_blank">
+              <MessageCircleMore />
+            </Link>
           </Button>
-          <Button variant={"ghost"}>
-            <Github />
+          <Button asChild variant={"ghost"}>
+            <Link href={"https://github.com/phm6530/"} target="_blank">
+              <Github />
+            </Link>
           </Button>
-          <Button variant={"ghost"}>
-            <Hammer />
+          <Button asChild variant={"ghost"}>
+            <Link href={"https://www.h-creations.com/"} target="_blank">
+              <Hammer />
+            </Link>
           </Button>
-          {/* <Button className="col-span-3 mt-5 py-5">글쓰기</Button> */}
         </div>
       </div>
 

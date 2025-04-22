@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { ENV } from "@/type/constants";
+import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
 import { ReactNode, useRef } from "react";
 
 export default function PostVanner({
@@ -25,8 +25,8 @@ export default function PostVanner({
         hasThumbnail
           ? {
               backgroundImage: `
-              linear-gradient(to top, rgba(20, 20, 20, 1), rgba(0, 0, 0, 0.1)),
-              url(${ENV.IMAGE_URL_PUBLIC}${thumbnail_url})
+              linear-gradient(to top, rgba(20, 20, 20, .9), rgba(20, 20, 20, .8), rgba(0, 0, 0, 0.1)),
+              url(${unsplashS3Mapping(thumbnail_url)})
             `,
               backgroundSize: "cover",
               backgroundPosition: "center",

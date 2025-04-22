@@ -51,8 +51,6 @@ export default function Keyword() {
     placeholderData: undefined,
   });
 
-  console.log(data);
-
   useEffect(() => {
     if (!ref.current) return;
 

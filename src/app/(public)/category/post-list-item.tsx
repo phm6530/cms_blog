@@ -8,6 +8,7 @@ import BadgeNew from "@/components/shared/badge-new";
 import { PostItemModel } from "@/type/post.type";
 import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
+import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
 
 export const PostItem = forwardRef<
   HTMLDivElement,
@@ -56,7 +57,7 @@ export const PostItem = forwardRef<
               )}
             </p>
           </Link>
-          <p className="line-clamp-2  text-xs md:text-[13px]! text-muted-foreground leading-5 tracking-tight md:mb-4">
+          <p className="line-clamp-2 text-xs md:text-[13px]! text-muted-foreground leading-5 tracking-tight md:mb-4 break-words">
             {post_description}
           </p>
           <p className="text-xs text-muted-foreground mt-1 flex gap-3">
@@ -75,7 +76,7 @@ export const PostItem = forwardRef<
         {thumbnail_url && (
           <div className="max-w-[150px] w-full ml-auto  aspect-[1/1] md:aspect-[16/11]  rounded-xl relative overflow-hidden ">
             <Image
-              src={`https://d33h8icwcso2tj.cloudfront.net/${thumbnail_url}`}
+              src={`${unsplashS3Mapping(thumbnail_url)}`}
               alt=""
               fill
               style={{ objectFit: "cover" }}

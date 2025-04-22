@@ -10,17 +10,21 @@ import {
 } from "@/components/ui/form";
 import { Button } from "./button";
 import { GlassWaterIcon, Upload } from "lucide-react";
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useFormContext } from "react-hook-form";
 import { wirtePostSchema } from "@/app/(protected)/write/schema";
 import { z } from "zod";
 import { uploadImageToS3 } from "@/util/s3-uploader";
+import { DialogCustom } from "@/app/(protected)/write/thumbnailSearch";
+import Image from "next/image";
+import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
 
 export function CheckField() {
   const ref = useRef<HTMLInputElement | null>(null);
   const { control, watch, setValue } =
     useFormContext<z.infer<typeof wirtePostSchema>>();
+  const [view, setView] = useState<boolean>(false);
 
   // imgKey..
   const imgKey = watch("imgKey");
@@ -64,57 +68,76 @@ export function CheckField() {
       }
     }
   };
+  const img = watch("thumbnail");
 
+  const url = unsplashS3Mapping(img);
+
+  console.log(url);
   return (
-    <FormField
-      control={control}
-      name="defaultThumbNail"
-      render={({ field }) => (
-        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow group">
-          <FormControl>
-            <Checkbox
-              checked={field.value === true}
-              onCheckedChange={field.onChange}
-            />
-          </FormControl>
-          <div className="space-y-1 leading-none">
-            <FormLabel className=" cursor-pointer group-hover:text-primary">
-              기본 썸네일 적용 ON / OFF
-            </FormLabel>
-            <FormDescription className="text-xs">
-              on 설정 시에 기존 설정한 썸네일이 반영됩니다.
-            </FormDescription>
-            <div className="flex gap-3 mt-5">
-              <Button variant={"outline"} className="text-xs cursor-pointer">
-                배너 삭제
-              </Button>{" "}
-              {/* hidden - file */}
-              <input
-                type="file"
-                name="file"
-                className="hidden"
-                ref={ref}
-                onChange={thumbNailUPloader}
+    <>
+      {/* 배너검색기 */}
+      <DialogCustom view={view} setView={setView} />
+      <FormField
+        control={control}
+        name="defaultThumbNail"
+        render={({ field }) => (
+          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow group">
+            <FormControl>
+              <Checkbox
+                checked={field.value === true}
+                onCheckedChange={field.onChange}
               />
-              <Button
-                variant={"outline"}
-                onClick={() => ref.current?.click()}
-                className="text-xs cursor-pointer"
-                disabled={field.value === true}
-              >
-                <Upload /> 배너 Img 변경하기
-              </Button>
-              <Button
-                disabled={field.value === true}
-                variant={"outline"}
-                className="text-xs cursor-pointer"
-              >
-                <GlassWaterIcon /> 썸네일 검색기
-              </Button>
-            </div>
-          </div>
-        </FormItem>
-      )}
-    />
+            </FormControl>
+            <div className="space-y-1 leading-none">
+              <FormLabel className=" cursor-pointer group-hover:text-primary">
+                기본 썸네일 적용 ON / OFF
+              </FormLabel>
+              <FormDescription className="text-xs">
+                on 설정 시에 기존 설정한 썸네일이 반영됩니다.
+              </FormDescription>
+              <div className="flex gap-3 mt-5">
+                <Button variant={"outline"} className="text-xs cursor-pointer">
+                  배너 삭제
+                </Button>{" "}
+                {/* hidden - file */}
+                <input
+                  type="file"
+                  name="file"
+                  className="hidden"
+                  ref={ref}
+                  onChange={thumbNailUPloader}
+                />
+                <Button
+                  variant={"outline"}
+                  onClick={() => ref.current?.click()}
+                  className="text-xs cursor-pointer"
+                  disabled={field.value === true}
+                >
+                  <Upload /> 배너 Img 변경하기
+                </Button>
+                <Button
+                  disabled={field.value === true}
+                  variant={"outline"}
+                  className="text-xs cursor-pointer"
+                  onClick={() => setView(true)}
+                >
+                  <GlassWaterIcon /> 배너 이미지 검색기
+                </Button>
+              </div>
+            </div>{" "}
+            {url && (
+              <div className="w-full max-w-[200px] aspect-[16/9]  ml-auto rounded-xl relative overflow-hidden">
+                <Image
+                  src={`${url}`}
+                  alt=""
+                  fill
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+            )}
+          </FormItem>
+        )}
+      />
+    </>
   );
 }

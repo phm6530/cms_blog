@@ -125,7 +125,7 @@
   }
   textarea::placeholder,
   input::placeholder {
-    @apply text-xs! md:text-sm;
+    @apply text-xs md:text-sm;
   }
 
   @keyframes fadeIn {

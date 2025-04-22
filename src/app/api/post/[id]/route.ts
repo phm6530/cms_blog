@@ -131,16 +131,27 @@ export async function DELETE(
       throw new Error("권한이 없습니다.");
     }
 
-    const rows = await db
+    const [rows] = await db
       .select()
       .from(blogMetaSchema)
-      .where(eq(blogMetaSchema.post_id, +id));
+      .where(eq(blogMetaSchema.post_id, +id))
+      .leftJoin(
+        pinnedPostSchema,
+        eq(pinnedPostSchema.post_id, blogMetaSchema.post_id)
+      );
 
     if (!rows) {
       throw new Error("이미 삭제되었거나 잘못된 요청입니다.");
     }
 
+    const { pinned_post } = rows;
+
     await db.delete(blogMetaSchema).where(eq(blogMetaSchema.post_id, +id));
+
+    //고정된 post면
+    if (!!pinned_post) {
+      revalidateTag(REVALIDATE.PINNED_POST);
+    }
 
     revalidateTag(`${REVALIDATE.POST.DETAIL}:${id}`); // 없애고
     revalidateTag(REVALIDATE.POST.LIST); // 리스트 초기화하고

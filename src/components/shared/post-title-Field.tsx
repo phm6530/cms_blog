@@ -8,15 +8,18 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import { cn } from "@/lib/utils";
 
 export default function PostTitleField({
   name,
   label,
   className,
+  placeholderLg,
   ...rest
 }: {
   name: string;
   label?: string;
+  placeholderLg?: boolean;
 } & TextareaHTMLAttributes<HTMLTextAreaElement>) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -48,7 +51,10 @@ export default function PostTitleField({
                 handleResizeHeight();
                 field.onChange(e);
               }}
-              className="text-2xl border-b pb-2 focus:outline-0"
+              className={cn(
+                "text-2xl border-b pb-2 focus:outline-0",
+                placeholderLg && "placeholder:text-2xl"
+              )}
               style={{
                 whiteSpace: "pre-wrap",
                 wordBreak: "break-word",

@@ -1,6 +1,7 @@
 // 관련게시물
-import { ENV, REVALIDATE } from "@/type/constants";
+import { REVALIDATE } from "@/type/constants";
 import { PostItemModel } from "@/type/post.type";
+import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import Image from "next/image";
 import Link from "next/link";
@@ -50,7 +51,7 @@ export default async function RelatedPosts({
                     {e.thumbnail_url ? (
                       <div className="w-full aspect-[16/8] relative">
                         <Image
-                          src={`${ENV.IMAGE_URL_PUBLIC}${e.thumbnail_url}`}
+                          src={`${unsplashS3Mapping(e.thumbnail_url)}`}
                           alt=""
                           fill
                           style={{ objectFit: "cover" }}

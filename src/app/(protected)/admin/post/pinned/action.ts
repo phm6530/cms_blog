@@ -15,6 +15,5 @@ export async function getPinnedPosts() {
     .select()
     .from(pinnedPostSchema)
     .orderBy(asc(pinnedPostSchema.order));
-  console.log("요청!");
   return rows;
 }
