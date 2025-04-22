@@ -6,6 +6,7 @@ import GuestBookItem from "./components/guestbook-item";
 import { CommentItemModel } from "@/lib/comment-bff";
 import CommentForm from "@/components/comments/comment-form";
 import MasonryLayout from "@/components/shared/MasonryLayout";
+import { User2, UsersRound } from "lucide-react";
 
 export default async function GuestBookPage() {
   const response = await withFetchRevaildationAction<CommentItemModel[]>({
@@ -24,7 +25,9 @@ export default async function GuestBookPage() {
 
   return (
     <div className="max-w-[800px] mx-auto pt-[50px]">
-      <span className="text-3xl  font-SUIT-Regular">GUEST BOOK</span>
+      <span className="text-2xl md:text-3xl  font-SUIT-Regular flex items-center gap-5">
+        GUEST BOOK
+      </span>
       <p className="pt-3 text-xs flex items-center gap-2 opacity-70 ">
         방문 감사합니다 !
       </p>

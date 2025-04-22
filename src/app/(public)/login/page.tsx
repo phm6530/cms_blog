@@ -46,10 +46,11 @@ export default function Page() {
     }
   };
   return (
-    <section className="max-w-[500px] mx-auto">
+    <section className="max-w-[500px] mx-auto py-10">
       <LoadingSpinnerWrapper
         loading={status === "loading" || status === "authenticated"}
       >
+        <h1 className="text-2xl mb-5 text-center">LOGIN</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <InputField name="email" placeholder="관리자 ID를 입력해주세요" />
@@ -70,9 +71,9 @@ export default function Page() {
             variant={"link"}
             className="text-zinc-600 hover:text-zinc-400"
           >
-            <Link href={"/register"} className="text-xs">
+            {/* <Link href={"/register"} className="text-xs">
               비밀번호를 잊으셨나요?
-            </Link>
+            </Link> */}
           </Button>
         </div>
       </LoadingSpinnerWrapper>

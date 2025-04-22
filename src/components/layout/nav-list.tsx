@@ -2,12 +2,13 @@
 
 import useMediaQuery from "@/hook/useMediaQuery";
 import { Menu, X } from "lucide-react";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { Button } from "../ui/button";
 
 export enum BREAKPOINT {
   SM = 640,
@@ -24,10 +25,21 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
   const [backDropTarget, setBackDropTarget] =
     useState<HTMLElement | null | null>(null);
 
+  const ref = useRef<string>(null);
+  const closeRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+
+  // 이전 비교하고 꺼버리기
+  useEffect(() => {
+    if (ref.current !== pathname) {
+      setToggle(false);
+    }
+    ref.current = pathname;
+  }, [ref, pathname]);
 
   useLayoutEffect(() => {
     const el = document.getElementById("backdrop-portal");
+
     if (el) {
       setBackDropTarget(el);
     }
@@ -56,7 +68,7 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
       <div
         className={cn(
           "fixed flex flex-col p-5 md:flex-row! bg-background top-0 gap-0 z-20 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto  ",
-          "md:static md:flex-row md:h-auto md:border-0 md:gap-5 md:p-0 delay-150 my-transtion",
+          "md:static md:flex-row md:h-auto md:border-0 md:gap-5 md:p-0  my-transtion  md:items-center",
           toggle ? "left-[100px]" : "left-full"
         )}
       >
@@ -76,7 +88,7 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
               className={cn(
                 "text-sm md:p-0 py-4 border-t md:border-t-0",
                 pathnameActive(e) &&
-                  "text-orange-400 md:border-b-2 border-orange-400"
+                  "text-indigo-400 md:border-b-2 border-indigo-400"
               )}
               key={e}
             >
@@ -96,19 +108,31 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
         </Link>
 
         {session.data?.user && (
-          <Link href={"/admin"} className="text-sm">
-            Admin
-          </Link>
+          <>
+            <Button asChild className="text-xs p-0" variant={"ghost"}>
+              <Link href={"/admin"}>관리자 페이지</Link>
+            </Button>
+            <Button
+              onClick={async () => await signOut()}
+              className="text-xs p-0"
+              variant={"ghost"}
+            >
+              로그아웃
+            </Button>
+          </>
         )}
       </div>
 
       {/* Portal */}
       {!isDesktop &&
         backDropTarget &&
-        toggle &&
         createPortal(
           <div
-            className="fixed w-full h-screen bg-black/50 backdrop-blur-sm z-10 animate-wiggle"
+            ref={closeRef}
+            className={cn(
+              "fixed w-full  h-screen hidden bg-black/50 backdrop-blur-sm z-10 animate-wiggle",
+              toggle && "block"
+            )}
             onClick={() => setToggle(false)}
           />,
           backDropTarget

@@ -32,7 +32,7 @@ export const PostItem = forwardRef<
       <div
         ref={ref}
         className={cn(
-          "transition-all  border-l-indigo-500 animate-fadein group grid-cols-1 cursor-pointer grid  gap-5 items-center py-3 border-b  last:border-b-0",
+          "transition-all  border-l-indigo-500 animate-wiggle group grid-cols-1 cursor-pointer grid  gap-5 items-center py-3 border-b  last:border-b-0",
           thumbnail_url && "grid-cols-[5fr_minmax(100px,_2fr)]",
           className
         )}

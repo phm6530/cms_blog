@@ -73,9 +73,9 @@ export default function PostLikeHandler({
   }, 1000);
 
   return (
-    <div className="text-center">
+    <div className="text-center  py-10">
       <Button
-        className="cursor-pointer rounded-full bg-transparent! "
+        className="cursor-pointer rounded-full bg-transparent!"
         onClick={() => {
           /**
            * opTimistic으로

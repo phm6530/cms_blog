@@ -123,8 +123,9 @@
   button {
     cursor: pointer;
   }
+  textarea::placeholder,
   input::placeholder {
-    @apply text-sm;
+    @apply text-xs! md:text-sm;
   }
 
   @keyframes fadeIn {
@@ -136,8 +137,21 @@
     }
   }
 
+  @keyframes close {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
   .animate-fadein {
     animation: fadeIn 0.5s linear infinite alternate;
+  }
+
+  .animate-close {
+    animation: close 0.5s 0.5s forwards;
   }
 
   .my-transtion {
@@ -233,6 +247,7 @@
 @theme {
   --animate-wiggle: wiggle 0.5s ease;
   --animate-fadein: fadeIn 0.5s ease;
+  --animate-close: close 0.5s 0.5s ease;
 
   @keyframes fadeIn {
     0% {

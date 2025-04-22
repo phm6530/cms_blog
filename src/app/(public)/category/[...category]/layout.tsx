@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PostListNav from "../post-list-nav";
 import SearchInput from "@/components/ui/search-input";
+import { auth } from "@/auth";
 
 export default async function Layout({
   params,
@@ -14,6 +15,7 @@ export default async function Layout({
   const { category: categoryList } = await params;
   const [category, group] = categoryList;
 
+  const session = await auth();
   return (
     <>
       <div className=" md:hidden md:mb-10 mb-4 mt-4">
@@ -44,12 +46,13 @@ export default async function Layout({
           )}
         </div>
 
-        {/* <span className="border-b border-foreground/40 w-[50px]"></span> */}
-        <Button className="ml-auto text-xs " variant={"ghost"}>
-          <Link className="flex" href={"/write"}>
-            글쓰기
-          </Link>
-        </Button>
+        {session?.user && (
+          <Button className="ml-auto text-xs " variant={"ghost"}>
+            <Link className="flex" href={"/write"}>
+              글쓰기
+            </Link>
+          </Button>
+        )}
       </div>
       {children}
     </>
