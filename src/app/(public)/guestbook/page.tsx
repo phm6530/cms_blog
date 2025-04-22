@@ -6,7 +6,6 @@ import GuestBookItem from "./components/guestbook-item";
 import { CommentItemModel } from "@/lib/comment-bff";
 import CommentForm from "@/components/comments/comment-form";
 import MasonryLayout from "@/components/shared/MasonryLayout";
-import { User2, UsersRound } from "lucide-react";
 
 export default async function GuestBookPage() {
   const response = await withFetchRevaildationAction<CommentItemModel[]>({
