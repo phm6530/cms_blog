@@ -40,10 +40,10 @@ export default async function PostListNav({
     const isActive = selectGroup === subGroupName || selectGroup === undefined;
 
     return cn(
-      "rounded-full text-xs border bg-transparent border-foreground dark:border dark:text-indigo-100",
+      "rounded-full text-xs border border-foreground dark:border border-0!",
       isActive
-        ? "text-primary dark:text-indigo-300 border-muted-foreground dark:border-indigo-400!"
-        : "border border-border"
+        ? "text-white bg-black dark:bg-indigo-500! border-muted-foreground dark:border-indigo-400!"
+        : "border-0 border-border bg-zinc-100"
     );
   };
 
@@ -60,7 +60,7 @@ export default async function PostListNav({
             <Button variant={"outline"} asChild className={activeStyle("all")}>
               <Link href={`/category/${curCategory}`}>
                 전체보기{" "}
-                <span className="dark:text-indigo-300 dark:opacity-100 opacity-50">
+                <span className="dark:text-indigo-100 dark:opacity-100 opacity-50 text-[10px]">
                   ({curNavList.postCnt})
                 </span>
               </Link>

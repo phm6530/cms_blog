@@ -34,6 +34,7 @@ export default function PostView({
       }
       setList(headings);
     }, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //

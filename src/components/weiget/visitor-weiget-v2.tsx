@@ -2,7 +2,6 @@
 import withClientFetch from "@/util/withClientFetch";
 
 import { useQuery } from "@tanstack/react-query";
-import { UserRound } from "lucide-react";
 
 export default function VisitorWigetV2() {
   // visitor...

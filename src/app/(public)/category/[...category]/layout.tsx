@@ -15,8 +15,8 @@ export default async function Layout({
 
   return (
     <>
-      <div className="h-24 md:h-auto! w-[calc(100%+39px)] relative -translate-x-[19px] md:mb-14">
-        <div className="w-full overflow-hidden left-0 absolute md:static! top-[20px]">
+      <div className="h-20 md:h-auto! w-[calc(100%+39px)] relative -translate-x-[19px] md:mb-14">
+        <div className="w-full overflow-hidden left-0 absolute md:static! top-[5px]">
           <PostListNav
             curCategory={decodeURIComponent(category)}
             selectGroup={
@@ -42,7 +42,7 @@ export default async function Layout({
         </div>
 
         {/* <span className="border-b border-foreground/40 w-[50px]"></span> */}
-        <Button className="ml-auto text-xs " variant={"outline"}>
+        <Button className="ml-auto text-xs " variant={"ghost"}>
           <Link className="flex" href={"/write"}>
             글쓰기
           </Link>

@@ -31,35 +31,40 @@ import RelatedPosts from "../related-posts";
 import { Suspense } from "react";
 import PostView from "../post-view";
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
 // import { HtmlContentNormalizer } from "@/util/baseurl-slice";
 
-// export async function generateMetadata({
-//   params: { id },
-// }: SurveyDetailTemplateParams): Promise<Metadata> {
-//   const response = await fetch(`${BASE_NEST_URL}/template/survey/${id}`, {
-//     cache: "force-cache",
-//     next: {
-//       tags: [`template-survey-${+id}`], // Tags
-//     },
-//   });
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const data = await withFetchRevaildationAction<BlogDetailResponse>({
+    endPoint: `api/post/${id}`,
+    options: {
+      cache: "force-cache",
+      next: {
+        tags: [`${REVALIDATE.POST.DETAIL}:${id}`],
+      },
+    },
+  });
 
-//   //존재하지 않는  페이지면 Redirect 시켜버림
-//   if (!response.ok) {
-//     notFound();
-//   }
+  if (!data || !data.result) {
+    notFound();
+  }
+  const { blog_metadata } = data.result;
 
-//   const data: FetchTemplateForm = await response.json();
-
-//   return {
-//     title: `[dopoll] ${data.title}`,
-//     description: data.description,
-//     openGraph: {
-//       title: `[dopoll] ${data.title}`,
-//       description: data.description,
-//       images: data.thumbnail,
-//     },
-//   };
-// }
+  return {
+    title: `${blog_metadata.post_title}`,
+    description: `${blog_metadata.post_description}`,
+    openGraph: {
+      title: `${blog_metadata.post_title}`,
+      description: `${blog_metadata.post_description}`,
+      images: `${ENV.IMAGE_URL_PUBLIC}${blog_metadata.thumbnail_url}`,
+    },
+  };
+}
 
 export default async function PostDetail({
   params,

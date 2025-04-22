@@ -7,10 +7,11 @@ import { HighlightKeyword } from "@/util/keyword-highlist";
 import BadgeNew from "@/components/shared/badge-new";
 import { PostItemModel } from "@/type/post.type";
 import { forwardRef } from "react";
+import { cn } from "@/lib/utils";
 
 export const PostItem = forwardRef<
   HTMLDivElement,
-  PostItemModel & { keyword?: string }
+  PostItemModel & { keyword?: string; className?: string }
 >(
   (
     {
@@ -23,13 +24,18 @@ export const PostItem = forwardRef<
       comment_count,
       keyword,
       like_cnt,
+      className,
     },
     ref
   ) => {
     return (
       <div
         ref={ref}
-        className="transition-all  border-l-indigo-500 animate-fadein group cursor-pointer grid grid-cols-[5fr_minmax(100px,_2fr)] gap-5 items-center py-3 border-b  last:border-b-0"
+        className={cn(
+          "transition-all  border-l-indigo-500 animate-fadein group grid-cols-1 cursor-pointer grid  gap-5 items-center py-3 border-b  last:border-b-0",
+          thumbnail_url && "grid-cols-[5fr_minmax(100px,_2fr)]",
+          className
+        )}
       >
         <div className="flex flex-col gap-2 py-1 md:py-3!">
           <div className="flex gap-3 mb-2">
@@ -42,7 +48,7 @@ export const PostItem = forwardRef<
             </div>
           </div>
           <Link href={`/post/${post_id}`}>
-            <p className="group-hover:underline text-base md:text-xl! tracking-tight">
+            <p className="group-hover:underline [text-shadow:_0px_0px_1px_rgba(0,0,0,1)] text-base md:text-xl! tracking-tight">
               {!!keyword ? (
                 <HighlightKeyword text={post_title} keyword={keyword} />
               ) : (
@@ -66,16 +72,16 @@ export const PostItem = forwardRef<
             </span>
           </p>
         </div>
-        <div className="max-w-[150px] w-full ml-auto  aspect-[1/1] md:aspect-[16/11]  rounded-xl relative overflow-hidden ">
-          {thumbnail_url && (
+        {thumbnail_url && (
+          <div className="max-w-[150px] w-full ml-auto  aspect-[1/1] md:aspect-[16/11]  rounded-xl relative overflow-hidden ">
             <Image
               src={`https://d33h8icwcso2tj.cloudfront.net/${thumbnail_url}`}
               alt=""
               fill
               style={{ objectFit: "cover" }}
             />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     );
   }

@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
-  CarouselApi,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
@@ -11,7 +10,6 @@ import { CategoryModel } from "@/type/blog-group";
 import { REVALIDATE } from "@/type/constants";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export default function ClientCaraousel({
   curCategory,
@@ -20,17 +18,17 @@ export default function ClientCaraousel({
   curCategory: string;
   selectGroup?: string;
 }) {
-  const [api, setApi] = useState<CarouselApi>();
+  // const [api, setApi] = useState<CarouselApi>();
   const queryclient = useQueryClient();
   const category = queryclient.getQueryData<{ [key: string]: CategoryModel }>([
     REVALIDATE.POST.CATEGORY,
   ]);
 
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-  }, [api]);
+  // useEffect(() => {
+  //   if (!api) {
+  //     return;
+  //   }
+  // }, [api]);
 
   if (!category) return;
 
@@ -39,10 +37,8 @@ export default function ClientCaraousel({
     const isActive = selectGroup === subGroupName || selectGroup === undefined;
 
     return cn(
-      "rounded-full text-xs border bg-transparent border-foreground dark:border dark:text-indigo-100",
-      isActive
-        ? "text-primary dark:text-indigo-300 border-muted-foreground dark:border-indigo-400!"
-        : "border border-border"
+      "rounded-full text-xs bg-transparent",
+      isActive ? "text-primary dark:text-indigo-300" : ""
     );
   };
 

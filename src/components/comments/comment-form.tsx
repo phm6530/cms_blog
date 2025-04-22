@@ -30,7 +30,7 @@ export default function CommentForm({
   postId,
 }: {
   targetSchema?: "comment" | "guestbook";
-  postId: string;
+  postId?: string;
   userData?: { email: string };
   parent_id?: null | number;
 }) {
@@ -131,14 +131,12 @@ export default function CommentForm({
               className="flex-1 min-h-[100px] w-full"
             />
             <div className="flex justify-between w-full">
-              <div className="pt-2 text-sm flex gap-3 col-span-6 order-1 md:order-none">
+              <div className="pt-2 text-sm flex gap-3 col-span-6 md:order-none">
                 <span className="text-[11px] opacity-45">
                   {form.watch("comment").length} / 1000 자
                 </span>
-
-                {/* <span className="text-destructive"> {errors[0]?.message}</span>*/}
               </div>
-              <Button className="py-3 px-5 h-auto!">댓글 작성</Button>
+              <Button className="py-3 px-5 h-auto! text-xs">댓글 작성</Button>
             </div>
           </div>
         </form>
