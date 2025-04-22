@@ -48,10 +48,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
       >
         <CarouselContent>
           {postList.map((data, index) => (
-            <CarouselItem
-              key={index}
-              className="w-[50px] basis-4/5 md:basis-1/1"
-            >
+            <CarouselItem key={index} className="w-[50px] basis-1/1">
               <div
                 className="w-full items-center cursor-pointer grid md:grid-cols-[6fr_4fr] border-border gap-10 p-10 bg-[#f9f7f4] dark:bg-[#252526] rounded-xl  flex-col  bg-cover bg-center overflow-hidden relative"
                 style={{
@@ -75,7 +72,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                     </Badge>
                   </div>
 
-                  <h1 className="text-shadow  leading-9 mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] text-2xl md:w-[60%] break-keep ">
+                  <h1 className="text-shadow  leading-9 mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] text-2xl  break-keep ">
                     {data.post_title}
                   </h1>
                   <p className="text-sm leading-6 z-10 mt-5 line-clamp-2 max-w-[300px] opacity-90 dark:text-[#cccccc]">

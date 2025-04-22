@@ -55,7 +55,7 @@ export default async function PostListNav({
           dragFree: true,
         }}
       >
-        <CarouselContent className="pl-5 md:pl-0 md:flex md:flex-wrap">
+        <CarouselContent className="pl-5 md:pl-0 md:flex md:flex-wrap ">
           <CarouselItem className="basis-auto shrink-0">
             <Button variant={"outline"} asChild className={activeStyle("all")}>
               <Link href={`/category/${curCategory}`}>
@@ -94,7 +94,7 @@ export default async function PostListNav({
         </CarouselContent>
       </Carousel>
 
-      <section className="w-full gap-3 hidden flex-wrap mb-6 md:flex">
+      <section className="w-full pl-5  gap-3 hidden flex-wrap mb-6 md:flex mt-10">
         <Button variant={"outline"} asChild className={activeStyle("all")}>
           <Link href={`/category/${curCategory}`}>
             전체보기{" "}

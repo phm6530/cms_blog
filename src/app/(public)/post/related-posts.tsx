@@ -41,9 +41,8 @@ export default async function RelatedPosts({
     <>
       {response.result?.list.length !== 0 && (
         <>
-          {" "}
           <h1 className="mb-4"> 관련 게시물</h1>
-          <section className="grid grid-cols-3 gap-10 mb-10">
+          <section className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-10 mb-10">
             {response.result?.list.map((e, idx) => {
               return (
                 <Link href={`${e.post_id}`} key={`${e.post_id}:${idx}`}>
@@ -62,8 +61,10 @@ export default async function RelatedPosts({
                     )}
 
                     <div className="flex flex-col gap-2">
-                      <h3 className="break-keep">{e.post_title}</h3>
-                      <p className="text-sm line-clamp-3 leading-6 text-muted-foreground">
+                      <h3 className="break-keep text-sm md:text-base">
+                        {e.post_title}
+                      </h3>
+                      <p className="text-xs md:text-sm line-clamp-2 leading-4 md:leading-6 text-muted-foreground">
                         {e.post_description}
                       </p>
                     </div>

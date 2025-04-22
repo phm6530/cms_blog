@@ -1,11 +1,7 @@
 import { REVALIDATE } from "@/type/constants";
-import { DateUtils } from "@/util/date-uill";
-import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 
+import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { PostItemModel } from "@/type/post.type";
-import { Heart, MessageCircle } from "lucide-react";
-import { Badge } from "../ui/badge";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import PostItem from "@/app/(public)/category/post-list-item";
 
@@ -30,7 +26,7 @@ export default async function RecentPost() {
   const firstObj = result.list;
 
   return (
-    <div className=" flex flex-col ">
+    <div className=" flex flex-col  md:w-full">
       <div className=" items-center gap-2 flex border-b pb-2 ">
         <h3>최신 글</h3>
       </div>

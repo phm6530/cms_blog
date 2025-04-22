@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PostListNav from "../post-list-nav";
+import SearchInput from "@/components/ui/search-input";
 
 export default async function Layout({
   params,
@@ -15,6 +16,9 @@ export default async function Layout({
 
   return (
     <>
+      <div className=" md:hidden md:mb-10 mb-4 mt-4">
+        <SearchInput name="keyword" />
+      </div>
       <div className="h-20 md:h-auto! w-[calc(100%+39px)] relative -translate-x-[19px] md:mb-14">
         <div className="w-full overflow-hidden left-0 absolute md:static! top-[5px]">
           <PostListNav
@@ -27,7 +31,6 @@ export default async function Layout({
           />
         </div>
       </div>
-
       <div className="grid grid-cols-[auto_1fr]  justify-between items-center gap-5 border-b pb-4 ">
         <div className="flex gap-2 items-end">
           <span className=" text-lg md:text-3xl font-Poppins">

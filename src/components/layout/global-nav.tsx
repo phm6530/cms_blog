@@ -4,7 +4,6 @@ import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction"
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import NavList from "./nav-list";
-import SearchInput from "../ui/search-input";
 
 export default async function GlobalNav() {
   const response = await withFetchRevaildationAction<{
@@ -37,9 +36,6 @@ export default async function GlobalNav() {
           <NavList categoryList={Object.keys(category)} />
         </div>
       </section>
-      <div className="grid-layout md:hidden md:mb-10 mt-[1rem]">
-        <SearchInput name="keyword" />
-      </div>
     </>
   );
 }

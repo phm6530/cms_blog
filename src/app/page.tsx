@@ -6,12 +6,13 @@ import RecentPost from "@/components/weiget/recent-post";
 export default function Home() {
   return (
     <>
-      <div className="col-span-2  col-start-2 flex flex-col gap-10 w-full">
+      <div className="col-span-2  col-start-2 flex flex-col gap-10 w-full  ">
         {/* 고정 */}
 
         {/* 최신글 */}
         <PinnedPosts />
         <RecentPost />
+
         {/* 방명록 */}
         <div className="grid md:grid-cols-2 gap-10 mb-10">
           <RecentComment />

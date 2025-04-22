@@ -28,13 +28,13 @@ export default async function RootLayout({
           <MouseClickEffect>
             <HeaderNav />
             <GlobalNav />
-            <main className="grid-layout">
-              <MainLayout>
-                <SideArea />
 
-                <div className="pt-5 md:pt-10 w-full ">{children}</div>
-              </MainLayout>
-            </main>
+            <MainLayout>
+              <SideArea />
+
+              <div className="w-full ">{children}</div>
+            </MainLayout>
+
             <Toaster />
             <Footer />
           </MouseClickEffect>

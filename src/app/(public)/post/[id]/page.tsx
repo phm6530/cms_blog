@@ -32,7 +32,7 @@ import { Suspense } from "react";
 import PostView from "../post-view";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
-// import { HtmlContentNormalizer } from "@/util/baseurl-slice";
+import PostVanner from "../post-vanner-bg";
 
 export async function generateMetadata({
   params,
@@ -95,35 +95,19 @@ export default async function PostDetail({
   }
   const hasThumbnail = Boolean(blog_metadata.thumbnail_url);
   return (
-    <main className=" w-full gap-6">
+    <div className=" w-full gap-6">
       {/* header */}
-      <section
-        className={cn(
-          "relative flex items-end",
-          hasThumbnail
-            ? "p-10 min-h-90 text-white outline outline-border rounded-2xl "
-            : "border-b"
-        )}
-        style={
-          hasThumbnail
-            ? {
-                backgroundImage: `
-            linear-gradient(to right, rgba(30, 30, 30, 1), rgba(30, 30, 30, .8),rgba(30, 30, 30, .8), rgba(0, 0, 0, 0.1)),
-            url(${ENV.IMAGE_URL_PUBLIC}${blog_metadata.thumbnail_url})
-          `,
-                backgroundSize: "cover",
-                backgroundPosition: "right",
-                backgroundRepeat: "no-repeat",
-              }
-            : undefined
-        }
+      <PostVanner
+        hasThumbnail={hasThumbnail}
+        thumbnail_url={blog_metadata.thumbnail_url}
       >
-        <div className="py-5 flex flex-col gap-5">
-          <div className="flex gap-2">
+        <div className="py-5 flex flex-col grid-layout relative  ">
+          <div className="flex gap-2 mt-auto mb-3">
             <Badge
-              variant={"secondary"}
+              variant={"outline"}
               className={cn(
-                blog_metadata.thumbnail_url && "bg-white text-black"
+                blog_metadata.thumbnail_url &&
+                  "bg-white text-black rounded-full"
               )}
             >
               {blog_sub_group.sub_group_name}
@@ -142,18 +126,18 @@ export default async function PostDetail({
           </div>
           <h1
             className={cn(
-              "text-3xl ",
+              "text-2xl md:text-4xl mb-5",
               blog_metadata.thumbnail_url &&
-                " max-w-[500px] leading-13 break-keep drop-shadow-md"
+                " max-w-[900px] leading-10 md:leading-13 break-keep drop-shadow-md"
             )}
             style={{
-              textShadow: "1px 2px 5px #000000",
+              textShadow: "0px 0px 1px",
             }}
           >
             {blog_metadata.post_title}
           </h1>
 
-          <div className="flex gap-2 pt- mt-auto">
+          <div className="flex gap-2 ">
             <div className="text-xs text-muted-foreground">
               {DateUtils.dateFormatKR(blog_metadata.created_at, "YYYY. MM. DD")}
             </div>
@@ -165,10 +149,10 @@ export default async function PostDetail({
             </div>
           </div>
         </div>
-      </section>
+      </PostVanner>
 
-      <div className="grid md:grid-cols-[auto_250px] pt-20 gap-5">
-        <section className=" gap-5">
+      <div className="grid md:grid-cols-[auto_250px] md:pt-20 gap-5 grid-layout">
+        <section className="gap-5 order-2 md:order-1">
           <div>
             <div className="w-full  border-b pb-10 relative">
               {/* TipTap Editor - custom lib */}
@@ -190,12 +174,13 @@ export default async function PostDetail({
               />
             </Suspense>
           </div>
-        </section>{" "}
+        </section>
         {/* 목차 포탈 */}
-        <div id="toc-target" className="sticky top-5 border-l" />
+        <div
+          id="toc-target"
+          className=" static md:sticky top-5 border-l-0 md:border-l order-1 md:order-2 pb-5"
+        />
       </div>
-    </main>
+    </div>
   );
-}
-{
 }

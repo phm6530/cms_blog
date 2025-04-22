@@ -49,7 +49,7 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
           className="block md:hidden cursor-pointer"
           onClick={() => setToggle((prev) => !prev)}
         >
-          <Menu size={30} />
+          <Menu size={20} />
         </div>
       )}
 
@@ -62,10 +62,10 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
       >
         {!isDesktop && (
           <span
-            className="md:hidden! flex  text-xs items-center mb-3 cursor-pointer"
+            className="md:hidden! flex  text-xs items-center mb-3 cursor-pointer ml-auto"
             onClick={() => setToggle(false)}
           >
-            닫기 <X />
+            close <X size={20} />
           </span>
         )}
         {/* cateogry list */}
@@ -74,7 +74,7 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
             <Link
               href={`/category/${e}`}
               className={cn(
-                "text-sm md:p-0 py-6 border-t md:border-t-0",
+                "text-sm md:p-0 py-4 border-t md:border-t-0",
                 pathnameActive(e) &&
                   "text-orange-400 md:border-b-2 border-orange-400"
               )}
@@ -88,7 +88,7 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
         <Link
           href={"/guestbook"}
           className={cn(
-            "text-sm md:p-0 py-6 border-t md:border-t-0",
+            "text-sm md:p-0 py-4 border-t md:border-t-0 border-b md:border-b-0",
             pathnameActive("guestbook") && ""
           )}
         >
