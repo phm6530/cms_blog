@@ -91,10 +91,12 @@ export default async function PostDetail({
   const { blog_metadata, blog_contents, blog_sub_group, category } =
     data.result;
 
-  if (!session && !blog_metadata.status) {
+  if (!session && blog_metadata.status === POST_STATUS.PRIVATE) {
     return <SelectPage />; //View에따라 공개여부
   }
+
   const hasThumbnail = Boolean(blog_metadata.thumbnail_url);
+
   return (
     <div className=" w-full gap-6">
       {/* header */}
