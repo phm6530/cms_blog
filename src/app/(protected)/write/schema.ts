@@ -1,3 +1,4 @@
+import { POST_STATUS } from "@/type/constants";
 import { z } from "zod";
 
 export const wirtePostSchema = z.object({
@@ -20,7 +21,7 @@ export const wirtePostSchema = z.object({
       }
     ),
   thumbnail: z.string().nullable(),
-  defaultThumbNail: z.boolean(),
+  defaultThumbNail: z.boolean().default(false),
   imgKey: z.string().min(1, { message: "필수항목 입니다" }),
-  view: z.boolean().default(true),
+  status: z.nativeEnum(POST_STATUS),
 });

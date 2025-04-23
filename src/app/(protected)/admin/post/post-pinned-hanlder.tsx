@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import LoadingSpinerV2 from "@/components/ui/loading-spinner-v2";
 import useThrottling from "@/hook/useThrottling";
 import { cn } from "@/lib/utils";
-import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
+import { HTTP_METHOD, POST_STATUS, REVALIDATE } from "@/type/constants";
 import withClientFetch from "@/util/withClientFetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Pin } from "lucide-react";
@@ -13,17 +13,18 @@ import { toast } from "sonner";
 export default function PostPinnedHandler({
   pin_id,
   post_id,
-  view,
+  status,
   isPending: viewPending,
   is_pinned,
 }: {
   pin_id: number | null;
   post_id: number;
-  view: boolean;
+  status: POST_STATUS;
   isPending: boolean;
   is_pinned: boolean;
 }) {
   const { throttle } = useThrottling();
+
   //옵티미스틱 용으로
   const [opVal, setOpval] = useState(is_pinned);
   const queryClient = useQueryClient();
@@ -74,12 +75,14 @@ export default function PostPinnedHandler({
         disabled={isPending || viewPending}
         className={cn(
           "text-xs opacity-50 min-w-[100px] justify-between",
-          view ? "opacity-100" : "bg-transparent! cursor-no-drop",
+          status === POST_STATUS.PUBLISHED
+            ? "opacity-100"
+            : "bg-transparent! cursor-no-drop",
           opVal && "border-indigo-400!"
         )}
         onClick={() =>
           throttle(async () => {
-            if (!view) return;
+            if (status === POST_STATUS.PRIVATE) return;
             mutate({
               pin_id: pin_id ?? undefined,
               post_id,

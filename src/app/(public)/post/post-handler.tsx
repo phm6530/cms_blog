@@ -49,6 +49,7 @@ export default function PostHandler({
       router.replace(`/category/${category}`);
     },
   });
+
   const { throttle } = useThrottling();
 
   const onDeleteHandler = async () => {

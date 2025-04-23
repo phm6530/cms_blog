@@ -12,18 +12,17 @@ import { wirtePostSchema } from "./schema";
 import { Button } from "@/components/ui/button";
 import { CheckField } from "@/components/ui/check-field";
 import { CategoryModel } from "@/type/blog-group";
-// import { MyEditor, useMyEditor } from "@squirrel309/my-testcounter";
-import React, { useMemo } from "react";
+import React, { useRef } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import PostTitleField from "@/components/shared/post-title-Field";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import withClientFetch from "@/util/withClientFetch";
 import useThrottling from "@/hook/useThrottling";
-import { ENV, HTTP_METHOD } from "@/type/constants";
+import { ENV, HTTP_METHOD, POST_STATUS } from "@/type/constants";
 import { v4 as uuidv4 } from "uuid";
 import transformHtmlToPlainText from "@/util/domParse";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { BlogDetailResponse } from "@/type/blog.type";
 import WirteSelectCategory from "./write-select-category";
 import SelectField from "@/components/ui/select-field";
@@ -34,29 +33,27 @@ import {
   useMyEditor,
 } from "@squirrel309/my-testcounter";
 import { uploadImageToS3 } from "@/util/s3-uploader";
-
-const defaultValues = {
-  title: "",
-  contents: "",
-
-  postGroup: {
-    category: null,
-    group: null,
-  },
-  thumbnail: null,
-  defaultThumbNail: false,
-  imgKey: "",
-  view: true,
-};
+import { WirteMode } from "./page";
+import { cn } from "@/lib/utils";
+import { DraftDialog } from "./draft-dialog";
+import { setDefaultValues } from "./defaultvalue-form";
 
 export default function WirteForm({
   postGroupItems,
   editData,
 }: {
   postGroupItems: { [key: string]: CategoryModel };
-  editData: BlogDetailResponse | undefined;
+  editData?: BlogDetailResponse;
 }) {
   const { throttle } = useThrottling();
+  const searchParams = useSearchParams();
+  const mode = searchParams.get("mode");
+  const queryClient = useQueryClient();
+  const isModeEdit = mode !== WirteMode.EDIT;
+  const imgKeyRef = useRef<string>(editData?.blog_metadata.img_key ?? uuidv4());
+  const router = useRouter();
+
+  /**---- 내 에디터 ---- */
   const { editor, configs, editorMode } = useMyEditor({
     editorMode: "editor",
     placeholder: "내용을 기재해주세요",
@@ -65,36 +62,20 @@ export default function WirteForm({
     enableYoutube: true,
   });
 
-  const imgKey = useMemo(() => {
-    return !!editData ? editData.blog_metadata.img_key : uuidv4();
-  }, [editData]);
-
-  const rotuer = useRouter();
-
+  /**---- 초기 Form 세팅 ---- */
   const form = useForm<z.infer<typeof wirtePostSchema>>({
-    defaultValues: !!editData
-      ? {
-          ...defaultValues,
-          title: editData.blog_metadata.post_title,
-          contents: editData.blog_contents.contents,
-          view: editData.blog_metadata.view,
-          postGroup: {
-            category: editData.blog_metadata.category_id,
-            group: editData.blog_metadata.sub_group_id,
-          },
-          thumbnail: editData.blog_metadata.thumbnail_url,
-          imgKey,
-        }
-      : { ...defaultValues, imgKey },
+    defaultValues: { ...setDefaultValues(editData), imgKey: imgKeyRef.current },
     resolver: zodResolver(wirtePostSchema),
   });
 
-  // mutate
+  /**---- 제출 ---- */
   const { mutate } = useMutation({
     mutationFn: async (
       body: z.infer<typeof wirtePostSchema> & { description: string }
     ) => {
-      return await withClientFetch<{ result: { postId: string } }>({
+      return await withClientFetch<{
+        result: { postId: string; postStatus: POST_STATUS };
+      }>({
         endPoint: !!editData
           ? `api/post/${editData.blog_metadata.post_id}`
           : "api/post",
@@ -107,44 +88,84 @@ export default function WirteForm({
           : body,
       });
     },
-    onSuccess: (data) => {
-      toast.success("글이 등록되었음");
-      rotuer.push(
-        `/post/${
-          !editData ? data.result.postId : editData.blog_metadata.post_id
-        }`
-      );
+    onSuccess: async (data) => {
+      console.log(data);
+      if (data.result.postStatus === POST_STATUS.PUBLISHED) {
+        toast.success("글이 등록되었음");
+        router.push(
+          `/post/${
+            !editData ? data.result.postId : editData.blog_metadata.post_id
+          }`
+        );
+      } else if (data.result.postStatus === POST_STATUS.DRAFT) {
+        toast.success("임시 저장 완료 되었습니다.");
+        router.replace(`/write?postId=${data.result.postId}&mode=draft`);
+        await queryClient.invalidateQueries({ queryKey: ["DRAFT_LIST"] });
+      }
     },
   });
 
-  // submit Handler
+  /**---- submitHandler ---- */
   const onSubmitHandler = (data: z.infer<typeof wirtePostSchema>) => {
     const reqData = {
       ...data,
       description: transformHtmlToPlainText({ html: data.contents }), // 추출해서 descritpion화 시키기
     };
+    reqData.contents = HtmlContentNormalizer.getPost(reqData.contents);
+    throttle(async () => mutate(reqData), 1000);
+  };
+
+  /**---- 임시저장은 유효성 검사 제외 ---- */
+  const draftSave = () => {
+    const data = form.getValues(); //현재 그냥 반영
+    const reqData = {
+      ...data,
+      description: transformHtmlToPlainText({ html: data.contents }),
+    };
+
+    reqData.postGroup = {
+      category: reqData.postGroup.category ?? null,
+      group: reqData.postGroup.group ?? null,
+    };
 
     reqData.contents = HtmlContentNormalizer.getPost(reqData.contents);
+    reqData.status = POST_STATUS.DRAFT; // 임시저장 상태 전달
     throttle(async () => mutate(reqData), 1000);
   };
 
   return (
     <Form {...form}>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 animate-wiggle">
         <div className="flex items-center gap-3">
           <WirteSelectCategory groups={postGroupItems} />
           <SelectField
-            name="view"
+            name="status"
             valueArr={
               [
-                { value: true, label: "공개" },
-                { value: false, label: "비 공개" },
+                { value: POST_STATUS.PUBLISHED, label: "공개" },
+                { value: POST_STATUS.PRIVATE, label: "비 공개" },
               ] as const
             }
-            defaultValue={true}
+            defaultValue={POST_STATUS.PUBLISHED}
           />
         </div>
+
         {!!form.watch("postGroup") && <CheckField />}
+
+        <MyToolbar
+          editor={editor}
+          {...configs}
+          uploadCallback={async (event: File) => {
+            const form = new FormData();
+            form.append("file", event);
+            const imgPath = await uploadImageToS3(form, imgKeyRef.current);
+
+            if (!imgPath.success) {
+              throw new Error(imgPath.message);
+            }
+            return `${ENV.IMAGE_URL_PUBLIC}${imgPath.url}`;
+          }}
+        />
 
         <PostTitleField
           name="title"
@@ -159,20 +180,6 @@ export default function WirteForm({
           render={({ field }) => {
             return (
               <FormItem>
-                <MyToolbar
-                  editor={editor}
-                  {...configs}
-                  uploadCallback={async (event: File) => {
-                    const form = new FormData();
-                    form.append("file", event);
-                    const imgPath = await uploadImageToS3(form, imgKey);
-
-                    if (!imgPath.success) {
-                      throw new Error(imgPath.message);
-                    }
-                    return `${ENV.IMAGE_URL_PUBLIC}${imgPath.url}`;
-                  }}
-                />
                 <FormControl>
                   <MyEditorContent
                     editor={editor}
@@ -187,27 +194,31 @@ export default function WirteForm({
           }}
         />
       </div>
-      <div className="flex gap-2 py-3 justify-end">
-        <Button
-          className="p-6 mr-auto"
-          variant={"outline"}
-          type={"button"}
-          // onClick={() => getList()}
-        >
-          설정
-        </Button>
+      <div className="flex gap-2 py-3 justify-between">
+        {/* --임시 저장은 새글 작성시에만 가능 불러오기도 안되게 막음 -- */}
+        {isModeEdit && (
+          <>
+            <Button
+              className="p-6 text-xs ml-auto"
+              variant={"outline"}
+              type={"button"}
+            >
+              <span
+                className="border-r pr-4 hover:underline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  draftSave();
+                }}
+              >
+                임시저장
+              </span>
+              <DraftDialog />
+            </Button>
+          </>
+        )}
 
         <Button
-          className="p-6"
-          variant={"outline"}
-          type={"button"}
-          // onClick={form.handleSubmit(onSubmitHandler)}
-        >
-          임시저장
-        </Button>
-
-        <Button
-          className="p-6"
+          className={cn("p-6 text-xs", !isModeEdit && "ml-auto")}
           type={"submit"}
           onClick={form.handleSubmit(onSubmitHandler)}
         >

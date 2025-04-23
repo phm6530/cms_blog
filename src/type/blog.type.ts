@@ -1,3 +1,5 @@
+import { POST_STATUS } from "./constants";
+
 export interface BlogMetadata {
   post_id: number;
   post_title: string;
@@ -7,7 +9,7 @@ export interface BlogMetadata {
   sub_group_id: number;
   author_id: number;
   thumbnail_url: string;
-  view: boolean;
+  status: POST_STATUS;
   img_key: string;
   category_id: number;
   like_cnt: number;

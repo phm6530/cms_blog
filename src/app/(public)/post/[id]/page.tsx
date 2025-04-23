@@ -17,7 +17,7 @@
 import CommentSection from "@/components/comments/comment-section";
 import { Badge } from "@/components/ui/badge";
 import { BlogDetailResponse } from "@/type/blog.type";
-import { REVALIDATE } from "@/type/constants";
+import { POST_STATUS, REVALIDATE } from "@/type/constants";
 import { DateUtils } from "@/util/date-uill";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
@@ -91,7 +91,7 @@ export default async function PostDetail({
   const { blog_metadata, blog_contents, blog_sub_group, category } =
     data.result;
 
-  if (!session && !blog_metadata.view) {
+  if (!session && !blog_metadata.status) {
     return <SelectPage />; //View에따라 공개여부
   }
   const hasThumbnail = Boolean(blog_metadata.thumbnail_url);
@@ -102,7 +102,12 @@ export default async function PostDetail({
         hasThumbnail={hasThumbnail}
         thumbnail_url={blog_metadata.thumbnail_url}
       >
-        <div className="py-5 flex flex-col grid-layout relative  ">
+        <div
+          className={cn(
+            "py-5 flex flex-col grid-layout relative",
+            !blog_metadata.thumbnail_url && "border-b"
+          )}
+        >
           <div className="flex gap-2 mt-auto mb-3">
             <Badge
               variant={"outline"}
@@ -121,7 +126,8 @@ export default async function PostDetail({
                 New
               </Badge>
             )}
-            {!blog_metadata.view && (
+            {/* 비공개 시에만... */}
+            {blog_metadata.status === POST_STATUS.PRIVATE && (
               <Badge className="rounded-full">비공개</Badge>
             )}
           </div>
@@ -152,7 +158,7 @@ export default async function PostDetail({
         </div>
       </PostVanner>
 
-      <div className="grid md:grid-cols-[auto_250px] md:pt-20 gap-5 grid-layout">
+      <div className="grid md:grid-cols-[auto_250px]  gap-5 grid-layout pt-20">
         <section className="gap-5 order-2 md:order-1">
           <div>
             <div className="w-full  border-b pb-10 relative">

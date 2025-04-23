@@ -9,7 +9,7 @@ export type PostFormData = {
   thumbnail: string | null;
   defaultThumbNail: boolean;
   imgKey: string;
-  view: boolean;
+  status: POST_STATUS;
   pinnedPost?: boolean;
 };
 
@@ -21,7 +21,8 @@ import { blogMetaSchema } from "@/db/schema/blog-metadata";
 import { blogSubGroup, categorySchema } from "@/db/schema/category";
 import { commentSchema } from "@/db/schema/comments";
 import { pinnedPostSchema } from "@/db/schema/post/pinned-post";
-import { REVALIDATE } from "@/type/constants";
+import { POST_STATUS, REVALIDATE } from "@/type/constants";
+import { apiHandler } from "@/util/api-hanlder";
 import { WithTransaction } from "@/util/withTransaction";
 import { and, desc, eq, ilike, lt, not, sql } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
@@ -54,7 +55,7 @@ export async function GET(req: NextRequest) {
       ? ilike(blogMetaSchema.post_title, `%${searchKeyword}%`)
       : undefined,
     // session 있으면 비밀글도 가져오기
-    !!session ? undefined : eq(blogMetaSchema.view, true),
+    !!session ? undefined : eq(blogMetaSchema.status, "published"),
     !!cursor ? lt(blogMetaSchema.post_id, cursor) : undefined,
     !!curPostId ? not(eq(blogMetaSchema.post_id, +curPostId)) : undefined
   );
@@ -146,12 +147,12 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const session = await auth();
   const body: PostFormData = await req.json();
+  const DRAFT_LIMIT = 10;
 
-  try {
+  return await apiHandler(async () => {
     if (!session?.user) {
       throw new Error("권한이 없습니다.");
     }
-
     const resultTx = await WithTransaction.run(async (tx) => {
       const [user] = await tx
         .select()
@@ -162,21 +163,38 @@ export async function POST(req: NextRequest) {
         throw new Error("없는 사용자 입니다.");
       }
 
+      /** 임시 저장일시에는 임시저장 목록 10개 제한 */
+      if (body.status === POST_STATUS.DRAFT) {
+        const [row] = await tx
+          .select({ cnt: sql<number>`COUNT(*)` })
+          .from(blogMetaSchema)
+          .where(eq(blogMetaSchema.status, POST_STATUS.DRAFT));
+
+        if (+row.cnt >= DRAFT_LIMIT) {
+          throw new Error("임시저장은 10개 초과 불가합니다.");
+        }
+      }
+
+      console.log(body);
+
       const [rows] = await tx
         .insert(blogMetaSchema)
         .values({
           post_title: body.title,
           post_description: body.description,
-          category_id: +body.postGroup.category,
-          sub_group_id: +body.postGroup.group,
+          category_id: body.postGroup.category
+            ? +body.postGroup.category
+            : null,
+          sub_group_id: body.postGroup.category ? +body.postGroup.group : null,
           author_id: user.id,
           img_key: body.imgKey,
-          view: body.view,
+          status: body.status,
           thumbnail_url: body.thumbnail,
         })
         .returning({
           id: blogMetaSchema.post_id,
           categoryName: blogMetaSchema.sub_group_id,
+          status: blogMetaSchema.status,
         });
 
       await tx.insert(blogContentsSchema).values({
@@ -184,26 +202,21 @@ export async function POST(req: NextRequest) {
         contents: body.contents,
       });
 
+      console.log(rows);
+
       return {
         postId: +rows.id,
         categoryName: rows.categoryName,
+        status: rows.status,
       };
     });
 
     revalidateTag(REVALIDATE.POST.LIST);
     revalidateTag(REVALIDATE.POST.CATEGORY);
 
-    return NextResponse.json({
-      success: true,
-      result: {
-        postId: resultTx.postId,
-      },
-    });
-  } catch (err) {
-    if (err instanceof Error)
-      return NextResponse.json(
-        { success: false, message: err.message },
-        { status: 500 }
-      );
-  }
+    return {
+      postId: resultTx.postId,
+      postStatus: resultTx.status,
+    };
+  });
 }

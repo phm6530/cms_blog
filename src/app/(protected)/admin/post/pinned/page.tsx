@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { REVALIDATE } from "@/type/constants";
 import { PinnedPostModel } from "@/type/post.type";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GripVertical } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { replaceSortAction } from "./sort-action";
@@ -17,6 +17,7 @@ export default function PinnedPage() {
   const [overIdx, setOverIdx] = useState<number | null>(null);
   const [list, setList] = useState<Array<PinnedPostModel> | null>(null);
   const prevList = useRef<Array<PinnedPostModel> | null>(null);
+  const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationFn: async (
@@ -30,6 +31,9 @@ export default function PinnedPage() {
     onSuccess: () => {
       toast.success("정렬이 변경되었습니다.");
       prevList.current = list; // 이전 버전을 업데이트
+      queryClient.invalidateQueries({
+        queryKey: [REVALIDATE.PINNED_POST],
+      });
     },
   });
 

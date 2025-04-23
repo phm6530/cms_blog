@@ -2,7 +2,7 @@
 
 import { Form } from "@/components/ui/form";
 import SelectField from "@/components/ui/select-field";
-import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
+import { HTTP_METHOD, POST_STATUS, REVALIDATE } from "@/type/constants";
 import withClientFetch from "@/util/withClientFetch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -10,28 +10,30 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const viewSchema = z.object({
-  view: z.boolean(),
+export const statusSchema = z.object({
+  status: z.nativeEnum(POST_STATUS).refine((val) => val !== POST_STATUS.DRAFT, {
+    message: "임시 저장 상태는 선택할 수 없습니다.",
+  }),
 });
 
+/** 임시저장은 여기서 건들 수 없음 status */
 export default function PostViewHandler({
   postId,
-  defaultView,
+  status,
   pinId,
   setPendingHandler,
 }: {
   postId: number;
-  defaultView: boolean;
+  status: Exclude<POST_STATUS, POST_STATUS.DRAFT>;
   pinId: number | null;
   setPendingHandler: (e: boolean) => void;
 }) {
   const queryClient = useQueryClient();
-
   const form = useForm({
     defaultValues: {
-      view: defaultView,
+      status,
     },
-    resolver: zodResolver(viewSchema),
+    resolver: zodResolver(statusSchema),
   });
 
   const { mutateAsync, isPending } = useMutation({
@@ -40,8 +42,9 @@ export default function PostViewHandler({
      * @param data Pin Id 존재하면 고정되어있는 콘텐츠임
      * @returns
      */
+
     mutationFn: async (
-      data: z.infer<typeof viewSchema> & { pinnedId: number | null }
+      data: z.infer<typeof statusSchema> & { pinnedId: number | null }
     ) => {
       return await withClientFetch<{ success: boolean }>({
         endPoint: `api/admin/post/view/${postId}`,
@@ -61,11 +64,12 @@ export default function PostViewHandler({
     },
   });
 
-  const onChangeHandler = async (val: string) => {
+  const onChangeHandler = async (
+    status: Exclude<POST_STATUS, POST_STATUS.DRAFT>
+  ) => {
     try {
-      const parsed = val === "true";
-      form.setValue("view", parsed);
-      const isValid = await form.trigger("view");
+      form.setValue("status", status);
+      const isValid = await form.trigger("status");
 
       if (!isValid) return false;
 
@@ -78,7 +82,7 @@ export default function PostViewHandler({
         return false;
       }
       setPendingHandler(true);
-      const result = await mutateAsync({ view: parsed, pinnedId: pinId });
+      const result = await mutateAsync({ status, pinnedId: pinId });
       return result.success;
     } catch (err: any) {
       void err;
@@ -90,16 +94,16 @@ export default function PostViewHandler({
     <>
       <Form {...form}>
         <SelectField
-          name="view"
+          name="status"
           loading={isPending}
           onValueChange={onChangeHandler}
           valueArr={
             [
-              { value: true, label: "공개" },
-              { value: false, label: "비 공개" },
+              { value: POST_STATUS.PUBLISHED, label: "공개" },
+              { value: POST_STATUS.PRIVATE, label: "비 공개" },
             ] as const
           }
-          defaultValue={true}
+          defaultValue={status}
         />
       </Form>
     </>

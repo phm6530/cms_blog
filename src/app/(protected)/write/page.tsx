@@ -6,8 +6,9 @@ import WirteForm from "./write-form";
 import { BlogDetailResponse } from "@/type/blog.type";
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-enum WirteMode {
+export enum WirteMode {
   EDIT = "edit",
+  DRAFT = "draft",
 }
 
 export default async function Page(props: {
@@ -17,8 +18,10 @@ export default async function Page(props: {
   const searchParams = await props.searchParams;
   const postId = searchParams.postId;
   const mode = searchParams.mode;
-  let tempData: BlogDetailResponse | undefined = undefined;
 
+  let editData: BlogDetailResponse | undefined = undefined;
+
+  // 카테고리
   const response = await withFetchRevaildationAction<{
     category: { [key: string]: CategoryModel };
     count: number;
@@ -32,8 +35,8 @@ export default async function Page(props: {
     },
   });
 
+  // 수정일 때 Data 가져오기
   if (mode === WirteMode.EDIT) {
-    // 수저일떄
     const editResponse = await withFetchRevaildationAction<BlogDetailResponse>({
       endPoint: `api/post/${postId}`,
       options: {
@@ -47,8 +50,7 @@ export default async function Page(props: {
     if (!editResponse.success) {
       notFound();
     }
-
-    tempData = editResponse.result;
+    editData = editResponse.result;
   }
 
   if (!response.success) {
@@ -59,7 +61,7 @@ export default async function Page(props: {
 
   return (
     <>
-      <WirteForm postGroupItems={category} editData={tempData} />{" "}
+      <WirteForm postGroupItems={category} {...(editData && { editData })} />
     </>
   );
 }

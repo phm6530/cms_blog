@@ -67,7 +67,7 @@ export async function PUT(
   try {
     if (!session?.user) throw new Error("권한이 없습니다.");
 
-    await WithTransaction.run(async (tx) => {
+    const resultTx = await WithTransaction.run(async (tx) => {
       // 사용자 조회
       const [user] = await tx
         .select()
@@ -77,19 +77,26 @@ export async function PUT(
       if (!user) throw new Error("없는 사용자입니다.");
 
       // 기존 메타데이터 수정
-      await tx
+      const [rows] = await tx
         .update(blogMetaSchema)
         .set({
           post_title: body.title,
           post_description: body.description,
-          category_id: +body.postGroup.category,
-          sub_group_id: +body.postGroup.group,
+          category_id: body.postGroup.category
+            ? +body.postGroup.category
+            : null,
+          sub_group_id: body.postGroup.group ? +body.postGroup.group : null,
           img_key: body.imgKey,
           update_at: new Date(),
-          view: body.view,
+          status: body.status,
           thumbnail_url: body.thumbnail,
         })
-        .where(eq(blogMetaSchema.post_id, +id));
+        .where(eq(blogMetaSchema.post_id, +id))
+        .returning({
+          id: blogMetaSchema.post_id,
+          categoryName: blogMetaSchema.sub_group_id,
+          status: blogMetaSchema.status,
+        });
 
       // 본문 내용도 수정
       await tx
@@ -98,6 +105,12 @@ export async function PUT(
           contents: body.contents,
         })
         .where(eq(blogContentsSchema.post_id, +id));
+
+      return {
+        postId: +rows.id,
+        categoryName: rows.categoryName,
+        status: rows.status,
+      };
     });
 
     //고정콘텐츠 일경우는 메인 쪽도 초기화
@@ -109,7 +122,13 @@ export async function PUT(
     revalidateTag(REVALIDATE.POST.LIST);
     revalidateTag(REVALIDATE.POST.CATEGORY);
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      result: {
+        postId: resultTx.postId,
+        postStatus: resultTx.status,
+      },
+    });
   } catch (err) {
     if (err instanceof Error)
       return NextResponse.json(
@@ -130,6 +149,8 @@ export async function DELETE(
     if (!session?.user) {
       throw new Error("권한이 없습니다.");
     }
+
+    console.log(id);
 
     const [rows] = await db
       .select()

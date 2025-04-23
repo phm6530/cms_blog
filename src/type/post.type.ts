@@ -1,3 +1,5 @@
+import { POST_STATUS } from "./constants";
+
 export type PostItemModel = {
   post_id: number;
   post_title: string;
@@ -8,7 +10,7 @@ export type PostItemModel = {
   thumbnail_url: string;
   sub_group_name: string;
   like_cnt: number;
-  view: boolean;
+  status: POST_STATUS;
   comment_count: number;
 };
 

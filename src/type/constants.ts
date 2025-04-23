@@ -36,3 +36,9 @@ export enum HTTP_METHOD {
   PUT = "PUT",
   PATCH = "PATCH",
 }
+
+export enum POST_STATUS {
+  DRAFT = "draft",
+  PUBLISHED = "published",
+  PRIVATE = "private",
+}

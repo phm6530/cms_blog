@@ -6,11 +6,12 @@ import { DateUtils } from "@/util/date-uill";
 import Link from "next/link";
 import PostPinnedHandler from "../post/post-pinned-hanlder";
 import { useState } from "react";
+import { POST_STATUS } from "@/type/constants";
 
 export default function PostListItem({
   post_id,
   post_title,
-  view,
+  status,
   sub_group_name,
   created_at,
   pin,
@@ -20,8 +21,6 @@ export default function PostListItem({
   const setPendingHandler = (e: boolean) => {
     setPending(e);
   };
-
-  console.log(isPending);
 
   return (
     <article className="flex p-4 hover:border-indigo-400 items-center justify-between">
@@ -41,12 +40,13 @@ export default function PostListItem({
         <PostPinnedHandler
           pin_id={pin.pin_id}
           post_id={post_id}
-          view={view}
+          status={status}
           is_pinned={pin.is_pinned}
           isPending={isPending}
         />
+        {/* ----- 임시저장은 관리 안함으로 단언하기 ----- */}
         <PostViewHandler
-          defaultView={view}
+          status={status as Exclude<POST_STATUS, POST_STATUS.DRAFT>}
           postId={post_id}
           pinId={pin.pin_id}
           setPendingHandler={setPendingHandler}

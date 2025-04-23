@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { db } from "@/db/db";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
 import { pinnedPostSchema } from "@/db/schema/post/pinned-post";
-import { REVALIDATE } from "@/type/constants";
+import { POST_STATUS, REVALIDATE } from "@/type/constants";
 import { apiHandler } from "@/util/api-hanlder";
 import { eq } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
@@ -21,13 +21,13 @@ export async function PATCH(
       throw new Error("권한이 없거나 잘못된 요청입니다.");
     }
 
-    const test = await db
+    const rows = await db
       .update(blogMetaSchema)
-      .set({ view: body.view })
+      .set({ status: body.status })
       .where(eq(blogMetaSchema.post_id, +id))
-      .returning({ view: blogMetaSchema.view });
+      .returning({ view: blogMetaSchema.status });
 
-    if (!body.view && body.pinnedId) {
+    if (body.status === POST_STATUS.PRIVATE && body.pinnedId) {
       await db
         .delete(pinnedPostSchema)
         .where(eq(pinnedPostSchema.id, body.pinnedId));
@@ -37,6 +37,6 @@ export async function PATCH(
     revalidateTag(`${REVALIDATE.POST.DETAIL}:${id}`); //해당 Post
     revalidateTag(REVALIDATE.POST.LIST); //리스트
     revalidateTag(REVALIDATE.POST.CATEGORY); // 카테고리
-    return test;
+    return rows;
   });
 }

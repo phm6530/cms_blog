@@ -37,7 +37,7 @@ export async function GET() {
         commentSchema,
         eq(commentSchema.post_id, blogMetaSchema.post_id)
       )
-      .where(eq(blogMetaSchema.view, true))
+      .where(eq(blogMetaSchema.status, "published"))
       .groupBy(
         pinnedPostSchema.id,
         pinnedPostSchema.post_id,
