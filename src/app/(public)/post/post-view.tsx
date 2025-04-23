@@ -68,11 +68,7 @@ export default function PostView({
                 className="text-sm hover:underline text-left  grid grid-cols-[auto_1fr] gap-2 items-start cursor-pointer"
                 onClick={() => scrollToHeading(item.id)}
               >
-                <span
-                  className={cn(
-                    prefix !== "text-xs" && "text-xs text-indigo-300"
-                  )}
-                >
+                <span className={cn(prefix !== "text-xs" && "text-xs ")}>
                   {currentPrefix}.
                 </span>
                 <span

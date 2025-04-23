@@ -135,7 +135,7 @@ export default async function PostDetail({
           </div>
           <h1
             className={cn(
-              "text-2xl md:text-3xl mb-9",
+              "text-2xl md:text-4xl mb-9",
               blog_metadata.thumbnail_url &&
                 " max-w-[900px] leading-10 md:leading-13 break-keep drop-shadow-md"
             )}
@@ -147,12 +147,12 @@ export default async function PostDetail({
           </h1>
 
           <div className="flex gap-2 ">
-            <div className="text-xs text-muted-foreground">
+            <div className="text-sm text-muted-foreground">
               {DateUtils.dateFormatKR(blog_metadata.created_at, "YYYY. MM. DD")}
             </div>
             <div className="flex gap-3 items-center">
               <Eye size={18} className="opacity-60" />{" "}
-              <span className="text-xs opacity-60">
+              <span className="text-sm opacity-60">
                 {readingTImeKO(blog_contents.contents)}분 이내 소요
               </span>
             </div>

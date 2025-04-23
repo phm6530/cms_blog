@@ -117,7 +117,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
               key={`nav-${idx}`}
               className={cn(
                 " rounded-full bg-muted-foreground/40 cursor-pointer size-2 transition-all",
-                idx + 1 === current && "bg-violet-400 h-2 w-5"
+                idx + 1 === current && " h-2 w-5 bg-muted-foreground/80"
               )}
               onClick={() => {
                 api?.scrollTo(idx);

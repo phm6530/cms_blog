@@ -25,7 +25,7 @@ export default function PostVanner({
         hasThumbnail
           ? {
               backgroundImage: `
-              linear-gradient(to top, rgba(20, 20, 20, .9), rgba(20, 20, 20, .8), rgba(0, 0, 0, 0.1)),
+              linear-gradient(to top, rgba(20, 20, 20, .9), rgba(20, 20, 20, .6), rgba(0, 0, 0, 0.1)),
               url(${unsplashS3Mapping(thumbnail_url)})
             `,
               backgroundSize: "cover",
