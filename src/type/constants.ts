@@ -42,3 +42,8 @@ export enum POST_STATUS {
   PUBLISHED = "published",
   PRIVATE = "private",
 }
+
+export enum WRITE_MODE {
+  EDIT = "edit",
+  DRAFT = "draft",
+}

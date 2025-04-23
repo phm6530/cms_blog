@@ -3,9 +3,8 @@ import { blogMetaSchema } from "@/db/schema/blog-metadata";
 import { POST_STATUS } from "@/type/constants";
 import { apiHandler } from "@/util/api-hanlder";
 import { eq } from "drizzle-orm";
-import { NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   return await apiHandler(async () => {
     return await db
       .select()

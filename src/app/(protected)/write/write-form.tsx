@@ -19,7 +19,7 @@ import PostTitleField from "@/components/shared/post-title-Field";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import withClientFetch from "@/util/withClientFetch";
 import useThrottling from "@/hook/useThrottling";
-import { ENV, HTTP_METHOD, POST_STATUS } from "@/type/constants";
+import { ENV, HTTP_METHOD, POST_STATUS, WRITE_MODE } from "@/type/constants";
 import { v4 as uuidv4 } from "uuid";
 import transformHtmlToPlainText from "@/util/domParse";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -33,7 +33,6 @@ import {
   useMyEditor,
 } from "@squirrel309/my-testcounter";
 import { uploadImageToS3 } from "@/util/s3-uploader";
-import { WirteMode } from "./page";
 import { cn } from "@/lib/utils";
 import { DraftDialog } from "./draft-dialog";
 import { setDefaultValues } from "./defaultvalue-form";
@@ -49,7 +48,7 @@ export default function WirteForm({
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode");
   const queryClient = useQueryClient();
-  const isModeEdit = mode !== WirteMode.EDIT;
+  const isModeEdit = mode !== WRITE_MODE.EDIT;
   const imgKeyRef = useRef<string>(editData?.blog_metadata.img_key ?? uuidv4());
   const router = useRouter();
 

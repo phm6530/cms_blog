@@ -1,15 +1,10 @@
 import { CategoryModel } from "@/type/blog-group";
-import { REVALIDATE } from "@/type/constants";
+import { REVALIDATE, WRITE_MODE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 import WirteForm from "./write-form";
 import { BlogDetailResponse } from "@/type/blog.type";
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
-
-export enum WirteMode {
-  EDIT = "edit",
-  DRAFT = "draft",
-}
 
 export default async function Page(props: {
   params: any;
@@ -36,7 +31,7 @@ export default async function Page(props: {
   });
 
   // 수정일 때 Data 가져오기
-  if (mode === WirteMode.EDIT) {
+  if (mode === WRITE_MODE.EDIT) {
     const editResponse = await withFetchRevaildationAction<BlogDetailResponse>({
       endPoint: `api/post/${postId}`,
       options: {
