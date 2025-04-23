@@ -41,11 +41,14 @@
   font-size: 1rem; /* text-sm  */
 }
 .tiptap p code {
-  background: var(--color-secondary-foreground);
+  background: var(--popover);
   border-radius: 0.5rem;
-  color: #f45858;
-  font-family: JetBrainsMono, monospace;
-  font-size: 0.9rem;
+
+  color: var(--chart-3);
+  font-size: 0.8rem;
+
+  letter-spacing: -1px;
+  font-family: "Poppins";
   padding: 0.45rem 0.55rem;
 }
 .tiptap:focus,
