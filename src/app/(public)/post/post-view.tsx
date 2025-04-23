@@ -60,7 +60,7 @@ export default function PostView({
             <div
               key={`${item.id}${idx}`}
               className={cn(
-                prefix === "" ? "py-2 border-b" : "ml-3 text-xs opacity-70",
+                prefix === "" ? "py-2 border-b" : "ml-3 text-xs",
                 "leading-6"
               )}
             >
@@ -68,10 +68,21 @@ export default function PostView({
                 className="text-sm hover:underline text-left  grid grid-cols-[auto_1fr] gap-2 items-start cursor-pointer"
                 onClick={() => scrollToHeading(item.id)}
               >
-                <span className={cn(prefix !== "text-xs" && "text-xs ")}>
+                <span
+                  className={cn(
+                    prefix !== "text-xs" && "text-xs text-indigo-300"
+                  )}
+                >
                   {currentPrefix}.
                 </span>
-                <span className="text-xs line-camp-2">{item.text}</span>
+                <span
+                  className={cn(
+                    "text-sm line-camp-2 ",
+                    prefix && " text-muted-foreground"
+                  )}
+                >
+                  {item.text}
+                </span>
               </div>
               {item.children.length > 0 &&
                 TocRender(item.children, currentPrefix)}
@@ -108,7 +119,7 @@ export default function PostView({
           <div className="flex gap-1 mt-4">
             <button
               onClick={() => router.push(`/category/${category}`)}
-              className="text-xs w-10 border flex items-center justify-center aspect-[16/16] group"
+              className="text-sm w-10 border flex items-center justify-center aspect-[16/16] group"
             >
               <ChevronLeft
                 size={15}
@@ -117,7 +128,7 @@ export default function PostView({
             </button>
             <button
               onClick={() => scrollTop()}
-              className="text-xs w-10 border flex items-center justify-center aspect-[16/16] group"
+              className="text-sm w-10 border flex items-center justify-center aspect-[16/16] group"
             >
               <ArrowUpToLine
                 size={15}
