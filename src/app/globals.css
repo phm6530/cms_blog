@@ -146,6 +146,35 @@
     }
   }
 
+  @keyframes opacity {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes bgScaleInit {
+    0% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+  }
+
+  @keyframes bgScaleLoop {
+    0% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
   .animate-fadein {
     animation: fadeIn 0.5s linear infinite alternate;
   }
@@ -248,7 +277,9 @@
   --animate-wiggle: wiggle 0.5s ease;
   --animate-fadein: fadeIn 0.5s ease;
   --animate-close: close 0.5s 0.5s ease;
-
+  --animate-opacity: opacity 1.4s ease;
+  --animate-bgscale: bgScale 5s cubic-bezier(0.2, 0.56, 0.38, 0.41) infinite
+    forwards alternate;
   @keyframes fadeIn {
     0% {
       transform: translateY(30px);

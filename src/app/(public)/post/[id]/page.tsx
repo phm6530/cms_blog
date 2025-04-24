@@ -106,11 +106,11 @@ export default async function PostDetail({
       >
         <div
           className={cn(
-            "py-5 flex flex-col grid-layout relative",
-            !blog_metadata.thumbnail_url && "border-b"
+            "py-5 flex flex-col grid-layout relative z-11 ",
+            !blog_metadata.thumbnail_url && "border-b  "
           )}
         >
-          <div className="flex gap-2 mt-auto mb-3">
+          <div className="flex gap-2 mt-auto mb-3 ">
             <Badge
               variant={"outline"}
               className={cn(
@@ -119,7 +119,7 @@ export default async function PostDetail({
               )}
             >
               {blog_sub_group.sub_group_name}
-            </Badge>{" "}
+            </Badge>
             {DateUtils.isNew(blog_metadata.created_at) && (
               <Badge
                 variant={"outline"}
@@ -135,19 +135,19 @@ export default async function PostDetail({
           </div>
           <h1
             className={cn(
-              "text-2xl md:text-4xl mb-9",
+              "text-3xl md:text-4xl mb-9",
               blog_metadata.thumbnail_url &&
                 " max-w-[900px] leading-10 md:leading-13 break-keep drop-shadow-md"
             )}
             style={{
-              textShadow: "0px 0px 1px",
+              textShadow: "1px 3px 10px black",
             }}
           >
             {blog_metadata.post_title}
           </h1>
 
           <div className="flex gap-2 ">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm  opacity-60">
               {DateUtils.dateFormatKR(blog_metadata.created_at, "YYYY. MM. DD")}
             </div>
             <div className="flex gap-3 items-center">

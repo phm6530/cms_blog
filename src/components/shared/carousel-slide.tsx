@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/carousel";
 import { PostItemModel } from "@/type/post.type";
 import { Badge } from "../ui/badge";
-import { Heart, MessageCircle } from "lucide-react";
 import { DateUtils } from "@/util/date-uill";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -46,11 +45,11 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
         }}
         setApi={setApi}
       >
-        <CarouselContent>
+        <CarouselContent className="animate-wiggle">
           {postList.map((data, index) => (
             <CarouselItem key={index} className="w-[50px] basis-1/1">
               <div
-                className="w-full items-center cursor-pointer grid md:grid-cols-[6fr_4fr] border-border gap-10 p-10 bg-[#f9f7f4] dark:bg-[#252526] rounded-xl  flex-col  bg-cover bg-center overflow-hidden relative"
+                className="w-full  cursor-pointer grid md:grid-cols-[6fr_4fr] border-border gap-10 p-10 bg-[#f9f7f4] dark:bg-[#252526] rounded-xl  flex-col  bg-cover bg-center overflow-hidden relative"
                 style={{
                   backgroundClip: "padding-box",
                 }}
@@ -72,22 +71,22 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                     </Badge>
                   </div>
 
-                  <h1 className="text-shadow  leading-9 mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] text-2xl  break-keep ">
+                  <h1 className="text-shadow md:w-[80%] leading-9 mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] text-2xl  break-keep ">
                     {data.post_title}
                   </h1>
                   <p className="text-sm leading-6 z-10 mt-5 line-clamp-2 max-w-[300px] opacity-90 dark:text-[#cccccc]">
                     {data.post_description}
                   </p>
 
-                  <div className="text-xs  flex gap-3 z-1 mt-10 opacity-60">
-                    <span className="flex gap-1 items-center">
+                  <div className="text-xs  flex gap-3 z-1 opacity-60 mt-auto">
+                    {/* <span className="flex gap-1 items-center">
                       <MessageCircle className="size-4" /> {data.comment_count}
                     </span>
                     <span className="flex gap-1 items-center">
                       <Heart className="size-4" /> {data.like_cnt}
-                    </span>
+                    </span> */}
 
-                    <span className="border-l border-border/30 pl-3">
+                    <span className="border-l border-border/30 pl-3 ">
                       {DateUtils.dateFormatKR(data.created_at, "YY. MM. DD")}
                     </span>
                   </div>

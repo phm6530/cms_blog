@@ -86,9 +86,8 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
             <Link
               href={`/category/${e}`}
               className={cn(
-                "text-sm md:p-0 py-4 border-t md:border-t-0",
-                pathnameActive(e) &&
-                  "text-indigo-400 md:border-b-2 border-indigo-400"
+                "text-sm md:p-0 py-4 border-t md:border-t-0 transition-all ",
+                pathnameActive(e) && "text-indigo-400 "
               )}
               key={e}
             >
@@ -100,8 +99,8 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
         <Link
           href={"/guestbook"}
           className={cn(
-            "text-sm md:p-0 py-4 border-t md:border-t-0 border-b md:border-b-0",
-            pathnameActive("guestbook") && ""
+            "text-sm md:p-0 py-4 border-t md:border-t-0 border-b md:border-b-0 transition-all ",
+            pathnameActive("guestbook") && "text-indigo-400  "
           )}
         >
           GUEST BOARD

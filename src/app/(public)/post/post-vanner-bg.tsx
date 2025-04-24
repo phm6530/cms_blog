@@ -18,23 +18,30 @@ export default function PostVanner({
     <section
       ref={ref}
       className={cn(
-        "relative flex overflow-hidden animate-wiggle",
-        hasThumbnail ? "p-5 md:p-10 min-h-[450px] text-white" : "pt-10"
-      )}
-      style={
+        `relative flex  overflow-hidden
+        after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center after:bg-no-repeat after:content-['']
+        after:bg-gradient-to-b 
+        `,
         hasThumbnail
-          ? {
-              backgroundImage: `
-              linear-gradient(to top, rgba(20, 20, 20, .9), rgba(20, 20, 20, .6), rgba(0, 0, 0, 0.1)),
-              url(${unsplashS3Mapping(thumbnail_url)})
-            `,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }
-          : undefined
-      }
+          ? " from:via-black/50 after:to-black/80 p-5 md:p-10 min-h-[500px] text-white"
+          : "pt-10"
+      )}
     >
+      {hasThumbnail && (
+        <div
+          className="absolute top-0 left-0 z-0 w-full h-full animate-vanner"
+          style={{
+            backgroundImage: `url(${unsplashS3Mapping(thumbnail_url)})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            animation: `
+            bgScaleInit 5s cubic-bezier(0, 0.75, 0, 0.62) forwards, 
+            bgScaleLoop 10s 5s ease  infinite alternate,
+            opacity .5s ease-out forwards`,
+          }}
+        />
+      )}
       {children}
     </section>
   );

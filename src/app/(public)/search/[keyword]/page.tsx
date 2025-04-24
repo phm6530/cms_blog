@@ -79,7 +79,7 @@ export default function Keyword() {
 
   return (
     <>
-      <div className="border-b pb-5 text-xl flex gap-3 items-center">
+      <div className="border-b pb-5 pt-11 text-xl flex gap-3 items-center">
         {decodeURIComponent(keyword as string)}
         {isPending ? (
           <Skeleton className="size-5" />
@@ -93,7 +93,6 @@ export default function Keyword() {
       <>
         {isPending ? (
           <div className="mt-5">
-            {" "}
             <div className="flex flex-col gap-5 py-5">
               {Array.from({ length: 10 }).map((_, idx) => {
                 return <PostItemSkeleton key={`skeleton-${idx}`} />;
