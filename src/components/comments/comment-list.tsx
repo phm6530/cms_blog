@@ -66,7 +66,7 @@ export default function CommentList({ postId }: { postId: string }) {
       )} */}
       <div>
         {flatData.length === 0 ? (
-          <div className="py-16 text-center ">
+          <div className="py-30 text-center border-b">
             <p className="text-base md:text-xl">아직 등록된 댓글이 없습니다.</p>
           </div>
         ) : (

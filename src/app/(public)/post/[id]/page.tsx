@@ -21,19 +21,23 @@ import { POST_STATUS, REVALIDATE } from "@/type/constants";
 import { DateUtils } from "@/util/date-uill";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
-import PostHandler from "../post-handler";
-import PostLikeHandler from "../post-like-hanlder";
+
 import SelectPage from "@/components/info-component/secrect-page";
 import { auth } from "@/auth";
 import { readingTImeKO } from "@/util/reading-timeKo";
 import { Eye } from "lucide-react";
 import RelatedPosts from "../related-posts";
 import { Suspense } from "react";
-import PostView from "../post-view";
+
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 import PostVanner from "../post-vanner-bg";
 import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
+
+import PostToolbar from "../post-toolbar";
+import PostView from "../post-view";
+import PostLikeHandler from "../post-like-hanlder";
+import PostHandler from "../post-handler";
 
 export async function generateMetadata({
   params,
@@ -106,7 +110,7 @@ export default async function PostDetail({
       >
         <div
           className={cn(
-            "py-5 flex flex-col grid-layout relative z-11 ",
+            "py-5 flex flex-col relative z-11 ",
             !blog_metadata.thumbnail_url && "border-b  "
           )}
         >
@@ -160,21 +164,27 @@ export default async function PostDetail({
         </div>
       </PostVanner>
 
-      <div className="grid md:grid-cols-[auto_250px]  gap-5 grid-layout pt-20">
+      <div className="grid gap-5 grid-layout pt-10 relative">
         <section className="gap-5 order-2 md:order-1">
           <div>
-            <div className="w-full  border-b pb-10 relative">
-              {/* TipTap Editor - custom lib */}
-              <PostView
-                contents={blog_contents.contents}
-                category={category.group_name}
-              />
-              <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt} />
-              <PostHandler postId={id} category={category.group_name} />
-            </div>
+            {/* ---- post Tool bar ----- */}
+            <PostToolbar
+              categoryName={category.group_name}
+              groupName={blog_sub_group.sub_group_name}
+            />
 
-            {/* 댓글 Section */}
+            {/* TipTap Editor - custom lib */}
+            <PostView
+              contents={blog_contents.contents}
+              category={category.group_name}
+            />
+            <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt} />
+            <PostHandler postId={id} category={category.group_name} />
+
+            {/* ---- 댓글 ----- */}
             <CommentSection postId={id} />
+
+            {/* ---- post Tool bar ----- */}
             <Suspense fallback={<>loading................</>}>
               <RelatedPosts
                 curPost={id}
@@ -184,6 +194,7 @@ export default async function PostDetail({
             </Suspense>
           </div>
         </section>
+
         {/* 목차 포탈 */}
         <div
           id="toc-target"

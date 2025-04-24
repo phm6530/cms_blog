@@ -12,7 +12,6 @@ import {
 import { PostItemModel } from "@/type/post.type";
 import { Badge } from "../ui/badge";
 import { DateUtils } from "@/util/date-uill";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
@@ -45,21 +44,29 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
         }}
         setApi={setApi}
       >
-        <CarouselContent className="animate-wiggle">
+        <CarouselContent className="animate-wiggle mr-10 translate-x-4.5">
           {postList.map((data, index) => (
-            <CarouselItem key={index} className="w-[50px] basis-1/1">
+            <CarouselItem key={index} className="w-[50px] basis-1/1 ">
               <div
-                className="w-full  cursor-pointer grid md:grid-cols-[6fr_4fr] border-border gap-10 p-10 bg-[#f9f7f4] dark:bg-[#252526] rounded-xl  flex-col  bg-cover bg-center overflow-hidden relative"
+                className={cn(
+                  `w-full cursor-pointer grid border-border gap-10 p-10  rounded-xl  flex-col bg-left bg-cover overflow-hidden relative
+                  after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center after:bg-no-repeat after:content-['']
+                 after:bg-gradient-to-bl from:via-black/10 after:to-black/70 after:z-1
+                  `
+                )}
                 style={{
                   backgroundClip: "padding-box",
+                  backgroundImage: `url(${unsplashS3Mapping(
+                    data.thumbnail_url
+                  )})`,
                 }}
                 onClick={() => router.push(`/post/${data.post_id}`)}
               >
-                <div className="flex flex-col  items-start ">
+                <div className="flex flex-col  items-start pt-20 z-10">
                   <div className="flex gap-2 mt-5">
                     <Badge
                       variant={"outline"}
-                      className="z-1 rounded-full border-foreground/50"
+                      className="z-1 rounded-full border-white/30 text-white"
                     >
                       {data.sub_group_name}
                     </Badge>
@@ -71,10 +78,13 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                     </Badge>
                   </div>
 
-                  <h1 className="text-shadow md:w-[80%] leading-9 mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] text-2xl  break-keep ">
+                  <h1
+                    className="text-shadow md:w-[80%] text-white leading-9 mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] text-2xl  break-keep "
+                    style={{ textShadow: "1px 1px 3px black" }}
+                  >
                     {data.post_title}
                   </h1>
-                  <p className="text-sm leading-6 z-10 mt-5 line-clamp-2 max-w-[300px] opacity-90 dark:text-[#cccccc]">
+                  <p className="text-sm leading-6 z-10 text-white mt-5 line-clamp-2 max-w-[300px] opacity-90 dark:text-[#cccccc]">
                     {data.post_description}
                   </p>
 
@@ -86,13 +96,13 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                       <Heart className="size-4" /> {data.like_cnt}
                     </span> */}
 
-                    <span className="border-l border-border/30 pl-3 ">
+                    <span className="border-l border-border/30  mt-5 text-white">
                       {DateUtils.dateFormatKR(data.created_at, "YY. MM. DD")}
                     </span>
                   </div>
                 </div>
 
-                <div className=" rounded-xl relative overflow-hidden aspect-[16/10] md:aspect-[16/17]">
+                {/* <div className=" rounded-xl relative overflow-hidden aspect-[16/10] md:aspect-[16/17]">
                   {data.thumbnail_url && (
                     <Image
                       src={`${unsplashS3Mapping(data.thumbnail_url)}`}
@@ -101,7 +111,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                       style={{ objectFit: "cover" }}
                     />
                   )}
-                </div>
+                </div> */}
               </div>
             </CarouselItem>
           ))}

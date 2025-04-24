@@ -1,7 +1,14 @@
 @charset "UTF-8";
+
+/* 가변 설정 */
+:root {
+  --font-scale: 1;
+}
+
 .tiptap p {
   line-height: 1.9;
   letter-spacing: -0.01rem;
+  font-size: calc(1rem * var(--font-scale));
 }
 .tiptap :first-child {
   margin-top: 0;
@@ -23,22 +30,22 @@
   line-height: 1.7;
 }
 .tiptap h1 {
-  font-size: 2.25rem; /* text-4xl */
+  font-size: calc(2.25rem * var(--font-scale)); /* text-4xl */
 }
 .tiptap h2 {
-  font-size: 1.75rem; /* text-2xl */
+  font-size: calc(1.75rem * var(--font-scale)); /* text-2xl */
 }
 .tiptap h3 {
-  font-size: 1.5rem; /* text-xl  */
+  font-size: calc(1.5rem * var(--font-scale)); /* text-2xl */
 }
 .tiptap h4 {
-  font-size: 1.25rem; /* text-lg  */
+  font-size: calc(1.25rem * var(--font-scale)); /* text-2xl */
 }
 .tiptap h5 {
-  font-size: 1.125rem; /* text-base */
+  font-size: calc(1.125rem * var(--font-scale)); /* text-2xl */
 }
 .tiptap h6 {
-  font-size: 1rem; /* text-sm  */
+  font-size: calc(1rem * var(--font-scale));
 }
 .tiptap p code {
   background: var(--popover);

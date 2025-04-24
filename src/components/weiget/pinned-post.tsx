@@ -27,7 +27,7 @@ export default async function PinnedPosts() {
 
   return (
     <div className="flex flex-col gap-1 relative w-full ">
-      <div className=" items-center gap-2 flex  pb-2 pt-5 ">
+      <div className=" items-center gap-2 flex  pb-2 pt-10 ">
         <Pin size={14} />
         <h3>Pinned Posts </h3>
       </div>

@@ -135,11 +135,14 @@ export default function PostView({
         </div>
       </TocPortal>
 
-      <MyEditorContent
-        value={contents}
-        editor={editor}
-        editorMode={editorMode}
-      />
+      <div id="mytiptap-view">
+        <MyEditorContent
+          value={contents}
+          editor={editor}
+          editorMode={editorMode}
+          className="animate-wiggle"
+        />
+      </div>
     </div>
   );
 }

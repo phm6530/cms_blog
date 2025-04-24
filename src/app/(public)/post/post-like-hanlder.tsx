@@ -75,7 +75,7 @@ export default function PostLikeHandler({
   return (
     <div className="text-center  py-10">
       <Button
-        className="cursor-pointer rounded-full bg-transparent!"
+        className="cursor-pointer px-10! py-6 bg-transparent!"
         onClick={() => {
           /**
            * opTimistic으로
@@ -93,7 +93,7 @@ export default function PostLikeHandler({
             isLike ? "fill-red-500" : "fill-none"
           )}
         />
-        <span className="text-xs opacity-70">{likeCount}</span>
+        <span className="text-base opacity-70">{likeCount}</span>
       </Button>
     </div>
   );
