@@ -15,6 +15,7 @@ import { DateUtils } from "@/util/date-uill";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
+import { QuoteIcon, TextQuote } from "lucide-react";
 
 export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
   const [api, setApi] = React.useState<CarouselApi>();
@@ -42,7 +43,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
           loop: true,
         }}
         setApi={setApi}
-        className="md:static!  top-0 md:w-full w-[calc(100%+35px)] left-0 -translate-x-5"
+        className="md:static!  top-0 md:w-full w-[calc(100%+39px)] left-0 -translate-x-5"
       >
         <CarouselContent className="animate-wiggle md:mr-0 mr-20 ">
           {postList.map((data, index) => (
@@ -52,7 +53,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
             >
               <div
                 className={cn(
-                  `w-full md:aspect-[16/7]  aspect-[16/14] cursor-pointer grid border-border p-6 md:p-10  rounded-xl  flex-col bg-center bg-cover  relative
+                  `w-full md:aspect-[16/7]  aspect-[16/17] cursor-pointer grid border-border p-6 md:p-10  rounded-xl  flex-col bg-center bg-cover  relative
                   after:absolute after:inset-0 after:animate-opacity after:bg-cover after:bg-center after:bg-no-repeat after:content-['']
                  after:bg-gradient-to-b md:after:bg-gradient-to-l after:from-white/30 after:via-black/30 after:to-black/80 md:after:to-via-black/20 after:z-1 after:rounded-xl!
                   `
@@ -82,7 +83,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                   </div>
 
                   <h1
-                    className="text-shadow md:w-[80%] text-white md:leading-9 leading-8  mt-2 md:mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] w-[80%] text-xl md:text-2xl  break-keep "
+                    className="text-shadow md:w-[80%] text-white md:leading-9 leading-9  mt-3 md:mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] w-[80%] text-2xl md:text-2xl  break-keep "
                     style={{ textShadow: "1px 1px 3px black" }}
                   >
                     {data.post_title}
