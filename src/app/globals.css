@@ -311,9 +311,9 @@
 
 @layer base {
   * {
-    /* pc 16px , mobile 14px */
-    @apply border-border outline-ring/50 md:text-base text-sm;
+    @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

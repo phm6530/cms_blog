@@ -67,7 +67,7 @@ export default function PostView({ contents }: { contents: string }) {
                 </span>
                 <span
                   className={cn(
-                    "text-sm line-camp-2 ",
+                    "line-camp-2 text-xs",
                     prefix && " text-muted-foreground"
                   )}
                 >
@@ -125,7 +125,7 @@ export default function PostView({ contents }: { contents: string }) {
           value={contents}
           editor={editor}
           editorMode={editorMode}
-          className="animate-wiggle"
+          className="animate-wiggle text-sm md:text-base!"
         />
       </div>
     </div>

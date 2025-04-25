@@ -45,6 +45,7 @@ export default function PostLikeHandler({
         // requireAuth: true,
       });
     },
+
     onError: () => {
       if (!!prevIsLike.current) {
         // 이전데이터가 true였으면 다시 복구
@@ -75,7 +76,7 @@ export default function PostLikeHandler({
   return (
     <div className="text-center  py-10">
       <Button
-        className="cursor-pointer px-10! py-6 bg-transparent!"
+        className="cursor-pointer px-10! py-5 bg-transparent!"
         onClick={() => {
           /**
            * opTimistic으로
@@ -93,7 +94,7 @@ export default function PostLikeHandler({
             isLike ? "fill-red-500" : "fill-none"
           )}
         />
-        <span className="text-base opacity-70">{likeCount}</span>
+        <span className=" opacity-70 text-xs">{likeCount}</span>
       </Button>
     </div>
   );

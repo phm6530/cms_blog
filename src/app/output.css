@@ -6,9 +6,9 @@
 }
 
 .tiptap p {
-  line-height: 1.9;
+  line-height: 2;
   letter-spacing: -0.01rem;
-  font-size: calc(1rem * var(--font-scale));
+  font-size: calc(1em * var(--font-scale));
 }
 .tiptap :first-child {
   margin-top: 0;
@@ -30,30 +30,30 @@
   line-height: 1.7;
 }
 .tiptap h1 {
-  font-size: calc(2.25rem * var(--font-scale)); /* text-4xl */
+  font-size: calc(2.25em * var(--font-scale)); /* text-4xl */
 }
 .tiptap h2 {
-  font-size: calc(1.75rem * var(--font-scale)); /* text-2xl */
+  font-size: calc(1.75em * var(--font-scale)); /* text-2xl */
 }
 .tiptap h3 {
-  font-size: calc(1.5rem * var(--font-scale)); /* text-2xl */
+  font-size: calc(1.5em * var(--font-scale)); /* text-2xl */
 }
 .tiptap h4 {
-  font-size: calc(1.25rem * var(--font-scale)); /* text-2xl */
+  font-size: calc(1.25em * var(--font-scale)); /* text-2xl */
 }
 .tiptap h5 {
-  font-size: calc(1.125rem * var(--font-scale)); /* text-2xl */
+  font-size: calc(1.125em * var(--font-scale)); /* text-2xl */
 }
 .tiptap h6 {
-  font-size: calc(1rem * var(--font-scale));
+  font-size: calc(1em * var(--font-scale));
 }
 .tiptap p code {
   background: var(--bg-mention);
-  border-radius: 0.5rem;
+  border-radius: 0.5em;
 
   color: var(--text-mention-color);
   border: 1px solid var(--border);
-  font-size: 0.75rem;
+  font-size: 0.75em;
 
   letter-spacing: -0.5px;
   font-family: "Poppins";

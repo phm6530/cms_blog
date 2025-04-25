@@ -135,7 +135,7 @@ export default function WirteForm({
   return (
     <Form {...form}>
       <div className="flex flex-col gap-3 animate-wiggle">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 ">
           <WirteSelectCategory groups={postGroupItems} />
           <SelectField
             name="status"
