@@ -1,10 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ChevronDown } from "lucide-react";
+// import { ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ReactNode, Children } from "react";
-import { Button } from "../ui/button";
+// import { Button } from "../ui/button";
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -18,9 +18,9 @@ export default function MainLayout({ children }: { children: ReactNode }) {
 
   const childrenArray = Children.toArray(children);
 
-  const topScroll = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  // const topScroll = () => {
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  // };
 
   return (
     <main
@@ -32,7 +32,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
     >
       {hideSidebar ? null : childrenArray[0]}
       {childrenArray[1]}
-
+      {/* 
       <Button
         type="button"
         onClick={topScroll}
@@ -40,7 +40,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         className="right-110 bottom-20 fixed border size-10 flex items-center justify-center cursor-pointer "
       >
         <ChevronDown className="rotate-180" size={20} />
-      </Button>
+      </Button> */}
     </main>
   );
 }

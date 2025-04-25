@@ -44,7 +44,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
         }}
         setApi={setApi}
       >
-        <CarouselContent className="animate-wiggle mr-10 translate-x-4.5">
+        <CarouselContent className="animate-wiggle md:mr-0 mr-10 translate-x-4.5">
           {postList.map((data, index) => (
             <CarouselItem key={index} className="w-[50px] basis-1/1 ">
               <div

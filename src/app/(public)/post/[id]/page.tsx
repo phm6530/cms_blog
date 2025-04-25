@@ -34,10 +34,10 @@ import { Metadata } from "next";
 import PostVanner from "../post-vanner-bg";
 import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
 
-import PostToolbar from "../post-toolbar";
-import PostView from "../post-view";
 import PostLikeHandler from "../post-like-hanlder";
 import PostHandler from "../post-handler";
+import PostContentCotainer from "../post-contents-wrapper";
+import PostView from "../post-view";
 
 export async function generateMetadata({
   params,
@@ -110,7 +110,7 @@ export default async function PostDetail({
       >
         <div
           className={cn(
-            "py-5 flex flex-col relative z-11 ",
+            "py-5 flex flex-col relative z-10 animate-fadein ",
             !blog_metadata.thumbnail_url && "border-b  "
           )}
         >
@@ -139,7 +139,7 @@ export default async function PostDetail({
           </div>
           <h1
             className={cn(
-              "text-3xl md:text-4xl mb-9",
+              "text-3xl md:text-4xl mb-9 ",
               blog_metadata.thumbnail_url &&
                 " max-w-[900px] leading-10 md:leading-13 break-keep drop-shadow-md"
             )}
@@ -165,41 +165,28 @@ export default async function PostDetail({
       </PostVanner>
 
       <div className="grid gap-5 grid-layout pt-10 relative">
-        <section className="gap-5 order-2 md:order-1">
-          <div>
-            {/* ---- post Tool bar ----- */}
-            <PostToolbar
+        <PostContentCotainer
+          categoryName={category.group_name}
+          groupName={blog_sub_group.sub_group_name}
+        >
+          {/* ------ TipTap Editor - custom lib ------ */}
+          <PostView contents={blog_contents.contents} />
+
+          <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt} />
+          <PostHandler postId={id} category={category.group_name} />
+
+          {/* ---- 댓글 ----- */}
+          <CommentSection postId={id} />
+
+          {/* ---- post Tool bar ----- */}
+          <Suspense fallback={<>loading................</>}>
+            <RelatedPosts
+              curPost={id}
               categoryName={category.group_name}
-              groupName={blog_sub_group.sub_group_name}
+              subGroupName={blog_sub_group.sub_group_name}
             />
-
-            {/* TipTap Editor - custom lib */}
-            <PostView
-              contents={blog_contents.contents}
-              category={category.group_name}
-            />
-            <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt} />
-            <PostHandler postId={id} category={category.group_name} />
-
-            {/* ---- 댓글 ----- */}
-            <CommentSection postId={id} />
-
-            {/* ---- post Tool bar ----- */}
-            <Suspense fallback={<>loading................</>}>
-              <RelatedPosts
-                curPost={id}
-                categoryName={category.group_name}
-                subGroupName={blog_sub_group.sub_group_name}
-              />
-            </Suspense>
-          </div>
-        </section>
-
-        {/* 목차 포탈 */}
-        <div
-          id="toc-target"
-          className=" static md:sticky top-5 border-l-0 md:border-l order-1 md:order-2 pb-5"
-        />
+          </Suspense>
+        </PostContentCotainer>
       </div>
     </div>
   );

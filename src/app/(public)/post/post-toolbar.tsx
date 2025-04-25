@@ -1,16 +1,28 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Eye, Minus, Plus, Share2, TypeIcon } from "lucide-react";
+import {
+  ChevronLeft,
+  Eye,
+  EyeOff,
+  Minus,
+  Plus,
+  RotateCw,
+  TypeIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { useLayoutEffect, useState } from "react";
 
 export default function PostToolbar({
   categoryName,
   groupName,
+  toggleTocHandler,
+  tocView,
 }: {
   categoryName: string;
   groupName: string;
+  toggleTocHandler: () => void;
+  tocView: boolean;
 }) {
   // 가변 폰트 기본값 설정
   const [size, setSize] = useState(1);
@@ -48,50 +60,67 @@ export default function PostToolbar({
   };
 
   return (
-    <div className="border-y py-4 mb-10 divide-x flex">
-      <Button asChild className="text-xs rounded-none" variant={"ghost"}>
-        <Link href={`/category/${categoryName}/${groupName}`}>
-          <ChevronLeft /> 목록으로
-        </Link>
-      </Button>
-
-      {/* 공유 */}
-      <Button asChild className="text-xs rounded-none" variant={"ghost"}>
-        <Link href={`/`}>
-          <Share2 />
-        </Link>
-      </Button>
-
-      {/* TOC Table on off */}
-      <Button asChild className="text-xs rounded-none" variant={"ghost"}>
-        <Link href={"/"}>
-          Table of Contents <Eye />
-        </Link>
-      </Button>
-
-      {/* 글자크기*/}
-      <div className="flex gap-2">
-        <TypeIcon />
-        {/* 증가 */}
-        <Button
-          className="text-xs"
-          variant={"outline"}
-          size={"sm"}
-          onClick={incrementTextSize}
-        >
-          <Plus />
+    <>
+      <div className="border-y py-4 mb-10 divide-x flex">
+        <Button asChild className="text-xs rounded-none" variant={"ghost"}>
+          <Link href={`/category/${categoryName}/${groupName}`}>
+            <ChevronLeft /> 목록으로
+          </Link>
         </Button>
+        {/* 글자크기*/}
+        <div className="flex gap-2 items-center px-4">
+          <TypeIcon size={18} />
+          <span className="text-xs  inline-block min-w-[35px]">
+            {(size * 100).toFixed(0)}%
+          </span>
 
-        {/* 감소 */}
+          <Button
+            className="text-xs size-7 border text-muted-foreground"
+            variant={"ghost"}
+            size={"sm"}
+            onClick={() => {
+              setSize(1);
+              applyTextSize(1);
+            }}
+          >
+            <RotateCw size={8} />
+          </Button>
+
+          {/* 증가 */}
+          <Button
+            className="text-xs size-7 border text-muted-foreground"
+            variant={"ghost"}
+            size={"sm"}
+            onClick={incrementTextSize}
+          >
+            <Plus size={8} />
+          </Button>
+          {/* 감소 */}
+          <Button
+            className="text-xs size-7 border text-muted-foreground"
+            variant={"ghost"}
+            size={"sm"}
+            onClick={decrementTextSize}
+          >
+            <Minus size={8} />
+          </Button>
+        </div>
+        {/* TOC Table on off */}
         <Button
-          className="text-xs "
-          variant={"outline"}
-          size={"sm"}
-          onClick={decrementTextSize}
+          className="text-xs rounded-none"
+          variant={"ghost"}
+          onClick={toggleTocHandler}
         >
-          <Minus />
+          목차보기 {!tocView ? <Eye /> : <EyeOff />}
         </Button>
+        {/* <DrawerDemo /> */}
+        {/* 공유 */}
+        {/* <Button asChild className="text-xs rounded-none" variant={"ghost"}>
+          <Link href={`/`}>
+            <Share2 />
+          </Link>
+        </Button> */}
       </div>
-    </div>
+    </>
   );
 }

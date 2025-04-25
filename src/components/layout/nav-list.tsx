@@ -67,7 +67,7 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
 
       <div
         className={cn(
-          "fixed flex flex-col p-5 md:flex-row! bg-background top-0 gap-0 z-20 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto  ",
+          "fixed flex flex-col p-5 md:flex-row! bg-background top-0 gap-0 z-100 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto  ",
           "md:static md:flex-row md:h-auto md:border-0 md:gap-5 md:p-0  my-transtion  md:items-center",
           toggle ? "left-[100px]" : "left-full"
         )}
@@ -108,7 +108,11 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
 
         {session.data?.user && (
           <>
-            <Button asChild className="text-xs p-0" variant={"ghost"}>
+            <Button
+              asChild
+              className="text-xs p-0 md:border-0 border"
+              variant={"ghost"}
+            >
               <Link href={"/admin"}>관리자 페이지</Link>
             </Button>
             <Button
@@ -129,7 +133,7 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
           <div
             ref={closeRef}
             className={cn(
-              "fixed w-full  h-screen hidden bg-black/50 backdrop-blur-sm z-10 animate-wiggle",
+              "fixed w-full  h-screen hidden bg-black/50 backdrop-blur-sm z-20 animate-wiggle",
               toggle && "block"
             )}
             onClick={() => setToggle(false)}

@@ -4,26 +4,18 @@ import { MyEditorContent, useMyEditor } from "@squirrel309/my-testcounter";
 import { useEffect, useState } from "react";
 import TocPortal from "./toc-portal";
 import { cn } from "@/lib/utils";
-import { ArrowUpToLine, ChevronLeft, TableOfContents } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ArrowUpToLine, TableOfContents } from "lucide-react";
 type TocItem = {
   id: string;
   level: number;
   text: string;
   children: TocItem[];
 };
-export default function PostView({
-  contents,
-  category,
-}: {
-  contents: string;
-  category: string;
-}) {
+export default function PostView({ contents }: { contents: string }) {
   const { editor, editorMode, getHeadings } = useMyEditor({
     editorMode: "view",
     enableCodeBlock: true,
   });
-  const router = useRouter();
 
   const [list, setList] = useState<any[]>([]); // 타입은 필요 시 정의하세요
 
@@ -52,7 +44,7 @@ export default function PostView({
     if (toc.length === 0) return null;
 
     return (
-      <div className="list-disc flex flex-col mt-2 gap-2">
+      <div className="list-disc flex flex-col mt-2 gap-2 ">
         {toc.map((item, idx) => {
           const currentPrefix = prefix ? `${prefix}-${idx + 1}` : `${idx + 1}`;
 
@@ -68,7 +60,9 @@ export default function PostView({
                 className="text-sm hover:underline text-left  grid grid-cols-[auto_1fr] gap-2 items-start cursor-pointer"
                 onClick={() => scrollToHeading(item.id)}
               >
-                <span className={cn(prefix !== "text-xs" && "text-xs ")}>
+                <span
+                  className={cn("mt-1", prefix !== "text-xs" && "text-xs ")}
+                >
                   {currentPrefix}.
                 </span>
                 <span
@@ -99,7 +93,7 @@ export default function PostView({
       {/* 포탈 */}
 
       <TocPortal>
-        <div className="sticky top-10 mt-5 md:pl-5 min-h-[150px] text-left ">
+        <div className="sticky top-20 md:pl-5 min-h-[150px] text-left ">
           <p className="border-b pb-2 flex gap-2 items-center">
             <TableOfContents size={15} />
             Table of Content
@@ -113,15 +107,6 @@ export default function PostView({
           </div>
 
           <div className="flex gap-1 mt-4">
-            <button
-              onClick={() => router.push(`/category/${category}`)}
-              className="text-sm w-10 border flex items-center justify-center aspect-[16/16] group"
-            >
-              <ChevronLeft
-                size={15}
-                className="opacity-50 group-hover:opacity-100"
-              />
-            </button>
             <button
               onClick={() => scrollTop()}
               className="text-sm w-10 border flex items-center justify-center aspect-[16/16] group"
