@@ -110,10 +110,7 @@ export default async function PostDetail({
         thumbnail_url={blog_metadata.thumbnail_url}
       >
         <div
-          className={cn(
-            "py-5 flex flex-col relative z-10 animate-fadein ",
-            !blog_metadata.thumbnail_url && "border-b  "
-          )}
+          className={cn("py-5 flex flex-col relative z-10  animate-wiggle ")}
         >
           <div className="flex gap-2 mt-auto mb-3 ">
             <Badge
@@ -128,7 +125,7 @@ export default async function PostDetail({
             {DateUtils.isNew(blog_metadata.created_at) && (
               <Badge
                 variant={"outline"}
-                className="relative rounded-full text-xs  border-rose-400 text-rose-400 animate-wiggle"
+                className="relative rounded-full text-xs  border-rose-400 text-rose-400 "
               >
                 New
               </Badge>
@@ -140,12 +137,12 @@ export default async function PostDetail({
           </div>
           <h1
             className={cn(
-              "text-3xl md:text-4xl mb-9 ",
+              "text-3xl md:text-3xl mb-9 ",
               blog_metadata.thumbnail_url &&
                 " max-w-[900px] leading-10 md:leading-13 break-keep drop-shadow-md"
             )}
             style={{
-              textShadow: "1px 3px 10px black",
+              textShadow: "1px 3px 10px black/30",
             }}
           >
             {blog_metadata.post_title}
@@ -165,7 +162,7 @@ export default async function PostDetail({
         </div>
       </PostVanner>
 
-      <div className="grid gap-5 grid-layout pt-10 relative">
+      <div className="grid gap-5 grid-layout md:pt-10 relative">
         <PostContentCotainer
           categoryName={category.group_name}
           groupName={blog_sub_group.sub_group_name}

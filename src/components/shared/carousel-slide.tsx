@@ -37,25 +37,24 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
 
   return (
     <section className="relative">
-      <div className="w-full aspect-[100/88]  bg-red md:hidden" />
       <Carousel
         opts={{
           loop: true,
         }}
         setApi={setApi}
-        className="md:static! absolute top-0 md:w-full w-[calc(100%+17px)] left-0"
+        className="md:static!  top-0 md:w-full w-[calc(100%+35px)] left-0 -translate-x-5"
       >
-        <CarouselContent className="animate-wiggle md:mr-0 mr-20">
+        <CarouselContent className="animate-wiggle md:mr-0 mr-20 ">
           {postList.map((data, index) => (
             <CarouselItem
               key={index}
-              className="w-[50px] basis-1/1 overflow-hidden"
+              className="w-[50px] basis-13/14 md:basis-1/1 overflow-hidden"
             >
               <div
                 className={cn(
-                  `w-full md:aspect-[16/7] aspect-[16/15] cursor-pointer grid border-border p-6 md:p-10  rounded-xl  flex-col bg-center bg-cover  relative
-                  after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center after:bg-no-repeat after:content-['']
-                 after:bg-gradient-to-bl after:from:via-black after:to-black/70 md:after:to-via-black/20 after:z-1 after:rounded-xl!
+                  `w-full md:aspect-[16/7]  aspect-[16/14] cursor-pointer grid border-border p-6 md:p-10  rounded-xl  flex-col bg-center bg-cover  relative
+                  after:absolute after:inset-0 after:animate-opacity after:bg-cover after:bg-center after:bg-no-repeat after:content-['']
+                 after:bg-gradient-to-b md:after:bg-gradient-to-l after:from-white/30 after:via-black/30 after:to-black/80 md:after:to-via-black/20 after:z-1 after:rounded-xl!
                   `
                 )}
                 style={{
@@ -70,37 +69,30 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                   <div className="flex gap-2 mt-5">
                     <Badge
                       variant={"outline"}
-                      className="z-1 rounded-full border-white/30 text-white"
+                      className="z-1 rounded-full border-white/30 text-white md:text-xs! text-[10px]"
                     >
                       {data.sub_group_name}
                     </Badge>
                     <Badge
                       variant={"outline"}
-                      className="z-1 rounded-full bg-yellow-400 text-black"
+                      className="z-1 rounded-full bg-yellow-400 text-black md:text-xs! text-[10px]"
                     >
                       pinned
                     </Badge>
                   </div>
 
                   <h1
-                    className="text-shadow md:w-[80%] text-white leading-9 mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] w-[60%] text-xl md:text-2xl  break-keep "
+                    className="text-shadow md:w-[80%] text-white md:leading-9 leading-8  mt-2 md:mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] w-[80%] text-xl md:text-2xl  break-keep "
                     style={{ textShadow: "1px 1px 3px black" }}
                   >
                     {data.post_title}
                   </h1>
-                  <p className="text-sm md:text-sm! leading-6 z-10 text-white md:mt-5 mt-2 line-clamp-2 md:line-clamp-2 max-w-[300px] opacity-90 dark:text-[#cccccc]">
+                  <p className="hidden md:block md:text-sm!  leading-6 z-10 text-white md:mt-5 mt-2 line-clamp-2 md:line-clamp-2! max-w-[400px] opacity-90 dark:text-[#cccccc]">
                     {data.post_description}
                   </p>
 
                   <div className="text-xs  flex gap-3 z-1 opacity-60 mt-auto">
-                    {/* <span className="flex gap-1 items-center">
-                      <MessageCircle className="size-4" /> {data.comment_count}
-                    </span>
-                    <span className="flex gap-1 items-center">
-                      <Heart className="size-4" /> {data.like_cnt}
-                    </span> */}
-
-                    <span className="border-l text-xs border-border/30  mt-5 text-white md:block hidden">
+                    <span className="border-l text-xs border-border/30  mt-5 text-white">
                       {DateUtils.dateFormatKR(data.created_at, "YY. MM. DD")}
                     </span>
                   </div>

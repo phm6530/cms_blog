@@ -51,10 +51,10 @@ export default function PostToolbar({
 
   return (
     <>
-      <div className="border-y py-4 mb-10 divide-x flex">
+      <div className="border-y py-2 mb-10 divide-x flex">
         <Button asChild className="text-xs rounded-none" variant={"ghost"}>
           <Link href={`/category/${categoryName}/${groupName}`}>
-            <ChevronLeft /> 목록으로
+            <ChevronLeft />
           </Link>
         </Button>
         {/* 글자크기*/}
@@ -65,7 +65,7 @@ export default function PostToolbar({
           </span>
 
           <Button
-            className="text-xs size-7 border text-muted-foreground"
+            className="text-xs size-6 border text-muted-foreground"
             variant={"ghost"}
             size={"sm"}
             onClick={() => {
@@ -78,38 +78,23 @@ export default function PostToolbar({
 
           {/* 증가 */}
           <Button
-            className="text-xs size-7 border text-muted-foreground"
+            className="text-xs size-6 border text-muted-foreground"
             variant={"ghost"}
             size={"sm"}
             onClick={incrementTextSize}
           >
-            <Plus size={8} />
+            <Plus size={7} />
           </Button>
           {/* 감소 */}
           <Button
-            className="text-xs size-7 border text-muted-foreground"
+            className="text-xs size-6 border text-muted-foreground"
             variant={"ghost"}
             size={"sm"}
             onClick={decrementTextSize}
           >
-            <Minus size={8} />
+            <Minus size={7} />
           </Button>
         </div>
-        {/* TOC Table on off */}
-        {/* <Button
-          className="text-xs rounded-none"
-          variant={"ghost"}
-          onClick={toggleTocHandler}
-        >
-          목차보기 {!tocView ? <Eye /> : <EyeOff />}
-        </Button> */}
-        {/* <DrawerDemo /> */}
-        {/* 공유 */}
-        {/* <Button asChild className="text-xs rounded-none" variant={"ghost"}>
-          <Link href={`/`}>
-            <Share2 />
-          </Link>
-        </Button> */}
       </div>
     </>
   );

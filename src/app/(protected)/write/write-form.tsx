@@ -90,7 +90,7 @@ export default function WirteForm({
     onSuccess: async (data) => {
       console.log(data);
       if (data.result.postStatus === POST_STATUS.PUBLISHED) {
-        toast.success("글이 등록되었음");
+        toast.success("포스팅을 게시하였습니다.");
         router.push(
           `/post/${
             !editData ? data.result.postId : editData.blog_metadata.post_id
@@ -100,6 +100,13 @@ export default function WirteForm({
         toast.success("임시 저장 완료 되었습니다.");
         router.replace(`/write?postId=${data.result.postId}&mode=draft`);
         await queryClient.invalidateQueries({ queryKey: ["DRAFT_LIST"] });
+      } else if (data.result.postStatus === POST_STATUS.PRIVATE) {
+        toast.success("수정완료 되었습니다.");
+        router.push(
+          `/post/${
+            !editData ? data.result.postId : editData.blog_metadata.post_id
+          }`
+        );
       }
     },
   });

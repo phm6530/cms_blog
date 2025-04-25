@@ -17,7 +17,7 @@ export default function PostView({ contents }: { contents: string }) {
     enableCodeBlock: true,
   });
 
-  const [list, setList] = useState<any[]>([]); // 타입은 필요 시 정의하세요
+  const [list, setList] = useState<any[]>([]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -44,7 +44,7 @@ export default function PostView({ contents }: { contents: string }) {
     if (toc.length === 0) return null;
 
     return (
-      <div className="list-disc flex flex-col mt-2 gap-2 ">
+      <div className="list-disc flex flex-col mt-2 gap-3 ">
         {toc.map((item, idx) => {
           const currentPrefix = prefix ? `${prefix}-${idx + 1}` : `${idx + 1}`;
 
@@ -61,7 +61,7 @@ export default function PostView({ contents }: { contents: string }) {
                 onClick={() => scrollToHeading(item.id)}
               >
                 <span
-                  className={cn("mt-1", prefix !== "text-xs" && "text-xs ")}
+                  className={cn("mt-0", prefix !== "text-xs" && "text-xs ")}
                 >
                   {currentPrefix}.
                 </span>

@@ -18,12 +18,12 @@ export default function PostVanner({
     <section
       ref={ref}
       className={cn(
-        `relative flex  overflow-hidden  md:h-auto aspect-[16/18] md:aspect-[16/7] max-w-[1100px]   w-full mx-auto md:mt-10
+        `relative flex  overflow-hidden  md:h-auto  max-w-[1100px]   w-full mx-auto 
         after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-2xl after:bg-no-repeat after:content-['']
         after:bg-gradient-to-b 
         `,
         hasThumbnail
-          ? " from:via-black/50 after:to-black/80 p-5 md:p-10  text-white"
+          ? " from:via-black/50 after:to-black/80 p-5 md:p-10 md:px-15 aspect-[16/18] md:mt-10 md:aspect-[16/7] text-white"
           : "pt-10"
       )}
     >

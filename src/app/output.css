@@ -52,9 +52,9 @@
   border-radius: 0.5em;
 
   color: var(--text-mention-color);
-  border: 1px solid var(--border);
-  font-size: 0.75em;
-
+  border: 1px solid var(--text-mention-color);
+  font-size: 0.85em;
+  margin: 0px 0.2rem;
   letter-spacing: -0.5px;
   font-family: "Poppins";
   padding: 0.25rem 0.35rem;
@@ -140,6 +140,10 @@
 }
 .tiptap .mention:after {
   content: "​";
+}
+.tiptap img {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
 }
 .dropdown-menu {
   border: 1px solid var(--border);

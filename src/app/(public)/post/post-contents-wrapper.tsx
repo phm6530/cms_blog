@@ -2,7 +2,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import PostToolbar from "./post-toolbar";
 import { cn } from "@/lib/utils";
-import { ChevronLeft } from "lucide-react";
+import { List } from "lucide-react";
 import useMediaQuery from "@/hook/useMediaQuery";
 import { BREAKPOINT } from "@/components/layout/nav-list";
 
@@ -35,7 +35,7 @@ export default function PostContentCotainer({
   return (
     <section
       className={cn(
-        "md:w-[calc(100%-250px)]  mx-auto gap-5  transition-all  pr-0 relative",
+        "md:w-[calc(100%-250px)]  mx-auto gap-5  pr-0 relative",
         isVisible && "w-full max-w-none md:pr-[250px]"
       )}
     >
@@ -47,7 +47,7 @@ export default function PostContentCotainer({
           md:p-0 p-5
          
           md:absolute h-full md:left-full md:w-[220px] order-1
-          transition-all  
+        
        border-l
  
            `,
@@ -61,17 +61,18 @@ export default function PostContentCotainer({
         }}
       >
         <span
-          className="bottom-1/6 top-auto md:top-10 absolute md:sticky! bg-indigo-500 -left-[41px] flex justify-center items-center cursor-pointer z-10 size-10 rounded-none border  "
+          className="bottom-1/6 top-auto md:top-10 absolute md:sticky! bg-background/70 -left-[55px] flex justify-center items-center cursor-pointer z-10 size-13.5 rounded-none border "
           onClick={toggleTocHandler}
           style={{
             backdropFilter: "blur(10px)",
             WebkitBackdropFilter: "blur(10px)",
           }}
         >
-          <ChevronLeft
+          <List />
+          {/* <ChevronLeft
             size={20}
             className={cn(isVisible ? "rotate-180" : "")}
-          />
+          /> */}
         </span>
         <div
           id="toc-target"
