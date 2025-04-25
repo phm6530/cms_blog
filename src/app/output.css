@@ -48,15 +48,16 @@
   font-size: calc(1rem * var(--font-scale));
 }
 .tiptap p code {
-  background: var(--popover);
+  background: var(--bg-mention);
   border-radius: 0.5rem;
 
-  color: var(--chart-3);
-  font-size: 0.8rem;
+  color: var(--text-mention-color);
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
 
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
   font-family: "Poppins";
-  padding: 0.45rem 0.55rem;
+  padding: 0.25rem 0.35rem;
 }
 .tiptap:focus,
 .tiptap pre:focus {
@@ -75,6 +76,9 @@
   font-family: JetBrainsMono, monospace;
   margin: 1.5rem 0;
   padding: 0.75rem 1rem;
+}
+.tiptap pre code span {
+  font-size: 0.8rem;
 }
 .tiptap pre code {
   background: none;

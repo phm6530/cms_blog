@@ -30,15 +30,15 @@ export default function VisitorWiget() {
           </div>
         ) : (
           <>
-            <div className="flex gap-3 items-end text-xs ">
-              <span className="opacity-50">TODAY</span>
-              <span className="animate-wiggle">
+            <div className="flex gap-3 items-end  ">
+              <span className="opacity-50 text-xs">TODAY</span>
+              <span className="animate-wiggle text-xs">
                 {data?.result.today_cnt ?? 0}
               </span>
             </div>
             <div className="flex gap-3 items-end text-xs">
-              <span className=" opacity-50">TOTAL</span>
-              <span className="animate-wiggle">
+              <span className=" opacity-50 text-xs">TOTAL</span>
+              <span className="animate-wiggle text-xs">
                 {(data?.result.allVisitor_cnt ?? 0).toLocaleString()}
               </span>
             </div>

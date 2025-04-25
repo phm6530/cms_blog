@@ -1,23 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  ChevronLeft,
-  Eye,
-  EyeOff,
-  Minus,
-  Plus,
-  RotateCw,
-  TypeIcon,
-} from "lucide-react";
+import { ChevronLeft, Minus, Plus, RotateCw, TypeIcon } from "lucide-react";
 import Link from "next/link";
 import { useLayoutEffect, useState } from "react";
 
 export default function PostToolbar({
   categoryName,
   groupName,
-  toggleTocHandler,
-  tocView,
 }: {
   categoryName: string;
   groupName: string;
@@ -106,13 +96,13 @@ export default function PostToolbar({
           </Button>
         </div>
         {/* TOC Table on off */}
-        <Button
+        {/* <Button
           className="text-xs rounded-none"
           variant={"ghost"}
           onClick={toggleTocHandler}
         >
           목차보기 {!tocView ? <Eye /> : <EyeOff />}
-        </Button>
+        </Button> */}
         {/* <DrawerDemo /> */}
         {/* 공유 */}
         {/* <Button asChild className="text-xs rounded-none" variant={"ghost"}>

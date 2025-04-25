@@ -160,7 +160,8 @@ export default function WirteForm({
             const imgPath = await uploadImageToS3(form, imgKeyRef.current);
 
             if (!imgPath.success) {
-              throw new Error(imgPath.message);
+              toast.error(imgPath.message);
+              return null;
             }
             return `${ENV.IMAGE_URL_PUBLIC}${imgPath.url}`;
           }}

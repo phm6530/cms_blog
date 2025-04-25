@@ -8,17 +8,15 @@ export async function uploadImageToS3(formData: FormData, imgKey: string) {
     if (!file) {
       return { success: false, message: "파일 없음" };
     }
-    const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+    const allowedExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
     const ext = file.name.split(".").pop()?.toLowerCase();
 
     if (!ext || !allowedExtensions.includes(ext)) {
-      console.log("이미지아님");
       throw new Error("확장자가 이미지 아님");
     }
 
     const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif"];
     if (!allowedMimeTypes.includes(file.type)) {
-      console.log("이미지아님");
       throw new Error("MIME 타입이 이미지 아님");
     }
 

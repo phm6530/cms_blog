@@ -60,15 +60,15 @@ export const PostItem = forwardRef<
           <p className="line-clamp-2 text-xs md:text-[13px]! text-muted-foreground leading-5 tracking-tight md:mb-4 break-words">
             {post_description}
           </p>
-          <p className="text-xs text-muted-foreground mt-1 flex gap-3">
-            <span className="flex gap-1 items-center">
+          <p className="text-xs text-muted-foreground mt-1 flex gap-3 ">
+            <span className="flex gap-1 items-center text-xs">
               <MessageCircle className="size-4" /> {comment_count}
             </span>
-            <span className="flex gap-1 items-center">
+            <span className="flex gap-1 items-center text-xs">
               <Heart className="size-4" /> {like_cnt}
             </span>
 
-            <span className="border-l-2 pl-3">
+            <span className="border-l-2 pl-3 text-xs">
               {DateUtils.dateFormatKR(created_at, "YY. MM. DD")}
             </span>
           </p>

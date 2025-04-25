@@ -67,7 +67,7 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
 
       <div
         className={cn(
-          "fixed flex flex-col p-5 md:flex-row! bg-background top-0 gap-0 z-100 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto  ",
+          "fixed flex flex-col p-5 md:flex-row! bg-background md:bg-transparent! top-0 gap-0  z-100 md:z-10 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto  ",
           "md:static md:flex-row md:h-auto md:border-0 md:gap-5 md:p-0  my-transtion  md:items-center",
           toggle ? "left-[100px]" : "left-full"
         )}
@@ -110,7 +110,7 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
           <>
             <Button
               asChild
-              className="text-xs p-0 md:border-0 border"
+              className="text-xs p-0 md:border-0! border"
               variant={"ghost"}
             >
               <Link href={"/admin"}>관리자 페이지</Link>

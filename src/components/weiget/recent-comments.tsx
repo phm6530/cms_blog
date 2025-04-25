@@ -31,12 +31,12 @@ export default async function RecentComment() {
             <Link
               href={`/post/${post.post_id}`}
               key={`${idx}-${post.post_id}`}
-              className="text-[13px] grid grid-cols-[auto_1fr] gap-3 hover:underline items-start"
+              className="text-[13px] grid grid-cols-[auto_1fr] gap-3  hover:underline items-start"
             >
-              <p className=" leading-5 mt-[0px]">
+              <p className=" leading-5 mt-[0px] text-xs">
                 {DateUtils.dateFormatKR(post.createdAt, "YY. MM. DD.")}
               </p>
-              <p className="line-clamp-2 leading-5">{post.comment}</p>
+              <p className="line-clamp-2 leading-5 text-xs">{post.comment}</p>
             </Link>
           );
         })}

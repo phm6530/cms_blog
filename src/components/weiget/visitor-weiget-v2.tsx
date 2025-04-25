@@ -37,7 +37,7 @@ export default function VisitorWigetV2() {
               </span>
             </div>
             <div className="flex flex-col gap-1  text-xs">
-              <span className=" opacity-50">TOTAL</span>
+              <span className=" opacity-50 text-xs">TOTAL</span>
               <span className="animate-wiggle text-2xl flex items-center gap-2">
                 {/* <span className="opacity-50 text-[11px]">TOTAL</span> */}
                 {(data?.result.allVisitor_cnt ?? 0).toLocaleString()}

@@ -36,22 +36,26 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
   }, [api]);
 
   return (
-    <>
+    <section className="relative">
+      <div className="w-full aspect-[100/88]  bg-red md:hidden" />
       <Carousel
         opts={{
           loop: true,
-          // dragFree: true,
         }}
         setApi={setApi}
+        className="md:static! absolute top-0 md:w-full w-[calc(100%+17px)] left-0"
       >
-        <CarouselContent className="animate-wiggle md:mr-0 mr-10 translate-x-4.5">
+        <CarouselContent className="animate-wiggle md:mr-0 mr-20">
           {postList.map((data, index) => (
-            <CarouselItem key={index} className="w-[50px] basis-1/1 ">
+            <CarouselItem
+              key={index}
+              className="w-[50px] basis-1/1 overflow-hidden"
+            >
               <div
                 className={cn(
-                  `w-full cursor-pointer grid border-border gap-10 p-10  rounded-xl  flex-col bg-left bg-cover overflow-hidden relative
+                  `w-full md:aspect-[16/7] aspect-[16/15] cursor-pointer grid border-border p-6 md:p-10  rounded-xl  flex-col bg-center bg-cover  relative
                   after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center after:bg-no-repeat after:content-['']
-                 after:bg-gradient-to-bl from:via-black/10 after:to-black/70 after:z-1
+                 after:bg-gradient-to-bl after:from:via-black after:to-black/70 md:after:to-via-black/20 after:z-1 after:rounded-xl!
                   `
                 )}
                 style={{
@@ -62,7 +66,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                 }}
                 onClick={() => router.push(`/post/${data.post_id}`)}
               >
-                <div className="flex flex-col  items-start pt-20 z-10">
+                <div className="flex flex-col  items-start  z-10 mt-auto">
                   <div className="flex gap-2 mt-5">
                     <Badge
                       variant={"outline"}
@@ -79,12 +83,12 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                   </div>
 
                   <h1
-                    className="text-shadow md:w-[80%] text-white leading-9 mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] text-2xl  break-keep "
+                    className="text-shadow md:w-[80%] text-white leading-9 mt-5 z-10 text-shadow-[0_35px_35px_rgb(0_0_0_/_0.25)] w-[60%] text-xl md:text-2xl  break-keep "
                     style={{ textShadow: "1px 1px 3px black" }}
                   >
                     {data.post_title}
                   </h1>
-                  <p className="text-sm leading-6 z-10 text-white mt-5 line-clamp-2 max-w-[300px] opacity-90 dark:text-[#cccccc]">
+                  <p className="text-sm md:text-sm! leading-6 z-10 text-white md:mt-5 mt-2 line-clamp-2 md:line-clamp-2 max-w-[300px] opacity-90 dark:text-[#cccccc]">
                     {data.post_description}
                   </p>
 
@@ -96,7 +100,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                       <Heart className="size-4" /> {data.like_cnt}
                     </span> */}
 
-                    <span className="border-l border-border/30  mt-5 text-white">
+                    <span className="border-l text-xs border-border/30  mt-5 text-white md:block hidden">
                       {DateUtils.dateFormatKR(data.created_at, "YY. MM. DD")}
                     </span>
                   </div>
@@ -116,8 +120,8 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-[-15px]" />
-        <CarouselNext className="right-[-15px]" />
+        <CarouselPrevious className="left-[-15px] md:flex hidden" />
+        <CarouselNext className="right-[-15px] md:flex hidden" />
       </Carousel>
       <div className="mt-3 flex gap-1 justify-center">
         {Array.from({ length: count }).map((_, idx) => {
@@ -135,6 +139,6 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
           );
         })}
       </div>
-    </>
+    </section>
   );
 }

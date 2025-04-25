@@ -57,7 +57,7 @@ export default function PostHandler({
   };
 
   return (
-    <div className="flex gap-2 mt-3.5">
+    <div className="flex gap-2 mt-3.5 border-b pb-5 mb-5">
       {session.data?.user && (
         <>
           <ConfirmButton title={"삭제하시겠습니까?"} cb={onDeleteHandler}>

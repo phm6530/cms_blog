@@ -38,6 +38,7 @@ import PostLikeHandler from "../post-like-hanlder";
 import PostHandler from "../post-handler";
 import PostContentCotainer from "../post-contents-wrapper";
 import PostView from "../post-view";
+import { HtmlContentNormalizer } from "@/util/baseurl-slice";
 
 export async function generateMetadata({
   params,
@@ -170,7 +171,9 @@ export default async function PostDetail({
           groupName={blog_sub_group.sub_group_name}
         >
           {/* ------ TipTap Editor - custom lib ------ */}
-          <PostView contents={blog_contents.contents} />
+          <PostView
+            contents={HtmlContentNormalizer.setImgUrl(blog_contents.contents)}
+          />
 
           <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt} />
           <PostHandler postId={id} category={category.group_name} />

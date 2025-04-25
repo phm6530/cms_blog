@@ -21,7 +21,7 @@ export default async function Layout({
       <div className=" md:hidden md:mb-10 mb-4 mt-4">
         <SearchInput name="keyword" />
       </div>
-      <div className="h-20 md:h-auto! w-[calc(100%+39px)] relative -translate-x-[19px] md:mb-14">
+      <div className="h-20 md:h-auto! w-[calc(100%+39px)] relative -translate-x-[22px] md:mb-14">
         <div className="w-full overflow-hidden left-0 absolute md:static! top-[5px]">
           <PostListNav
             curCategory={decodeURIComponent(category)}

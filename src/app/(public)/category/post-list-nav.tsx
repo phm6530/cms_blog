@@ -60,7 +60,7 @@ export default async function PostListNav({
             <Button variant={"outline"} asChild className={activeStyle("all")}>
               <Link href={`/category/${curCategory}`}>
                 전체보기{" "}
-                <span className="dark:text-indigo-100 dark:opacity-100 opacity-50 text-[10px]">
+                <span className="dark:text-indigo-100  dark:opacity-100 opacity-50 text-[10px]">
                   ({curNavList.postCnt})
                 </span>
               </Link>
@@ -82,7 +82,7 @@ export default async function PostListNav({
               >
                 <Link href={`/category/${curCategory}/${group.subGroupName}`}>
                   {group.subGroupName}{" "}
-                  <span className="dark:text-indigo-300 dark:opacity-100 opacity-50">
+                  <span className="dark:text-indigo-300 dark:opacity-100 opacity-50 text-xs">
                     ({group.postCount})
                   </span>
                 </Link>
@@ -98,7 +98,7 @@ export default async function PostListNav({
         <Button variant={"outline"} asChild className={activeStyle("all")}>
           <Link href={`/category/${curCategory}`}>
             전체보기{" "}
-            <span className="dark:text-indigo-300 dark:opacity-100 opacity-50">
+            <span className="dark:text-indigo-300 dark:opacity-100 opacity-50 text-xs">
               ({curNavList.postCnt})
             </span>
           </Link>
@@ -114,7 +114,7 @@ export default async function PostListNav({
             >
               <Link href={`/category/${curCategory}/${group.subGroupName}`}>
                 {group.subGroupName}{" "}
-                <span className="dark:text-indigo-300 dark:opacity-100 opacity-50">
+                <span className="dark:text-indigo-300 dark:opacity-100 opacity-50 text-xs">
                   ({group.postCount})
                 </span>
               </Link>

@@ -27,11 +27,11 @@ export default function Footer() {
         </Button>
       </div>
 
-      <p className="flex items-center text-xs">
-        <span>squirrel309@naver.com</span>
+      <p className="flex items-center ">
+        <span className="text-xs">squirrel309@naver.com</span>
       </p>
-      <p className="flex items-center text-xs opacity-50">
-        <span> Copyright ⓒ p. Hyun</span>
+      <p className="flex items-center  opacity-50">
+        <span className="text-xs"> Copyright ⓒ p. Hyun</span>
       </p>
     </footer>
   );

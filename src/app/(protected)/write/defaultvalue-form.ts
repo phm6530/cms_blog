@@ -2,6 +2,7 @@ import { z } from "zod";
 import { wirtePostSchema } from "./schema";
 import { POST_STATUS } from "@/type/constants";
 import { BlogDetailResponse } from "@/type/blog.type";
+import { HtmlContentNormalizer } from "@/util/baseurl-slice";
 
 const defaultValues: z.infer<typeof wirtePostSchema> = {
   title: "",
@@ -22,7 +23,9 @@ export const setDefaultValues = (editData: BlogDetailResponse | undefined) => {
       ? {
           ...defaultValues,
           title: editData.blog_metadata.post_title,
-          contents: editData.blog_contents.contents,
+          contents: HtmlContentNormalizer.setImgUrl(
+            editData.blog_contents.contents
+          ),
           status:
             editData.blog_metadata.status === POST_STATUS.DRAFT
               ? POST_STATUS.PUBLISHED
