@@ -21,18 +21,17 @@ export default async function PinnedPosts() {
   }
   const data = response.result;
 
-  if (!data) {
-    return "등록된 고정 콘텐츠가 없습니다.";
-  }
-
   return (
     <div className="flex flex-col gap-1 relative w-full ">
       <div className=" items-center gap-2 flex  pb-2 pt-10 ">
         <Pin size={14} />
         <h3>Pinned Posts </h3>
       </div>
-
-      <CarouselSlide postList={response.result} />
+      {!data || data.length === 0 ? (
+        "등록된 고정 콘텐츠가 없습니다."
+      ) : (
+        <CarouselSlide postList={response.result} />
+      )}
     </div>
   );
 }

@@ -23,7 +23,7 @@ export default function PostListItem({
   };
 
   return (
-    <article className="flex p-4 hover:border-indigo-400 items-center justify-between">
+    <article className="flex p-4 animate-wiggle hover:bg-indigo-400/5 items-center justify-between">
       <div className="text-sm flex flex-col gap-1">
         <Link href={`/post/${post_id}`} className="hover:underline">
           <p> {post_title}</p>

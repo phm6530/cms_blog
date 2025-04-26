@@ -35,8 +35,8 @@ export default function PostContentCotainer({
   return (
     <section
       className={cn(
-        "md:w-[calc(100%-250px)]  mx-auto gap-5  pr-0 relative",
-        isVisible && "w-full max-w-none md:pr-[250px]"
+        "md:w-[calc(100%-250px)]  mx-auto gap-5  pr-0 relative ",
+        isVisible && "w-full! max-w-none md:pr-[250px]!"
       )}
     >
       <div
@@ -83,7 +83,7 @@ export default function PostContentCotainer({
         />
       </div>
 
-      <div>
+      <div className="flex-1">
         {/* ---- post Tool bar ----- */}
         <PostToolbar
           categoryName={categoryName}

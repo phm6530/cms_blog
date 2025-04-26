@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "./output.css";
+import "../styles/editor.css";
+
 import ClientProvider from "@/provider/client-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/layout/footer";

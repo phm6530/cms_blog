@@ -104,7 +104,12 @@ export default function PinnedPage() {
         /<span className="opacity-50">5</span>
       </div>
 
-      <section className="animate-wiggle">
+      <section className="animate-wiggle border-t">
+        {list?.length === 0 && (
+          <div className="text-center py-10">
+            등록된 고정 콘텐츠가 없습니다.
+          </div>
+        )}
         {list?.map((e, pinIdx) => {
           return (
             <div

@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <Link href={"/admin/post/pinned"}>고정 글 정렬</Link>
               </TabsTrigger>
             </TabsList>
-          </Tabs>{" "}
+          </Tabs>
           <div key={pathname}>{children}</div>
         </>
       )}

@@ -1,10 +1,14 @@
 "use client";
 
-import { MyEditorContent, useMyEditor } from "@squirrel309/my-testcounter";
 import { useEffect, useState } from "react";
 import TocPortal from "./toc-portal";
 import { cn } from "@/lib/utils";
 import { ArrowUpToLine, TableOfContents } from "lucide-react";
+import {
+  EditorProvider,
+  SimpleEditorContents,
+  useSimpleEditor,
+} from "@squirrel309/my-testcounter";
 type TocItem = {
   id: string;
   level: number;
@@ -12,10 +16,7 @@ type TocItem = {
   children: TocItem[];
 };
 export default function PostView({ contents }: { contents: string }) {
-  const { editor, editorMode, getHeadings } = useMyEditor({
-    editorMode: "view",
-    enableCodeBlock: true,
-  });
+  const { editor, getHeadings } = useSimpleEditor();
 
   const [list, setList] = useState<any[]>([]);
 
@@ -121,12 +122,13 @@ export default function PostView({ contents }: { contents: string }) {
       </TocPortal>
 
       <div id="mytiptap-view">
-        <MyEditorContent
-          value={contents}
-          editor={editor}
-          editorMode={editorMode}
-          className="animate-wiggle text-sm md:text-base!"
-        />
+        <EditorProvider editor={editor}>
+          <SimpleEditorContents
+            value={contents}
+            editorMode="view"
+            className="animate-wiggle text-sm md:text-base!"
+          />
+        </EditorProvider>
       </div>
     </div>
   );

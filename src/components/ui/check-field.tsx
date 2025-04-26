@@ -35,10 +35,8 @@ export function CheckField() {
       if (!file) {
         throw new Error("파일이 없습니다."); //에러만 전달
       }
-      const form = new FormData();
-      form.append("file", file);
 
-      const imgPath = await uploadImageToS3(form, imgKey);
+      const imgPath = await uploadImageToS3(file, imgKey);
 
       if (!imgPath.success) {
         throw new Error(imgPath.message);

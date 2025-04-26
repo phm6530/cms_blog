@@ -13,13 +13,10 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   const hideSidebar =
     pathname === "/login" ||
     pathname === "/register" ||
+    pathname === "/write" ||
     /^\/post\/[^/]+$/.test(pathname); // /post/[id]에 대응
 
   const childrenArray = Children.toArray(children);
-
-  // const topScroll = () => {
-  //   window.scrollTo({ top: 0, behavior: "smooth" });
-  // };
 
   return (
     <main

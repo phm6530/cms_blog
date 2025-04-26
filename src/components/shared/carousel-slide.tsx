@@ -86,7 +86,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                   >
                     {data.post_title}
                   </h1>
-                  <p className="hidden md:block md:text-sm!  leading-6 z-10 text-white md:mt-5 mt-2 line-clamp-2 md:line-clamp-2! max-w-[400px] opacity-90 dark:text-[#cccccc]">
+                  <p className="text-sm w-[70%] md:block md:text-sm!  leading-6 z-10 text-white md:mt-5 mt-2 line-clamp-2 md:line-clamp-2! max-w-[400px] opacity-90 dark:text-[#cccccc]">
                     {data.post_description}
                   </p>
 

@@ -27,15 +27,17 @@ import { BlogDetailResponse } from "@/type/blog.type";
 import WirteSelectCategory from "./write-select-category";
 import SelectField from "@/components/ui/select-field";
 import { HtmlContentNormalizer } from "@/util/baseurl-slice";
-import {
-  MyEditorContent,
-  MyToolbar,
-  useMyEditor,
-} from "@squirrel309/my-testcounter";
+
 import { uploadImageToS3 } from "@/util/s3-uploader";
 import { cn } from "@/lib/utils";
 import { DraftDialog } from "./draft-dialog";
 import { setDefaultValues } from "./defaultvalue-form";
+import {
+  EditorProvider,
+  SimpleEditorContents,
+  SimpleToolTip,
+  useSimpleEditor,
+} from "@squirrel309/my-testcounter";
 
 export default function WirteForm({
   postGroupItems,
@@ -52,13 +54,17 @@ export default function WirteForm({
   const imgKeyRef = useRef<string>(editData?.blog_metadata.img_key ?? uuidv4());
   const router = useRouter();
 
-  /**---- 내 에디터 ---- */
-  const { editor, configs, editorMode } = useMyEditor({
-    editorMode: "editor",
+  const { editor } = useSimpleEditor({
     placeholder: "내용을 기재해주세요",
-    enableCodeBlock: true,
-    enableImage: true,
-    enableYoutube: true,
+    uploadCallback: async (e: File) => {
+      const test = await uploadImageToS3(e, imgKeyRef.current);
+      if (!test.success) {
+        toast.error(test.message);
+        throw new Error("");
+      }
+
+      return `${ENV.IMAGE_URL_PUBLIC}${test.url}`;
+    },
   });
 
   /**---- 초기 Form 세팅 ---- */
@@ -158,48 +164,31 @@ export default function WirteForm({
 
         {!!form.watch("postGroup") && <CheckField />}
 
-        <MyToolbar
-          editor={editor}
-          {...configs}
-          uploadCallback={async (event: File) => {
-            const form = new FormData();
-            form.append("file", event);
-            const imgPath = await uploadImageToS3(form, imgKeyRef.current);
+        <EditorProvider editor={editor}>
+          <SimpleToolTip />
 
-            if (!imgPath.success) {
-              toast.error(imgPath.message);
-              return null;
-            }
-            return `${ENV.IMAGE_URL_PUBLIC}${imgPath.url}`;
-          }}
-        />
+          <PostTitleField
+            name="title"
+            placeholder="제목을 기재해주세요"
+            className="p-0 mt-10 "
+            placeholderLg
+          />
 
-        <PostTitleField
-          name="title"
-          placeholder="제목을 기재해주세요"
-          className="p-0 mt-10 "
-          placeholderLg
-        />
-
-        <FormField
-          name="contents"
-          control={form.control}
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <FormControl>
-                  <MyEditorContent
-                    editor={editor}
-                    editorMode={editorMode}
-                    {...field}
-                    className="border"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
-        />
+          <FormField
+            name="contents"
+            control={form.control}
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormControl>
+                    <SimpleEditorContents {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+        </EditorProvider>
       </div>
       <div className="flex gap-2 py-3 justify-between">
         {/* --임시 저장은 새글 작성시에만 가능 불러오기도 안되게 막음 -- */}

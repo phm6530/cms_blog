@@ -129,20 +129,27 @@ export default function Category() {
               <div className="flex justify-between items-center bg-secondary p-2">
                 <div className="flex items-center gap-3 ">
                   <Menu size={15} />
+
                   <span className="font-semibold">
                     {category.name} ({category.postCnt})
                   </span>
                 </div>
                 <div className="flex gap-2 ">
-                  <Button variant={"ghost"}>변경</Button>
+                  <Button variant={"outline"} size={"sm"} className="text-xs">
+                    변경
+                  </Button>
                   <Button
-                    variant={"ghost"}
+                    variant={"outline"}
+                    size={"sm"}
+                    className="text-xs"
                     onClick={() => addCategoryHandler({ id: category.id })}
                   >
                     추가
                   </Button>
                   <Button
-                    variant={"ghost"}
+                    variant={"outline"}
+                    size={"sm"}
+                    className="text-xs"
                     onClick={() =>
                       deleteCategoryHandler({ categoryId: category.id })
                     }
