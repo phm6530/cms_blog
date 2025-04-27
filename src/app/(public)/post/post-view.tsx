@@ -16,7 +16,8 @@ type TocItem = {
   children: TocItem[];
 };
 export default function PostView({ contents }: { contents: string }) {
-  const { editor, getHeadings } = useSimpleEditor();
+  console.log(contents);
+  const { editor, getHeadings } = useSimpleEditor({ editable: false });
 
   const [list, setList] = useState<any[]>([]);
 
@@ -125,7 +126,6 @@ export default function PostView({ contents }: { contents: string }) {
         <EditorProvider editor={editor}>
           <SimpleEditorContents
             value={contents}
-            editorMode="view"
             className="animate-wiggle text-sm md:text-base!"
           />
         </EditorProvider>

@@ -117,6 +117,18 @@ export default function WirteForm({
     },
   });
 
+  /**---- 이미지 Resize이상해서 발라냄 ---- */
+  // function cleanUpImageWrapper(html: string): string {
+  //   if (!html) return html;
+
+  //   const wrapperRegex =
+  //     /<div[^>]*>\s*<div[^>]*>\s*<img([^>]*)>\s*<\/div>\s*<\/div>/gim;
+
+  //   return html.replace(wrapperRegex, (_match, imgAttributes) => {
+  //     return `<img ${imgAttributes.trim()} />`;
+  //   });
+  // }
+
   /**---- submitHandler ---- */
   const onSubmitHandler = (data: z.infer<typeof wirtePostSchema>) => {
     const reqData = {
@@ -124,6 +136,7 @@ export default function WirteForm({
       description: transformHtmlToPlainText({ html: data.contents }), // 추출해서 descritpion화 시키기
     };
     reqData.contents = HtmlContentNormalizer.getPost(reqData.contents);
+    // reqData.contents = cleanUpImageWrapper(reqData.contents);
     throttle(async () => mutate(reqData), 1000);
   };
 
