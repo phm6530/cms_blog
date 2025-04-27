@@ -1,5 +1,10 @@
 @charset "UTF-8";
 /* @use */
+
+:root {
+  --font-scale: 1;
+}
+
 .tiptap-button {
   /************************************************** 
       Default button background color 
@@ -1223,6 +1228,7 @@
 .tiptap p {
   line-height: 2;
   letter-spacing: -0.01rem;
+  font-size: calc(1rem * var(--font-scale));
 }
 .tiptap :first-child {
   margin-top: 0;
@@ -1241,31 +1247,32 @@
 .tiptap h4,
 .tiptap h5,
 .tiptap h6 {
-  line-height: 1.7;
+  line-height: 2;
 }
 .tiptap h1 {
-  font-size: 2.25rem; /* text-4xl */
+  font-size: calc(2.25rem * var(--font-scale));
 }
 .tiptap h2 {
-  font-size: 1.75rem; /* text-2xl */
+  font-size: calc(1.75rem * var(--font-scale));
 }
 .tiptap h3 {
-  font-size: 1.5rem; /* text-xl  */
+  font-size: calc(1.5rem * var(--font-scale));
 }
 .tiptap h4 {
-  font-size: 1.25rem; /* text-lg  */
+  font-size: calc(1.25rem * var(--font-scale));
 }
 .tiptap h5 {
-  font-size: 1.125rem; /* text-base */
+  font-size: calc(1.125rem * var(--font-scale));
 }
 .tiptap h6 {
-  font-size: 1rem; /* text-sm  */
+  font-size: calc(1rem * var(--font-scale));
 }
 .tiptap p code {
   border-radius: 0.5rem;
   font-family: "popphine";
   font-weight: 700;
   color: #6a52f0;
+
   border: 1px solid rgb(193 154 255 / 22%);
   font-size: 0.9rem;
   padding: 0.15rem 0.2rem;
