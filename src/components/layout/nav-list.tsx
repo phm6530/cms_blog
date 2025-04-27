@@ -58,7 +58,7 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
     <>
       {!isDesktop && (
         <div
-          className="block md:hidden cursor-pointer"
+          className="block  md:hidden cursor-pointer"
           onClick={() => setToggle((prev) => !prev)}
         >
           <Menu size={20} />
@@ -67,10 +67,15 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
 
       <div
         className={cn(
-          "fixed flex flex-col p-5 md:flex-row! bg-background md:bg-transparent! top-0 gap-0  z-100 md:z-10 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto  ",
-          "md:static md:flex-row md:h-auto md:border-0 md:gap-5 md:p-0  my-transtion  md:items-center",
+          `fixed flex flex-col ease-side p-5 md:flex-row! bg-background md:bg-transparent! top-0 gap-0 z-100 md:z-10 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto`,
+          `md:static md:flex-row   md:h-auto md:border-0 md:gap-5 md:p-0  md:items-center`,
           toggle ? "left-[100px]" : "left-full"
         )}
+        // inline으로 반영
+        style={{
+          transition: `transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
+          left 0.75s cubic-bezier(0.77, 0.2, 0.05, 1)`,
+        }}
       >
         {!isDesktop && (
           <span

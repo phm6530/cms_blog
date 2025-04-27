@@ -39,15 +39,25 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
       <Carousel
         opts={{
           loop: true,
+
+          containScroll: "trimSnaps",
         }}
         setApi={setApi}
-        className="md:static!  top-0 md:w-full w-[calc(100%+39px)] left-0 -translate-x-5"
+        className={cn(
+          "md:static!  top-0 md:w-full   w-[calc(100%+40px)]  left-0 ",
+          postList.length > 1 && "-translate-x-5 pl-5 md:pl-0 md:-translate-x-0"
+        )}
       >
-        <CarouselContent className="animate-wiggle md:mr-0 mr-20 ">
+        <CarouselContent
+          className={cn(
+            "nimate-wiggle md:mr-0 mr-20",
+            postList.length <= 1 && "mr-0"
+          )}
+        >
           {postList.map((data, index) => (
             <CarouselItem
               key={index}
-              className="w-[50px] basis-13/14 md:basis-1/1 overflow-hidden"
+              className="w-[50px] basis-1/1 md:basis-1/1 overflow-hidden"
             >
               <div
                 className={cn(

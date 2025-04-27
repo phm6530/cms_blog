@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -187,11 +185,6 @@
     animation: close 0.5s 0.5s forwards;
   }
 
-  .my-transtion {
-    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
-      left 0.75s cubic-bezier(0.77, 0.2, 0.05, 1);
-  }
-
   @keyframes opacity {
     0% {
       opacity: 0;
@@ -264,6 +257,11 @@
     @apply flex-col;
   }
 
+  .my-transition {
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
+      left 0.75s cubic-bezier(0.77, 0.2, 0.05, 1);
+  }
+
   .nav-pc {
     @apply flex-row!;
   }
@@ -271,6 +269,7 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
   .scrollbar-hide {
     -ms-overflow-style: none; /* IE/Edge */
     scrollbar-width: none; /* Firefox */
