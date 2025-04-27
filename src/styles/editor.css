@@ -1,9 +1,4 @@
 @charset "UTF-8";
-
-:root {
-  --font-scale: 1;
-}
-
 /* @use */
 .tiptap-button {
   /************************************************** 
@@ -983,7 +978,7 @@
   z-index: 10;
   width: 100%;
   min-height: var(--tt-toolbar-height);
-  background: var(--tt-card-bg-color);
+  background: var(--tt-toolbar-bg-color);
   border-bottom: 1px solid var(--tt-toolbar-border-color);
   padding: 0 0.5rem;
   overflow-x: auto;
@@ -1211,6 +1206,12 @@
   cursor: text;
 }
 
+@media screen and (max-width: 768px) {
+  .simple-editor-content img {
+    width: 100% !important;
+  }
+}
+
 .tiptap {
   /* placeholder */
   /* Heading styles */
@@ -1220,9 +1221,8 @@
   ===================== */
 }
 .tiptap p {
-  line-height: 1.9;
+  line-height: 1.7;
   letter-spacing: -0.01rem;
-  font-size: calc(1em * var(--font-scale));
 }
 .tiptap :first-child {
   margin-top: 0;
@@ -1243,42 +1243,32 @@
 .tiptap h6 {
   line-height: 1.7;
 }
-.tiptap h1,
-.tiptap h2,
-.tiptap h3,
-.tiptap h4,
-.tiptap h5,
-.tiptap h6 {
-  line-height: 1.7;
-}
 .tiptap h1 {
-  font-size: calc(2.25em * var(--font-scale)); /* text-4xl */
+  font-size: 2.25rem; /* text-4xl */
 }
 .tiptap h2 {
-  font-size: calc(1.75em * var(--font-scale)); /* text-2xl */
+  font-size: 1.75rem; /* text-2xl */
 }
 .tiptap h3 {
-  font-size: calc(1.5em * var(--font-scale)); /* text-2xl */
+  font-size: 1.5rem; /* text-xl  */
 }
 .tiptap h4 {
-  font-size: calc(1.25em * var(--font-scale)); /* text-2xl */
+  font-size: 1.25rem; /* text-lg  */
 }
 .tiptap h5 {
-  font-size: calc(1.125em * var(--font-scale)); /* text-2xl */
+  font-size: 1.125rem; /* text-base */
 }
 .tiptap h6 {
-  font-size: calc(1em * var(--font-scale));
+  font-size: 1rem; /* text-sm  */
 }
 .tiptap p code {
   border-radius: 0.5rem;
-  font-family: "SUIT-Regular";
-  color: #eb5757;
-  background: #eb57571a;
+  font-family: monospace;
   font-weight: bold;
-  border: 1px solid #eb57578c;
+  color: #eb5757;
+  border: 1px solid #eb5757;
   font-size: 0.9rem;
-  margin: 0 0.25rem;
-  padding: 0.25rem 0.35rem;
+  padding: 0.25rem 0.15rem;
 }
 .tiptap:focus,
 .tiptap pre:focus {
@@ -1857,14 +1847,6 @@
   --tt-accent-contrast: 8%;
   --tt-destructive-contrast: 8%;
   --tt-foreground-contrast: 8%;
-}
-:root,
-:root *,
-:root ::before,
-:root ::after {
-  box-sizing: border-box;
-  transition: none var(--tt-transition-duration-default)
-    var(--tt-transition-easing-default);
 }
 
 :root {
