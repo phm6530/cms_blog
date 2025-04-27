@@ -1221,7 +1221,7 @@
   ===================== */
 }
 .tiptap p {
-  line-height: 1.7;
+  line-height: 2;
   letter-spacing: -0.01rem;
 }
 .tiptap :first-child {
@@ -1264,12 +1264,14 @@
 .tiptap p code {
   border-radius: 0.5rem;
   font-family: "popphine";
-  font-weight: bold;
-  color: #eb5757;
-  border: 1px solid #eb5757;
+  font-weight: 700;
+  color: #6a52f0;
+  border: 1px solid rgb(193 154 255 / 22%);
   font-size: 0.9rem;
-  padding: 0.25rem 0.15rem;
+  padding: 0.15rem 0.2rem;
+  background: rgba(255, 255, 255, 1);
 }
+
 .tiptap:focus,
 .tiptap pre:focus {
   outline: none;
