@@ -33,7 +33,6 @@ export default function PostVanner({
           style={{
             backgroundImage: `url(${unsplashS3Mapping(thumbnail_url)})`,
             backgroundSize: "cover",
-            backgroundPosition: "right",
             backgroundRepeat: "no-repeat",
             animation: `
             bgScaleInit 5s cubic-bezier(0, 0.75, 0, 0.62) forwards, 

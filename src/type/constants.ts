@@ -10,6 +10,7 @@ export enum GUEST_BOARD {
 
 export enum WEIGET {
   COMMENT = "COMMENT_WEIGET",
+  GUESTBOARD = "GUESTBOARD",
 }
 
 export const REVALIDATE = {

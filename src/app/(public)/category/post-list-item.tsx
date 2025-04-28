@@ -30,26 +30,27 @@ export const PostItem = forwardRef<
     ref
   ) => {
     return (
-      <div
-        ref={ref}
-        className={cn(
-          "transition-all  border-l-indigo-500 animate-wiggle group grid-cols-1 cursor-pointer grid  gap-5 items-center py-3 border-b  last:border-b-0",
+      <Link href={`/post/${post_id}`}>
+        <div
+          ref={ref}
+          className={cn(
+            "transition-all  border-l-indigo-500 animate-wiggle group grid-cols-1 cursor-pointer grid  gap-5 items-center py-3 border-b  last:border-b-0",
 
-          thumbnail_url && "grid-cols-[minmax(0,5fr)_minmax(100px,2fr)]",
-          className
-        )}
-      >
-        <div className="flex flex-col gap-2 py-1 md:py-3!">
-          <div className="flex gap-3 mb-2">
-            <Badge variant={"secondary"} className="text-[10px] rounded-full">
-              {sub_group_name}
-            </Badge>
-            <div className="relative inline-flex items-center justify-center">
-              {/* 실제 Badge 내용 */}
-              {DateUtils.isNew(created_at) && <BadgeNew />}
+            thumbnail_url && "grid-cols-[minmax(0,5fr)_minmax(100px,2fr)]",
+            className
+          )}
+        >
+          <div className="flex flex-col gap-2 py-1 md:py-3!">
+            <div className="flex gap-3 mb-2">
+              <Badge variant={"secondary"} className="text-[10px] rounded-full">
+                {sub_group_name}
+              </Badge>
+              <div className="relative inline-flex items-center justify-center">
+                {/* 실제 Badge 내용 */}
+                {DateUtils.isNew(created_at) && <BadgeNew />}
+              </div>
             </div>
-          </div>
-          <Link href={`/post/${post_id}`}>
+
             <p className="group-hover:underline [text-shadow:_0px_0px_1px_rgba(0,0,0,1)] text-base md:text-xl! tracking-tight">
               {!!keyword ? (
                 <HighlightKeyword text={post_title} keyword={keyword} />
@@ -57,34 +58,35 @@ export const PostItem = forwardRef<
                 post_title
               )}
             </p>
-          </Link>
-          <p className="line-clamp-2 text-xs md:text-[13px]! text-muted-foreground leading-5 tracking-tight md:mb-4 break-words">
-            {post_description}
-          </p>
-          <p className="text-xs text-muted-foreground mt-1 flex gap-3 ">
-            <span className="flex gap-1 items-center text-xs">
-              <MessageCircle className="size-4" /> {comment_count}
-            </span>
-            <span className="flex gap-1 items-center text-xs">
-              <Heart className="size-4" /> {like_cnt}
-            </span>
 
-            <span className="border-l-2 pl-3 text-xs">
-              {DateUtils.dateFormatKR(created_at, "YY. MM. DD")}
-            </span>
-          </p>
-        </div>
-        {thumbnail_url && (
-          <div className="max-w-[150px] w-full ml-auto  aspect-[1/1] md:aspect-[16/11]  rounded-xl relative overflow-hidden ">
-            <Image
-              src={`${unsplashS3Mapping(thumbnail_url)}`}
-              alt=""
-              fill
-              style={{ objectFit: "cover" }}
-            />
+            <p className="line-clamp-2 text-xs md:text-[13px]! text-muted-foreground leading-5 tracking-tight md:mb-4 break-words">
+              {post_description}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1 flex gap-3 ">
+              <span className="flex gap-1 items-center text-xs">
+                <MessageCircle className="size-4" /> {comment_count}
+              </span>
+              <span className="flex gap-1 items-center text-xs">
+                <Heart className="size-4" /> {like_cnt}
+              </span>
+
+              <span className="border-l-2 pl-3 text-xs">
+                {DateUtils.dateFormatKR(created_at, "YY. MM. DD")}
+              </span>
+            </p>
           </div>
-        )}
-      </div>
+          {thumbnail_url && (
+            <div className="max-w-[150px] w-full ml-auto  aspect-[1/1] md:aspect-[16/11]  rounded-xl relative overflow-hidden ">
+              <Image
+                src={`${unsplashS3Mapping(thumbnail_url)}`}
+                alt=""
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          )}
+        </div>{" "}
+      </Link>
     );
   }
 );
