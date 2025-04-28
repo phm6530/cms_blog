@@ -26,10 +26,10 @@ export default async function GlobalNav() {
 
   return (
     <>
-      <section className="py-5  flex justify-between  border-b  z-1">
-        <div className="grid-layout items-center flex justify-between border-secondary-foreground/10 ">
+      <section className="py-3 md:py-5   flex justify-between  border-b sticky top-0 bg-background z-1">
+        <div className="grid-layout items-center flex justify-between z-20 border-secondary-foreground/10 ">
           <Link href={"/"}>
-            <h1 className="text-2xl md:text-3xl font-Poppins">
+            <h1 className="text-xl md:text-3xl font-Poppins">
               PHM{"'"} DEV BLOG
             </h1>
           </Link>

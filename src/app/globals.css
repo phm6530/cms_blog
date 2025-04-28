@@ -195,7 +195,8 @@
   }
 
   .animate-opacity {
-    animation: opacity 0.5s linear infinite alternate;
+    opacity: 0;
+    animation: opacity 0.5s linear forwards;
   }
 
   @font-face {

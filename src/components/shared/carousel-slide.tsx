@@ -61,7 +61,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
             >
               <div
                 className={cn(
-                  `w-full md:aspect-[16/7]  aspect-[16/17] cursor-pointer grid border-border p-6 md:p-10  rounded-xl  flex-col bg-center bg-cover  relative
+                  `w-full md:aspect-[16/7]  aspect-[16/17]  cursor-pointer grid border-border p-6 md:p-10  rounded-xl  flex-col bg-center bg-cover  relative
                   after:absolute after:inset-0 after:animate-opacity after:bg-cover after:bg-center after:bg-no-repeat after:content-['']
                  after:bg-gradient-to-b md:after:bg-gradient-to-l after:from-white/30 after:via-black/30 after:to-black/80 md:after:to-via-black/20 after:z-1 after:rounded-xl!
                   `
@@ -74,7 +74,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                 }}
                 onClick={() => router.push(`/post/${data.post_id}`)}
               >
-                <div className="flex flex-col  items-start  z-10 mt-auto">
+                <div className="flex flex-col  items-start  z-10 mt-auto  ">
                   <div className="flex gap-2 mt-5">
                     <Badge
                       variant={"outline"}
