@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  compiler: {
+    removeConsole: true, // build시 console.log 삭제 .
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: "5mb", // 업로드 5MB 로

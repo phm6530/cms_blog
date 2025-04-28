@@ -90,7 +90,7 @@ export default function PostView({ contents }: { contents: string }) {
   };
 
   return (
-    <div className="flex">
+    <div>
       {/* 포탈 */}
 
       <TocPortal>
