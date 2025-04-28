@@ -5,7 +5,7 @@ export const dynamicSchema = (existParent: boolean, session: boolean) => {
   let schema = z.object({
     comment: z
       .string()
-      .min(5)
+      .min(2, { message: "2글자 이상 기재해주세요" })
       .max(1000, { message: "1000자 이하로 기재해주세요" }),
   });
 

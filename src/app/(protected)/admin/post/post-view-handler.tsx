@@ -56,7 +56,12 @@ export default function PostViewHandler({
       });
     },
     onSuccess: async () => {
-      toast.success("변경되었습니다.");
+      toast.success("변경되었습니다.", {
+        style: {
+          background: "#1e293b",
+          color: "#38bdf8",
+        },
+      });
       setPendingHandler(false);
       await queryClient.invalidateQueries({
         queryKey: [REVALIDATE.POST.LIST],

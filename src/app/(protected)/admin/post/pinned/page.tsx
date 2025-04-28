@@ -29,7 +29,12 @@ export default function PinnedPage() {
       }
     },
     onSuccess: () => {
-      toast.success("정렬이 변경되었습니다.");
+      toast.success("정렬이 변경되었습니다.", {
+        style: {
+          background: "#1e293b",
+          color: "#38bdf8",
+        },
+      });
       prevList.current = list; // 이전 버전을 업데이트
       queryClient.invalidateQueries({
         queryKey: [REVALIDATE.PINNED_POST],

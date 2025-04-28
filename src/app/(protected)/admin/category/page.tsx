@@ -59,7 +59,12 @@ export default function Category() {
       });
     },
     onSuccess: () => {
-      toast.success("카테고리가 추가 되었습니다.");
+      toast.success("카테고리가 추가 되었습니다.", {
+        style: {
+          background: "#1e293b",
+          color: "#38bdf8",
+        },
+      });
       router.refresh();
       queryClient.invalidateQueries({
         queryKey: ["test"],
@@ -81,7 +86,12 @@ export default function Category() {
       });
     },
     onSuccess: () => {
-      toast.success("카테고리가 삭제되었습니다.");
+      toast.success("카테고리가 삭제되었습니다.", {
+        style: {
+          background: "#1e293b",
+          color: "#38bdf8",
+        },
+      });
       router.refresh();
       queryClient.invalidateQueries({
         queryKey: ["test"],

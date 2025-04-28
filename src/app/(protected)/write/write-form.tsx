@@ -96,7 +96,12 @@ export default function WirteForm({
     onSuccess: async (data) => {
       console.log(data);
       if (data.result.postStatus === POST_STATUS.PUBLISHED) {
-        toast.success("포스팅을 게시하였습니다.");
+        toast.success("포스팅을 게시하였습니다.", {
+          style: {
+            background: "#1e293b",
+            color: "#38bdf8",
+          },
+        });
         router.push(
           `/post/${
             !editData ? data.result.postId : editData.blog_metadata.post_id

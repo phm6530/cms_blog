@@ -128,7 +128,7 @@ export default function CommentForm({
               name={"comment"}
               placeholder="남기실 메세지를 입력해주세요"
               maxLength={1000}
-              className="flex-1 md:min-h-[100px] w-full bg-muted-foreground/5"
+              className="flex-1 md:min-h-[100px] w-full "
             />
             <div className="flex justify-between w-full">
               <div className="pt-2 text-sm flex gap-3 col-span-6 md:order-none placeholder:text-xs!">

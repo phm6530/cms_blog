@@ -56,7 +56,12 @@ export default function PostPinnedHandler({
       });
     },
     onSuccess: () => {
-      toast.success(!opVal ? "설정 되었습니다." : "해제 되었습니다.");
+      toast.success(!opVal ? "설정 되었습니다." : "해제 되었습니다.", {
+        style: {
+          background: "#1e293b",
+          color: "#38bdf8",
+        },
+      });
       setOpval((prev) => !prev);
       queryClient.invalidateQueries({
         queryKey: [REVALIDATE.POST.LIST],
