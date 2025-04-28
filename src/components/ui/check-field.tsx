@@ -70,7 +70,6 @@ export function CheckField() {
 
   const url = unsplashS3Mapping(img);
 
-  console.log(url);
   return (
     <>
       {/* 배너검색기 */}

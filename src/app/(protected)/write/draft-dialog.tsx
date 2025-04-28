@@ -94,7 +94,6 @@ export function DraftDialog() {
       return response.result;
     },
     onSuccess: (data) => {
-      console.log(data);
       reset(setDefaultValues(data));
       toast.success("임시저장 항목 불러왔습니다.");
     },

@@ -16,7 +16,6 @@ type TocItem = {
   children: TocItem[];
 };
 export default function PostView({ contents }: { contents: string }) {
-  console.log(contents);
   const { editor, getHeadings } = useSimpleEditor({ editable: false });
 
   const [list, setList] = useState<any[]>([]);

@@ -175,8 +175,6 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      console.log(body);
-
       const [rows] = await tx
         .insert(blogMetaSchema)
         .values({
@@ -201,8 +199,6 @@ export async function POST(req: NextRequest) {
         post_id: +rows.id,
         contents: body.contents,
       });
-
-      console.log(rows);
 
       return {
         postId: +rows.id,

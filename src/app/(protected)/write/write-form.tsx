@@ -94,7 +94,6 @@ export default function WirteForm({
       });
     },
     onSuccess: async (data) => {
-      console.log(data);
       if (data.result.postStatus === POST_STATUS.PUBLISHED) {
         toast.success("포스팅을 게시하였습니다.", {
           style: {
