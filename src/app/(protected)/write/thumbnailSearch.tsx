@@ -140,6 +140,7 @@ export function DialogCustom({
                         style={{ objectFit: "cover" }}
                         fill
                         sizes="(max-width : 768px) 100vw"
+                        unoptimized
                       />
                     </div>
                   );

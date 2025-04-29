@@ -82,6 +82,7 @@ export const PostItem = forwardRef<
                 alt=""
                 fill
                 style={{ objectFit: "cover" }}
+                unoptimized
               />
             </div>
           )}

@@ -32,6 +32,7 @@ export function RecentPostSlider({ postList }: { postList: PostItemModel[] }) {
                   alt={data.post_title}
                   fill
                   style={{ objectFit: "cover" }}
+                  unoptimized
                 />
               </div>
               <div className="flex flex-col gap-4 p-5 flex-grow">

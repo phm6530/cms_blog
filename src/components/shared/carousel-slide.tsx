@@ -25,7 +25,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
     if (!api) {
       return;
     }
-
+    console.log("???");
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
 
@@ -33,6 +33,8 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
       setCurrent(api.selectedScrollSnap() + 1);
     });
   }, [api]);
+
+  console.log("api::", api);
 
   return (
     <section className="relative">

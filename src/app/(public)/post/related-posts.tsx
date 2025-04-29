@@ -55,6 +55,7 @@ export default async function RelatedPosts({
                           alt=""
                           fill
                           style={{ objectFit: "cover" }}
+                          unoptimized
                         />
                       </div>
                     ) : (
