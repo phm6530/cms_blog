@@ -109,9 +109,7 @@ export default async function PostDetail({
         hasThumbnail={hasThumbnail}
         thumbnail_url={blog_metadata.thumbnail_url}
       >
-        <div
-          className={cn("py-5 flex flex-col relative z-10  animate-wiggle ")}
-        >
+        <div className={cn("py-5 flex flex-col relative z-1 animate-wiggle ")}>
           <div className="flex gap-2 mt-auto mb-3 ">
             <Badge
               variant={"outline"}
