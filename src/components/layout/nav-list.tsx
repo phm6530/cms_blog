@@ -132,19 +132,16 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
       </div>
 
       {/* Portal */}
-      {!isDesktop &&
-        backDropTarget &&
-        createPortal(
-          <div
-            ref={closeRef}
-            className={cn(
-              "fixed w-full  h-screen hidden bg-black/50 backdrop-blur-sm z-20 animate-wiggle",
-              toggle && "block"
-            )}
-            onClick={() => setToggle(false)}
-          />,
-          backDropTarget
-        )}
+      {!isDesktop && backDropTarget && (
+        <div
+          ref={closeRef}
+          className={cn(
+            "fixed w-full left-0 top-0 h-screen  hidden bg-black/50 backdrop-blur-sm z-20 animate-wiggle",
+            toggle && "block"
+          )}
+          onClick={() => setToggle(false)}
+        />
+      )}
     </>
   );
 }
