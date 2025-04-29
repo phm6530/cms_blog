@@ -10,6 +10,7 @@ import MouseClickEffect from "@/components/shared/mouse-clickeffect";
 import HeaderNav from "@/components/layout/header-nav";
 import GlobalNav from "@/components/layout/global-nav";
 import MainLayout from "@/components/layout/main-layout";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "퍼블리셔와 개발자 그 어딘가",
@@ -25,6 +26,7 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <div id="backdrop-portal"></div>
+        <Analytics />
         <ClientProvider>
           <MouseClickEffect>
             <HeaderNav />
