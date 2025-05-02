@@ -2,7 +2,9 @@ import s3 from "@/config/aws.config";
 import { apiHandler } from "@/util/api-hanlder";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextRequest } from "next/server";
-
+/**
+ * 외부 프로젝트 전용
+ */
 export async function POST(req: NextRequest) {
   return await apiHandler(async () => {
     const formData = await req.formData();
@@ -28,7 +30,7 @@ export async function POST(req: NextRequest) {
     }
 
     const fileName = `${Date.now()}-${imgKey}`;
-    const Key = `uploads/blog/${imgKey}/${fileName}`;
+    const Key = `uploads/project/${imgKey}/${fileName}`;
 
     const command = new PutObjectCommand({
       Bucket: process.env.AWS_S3_BUCKET_NAME!,
