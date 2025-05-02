@@ -6,16 +6,19 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   return await apiHandler(async () => {
     const formData = await req.formData();
+
     const file = formData.get("file") as File;
     const imgKey = formData.get("imgKey") as string;
-    const allowedExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
-    const ext = File.name.split(".").pop()?.toLowerCase();
 
-    if (!ext || !allowedExtensions.includes(ext)) {
-      throw new Error("확장자가 이미지 아님");
-    }
+    if (!file) throw new Error("파일 없음");
 
-    const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif"];
+    const allowedMimeTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+    ];
+
     if (!allowedMimeTypes.includes(file.type)) {
       throw new Error("MIME 타입이 이미지 아님");
     }
