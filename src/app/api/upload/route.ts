@@ -1,7 +1,7 @@
 import s3 from "@/config/aws.config";
 import { apiHandler } from "@/util/api-hanlder";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   return await apiHandler(async () => {
@@ -38,6 +38,8 @@ export async function POST(req: NextRequest) {
     });
 
     await s3.send(command);
-    return NextResponse.json({ success: true, url: Key });
+    return {
+      url: Key,
+    };
   });
 }
