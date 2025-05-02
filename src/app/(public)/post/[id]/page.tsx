@@ -39,6 +39,7 @@ import PostHandler from "../post-handler";
 import PostContentCotainer from "../post-contents-wrapper";
 import PostView from "../post-view";
 import { HtmlContentNormalizer } from "@/util/baseurl-slice";
+import LoadingSpiner from "@/components/animation/loading-spiner";
 
 export async function generateMetadata({
   params,
@@ -177,7 +178,7 @@ export default async function PostDetail({
           <CommentSection postId={id} />
 
           {/* ---- post Tool bar ----- */}
-          <Suspense fallback={<>loading................</>}>
+          <Suspense fallback={<LoadingSpiner />}>
             <RelatedPosts
               curPost={id}
               categoryName={category.group_name}

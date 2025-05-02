@@ -23,7 +23,7 @@ export default function Page() {
       queryKey: [REVALIDATE.POST.LIST, category, isSubGroup, keyword],
       queryFn: async ({ pageParam }) => {
         const limit = 10;
-        const cursor = pageParam !== 0 ? pageParam : null; // 일단 초기 0, APi 변경후에 받을예정임
+        const cursor = pageParam !== 0 ? pageParam : null;
 
         let baseUrl = `api/post?category=${category}&group=${isSubGroup}`;
 

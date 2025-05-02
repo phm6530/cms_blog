@@ -1,8 +1,8 @@
 "use client";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import PostToolbar from "./post-toolbar";
 import { cn } from "@/lib/utils";
-import { List } from "lucide-react";
+import { ChevronRight, List } from "lucide-react";
 import useMediaQuery from "@/hook/useMediaQuery";
 import { BREAKPOINT } from "@/components/layout/nav-list";
 
@@ -19,11 +19,6 @@ export default function PostContentCotainer({
   const isDesktop = useMediaQuery(`(min-width:${BREAKPOINT.MD}px)`);
   const [isVisible, setIsVisible] = useState(isDesktop);
 
-  /** 모바일에서는 view 값 off를 초기값으로  */
-  useEffect(() => {
-    setIsVisible(isDesktop);
-  }, [isDesktop]);
-
   const toggleTocHandler = () => {
     if (isVisible) {
       setIsVisible(false);
@@ -33,57 +28,43 @@ export default function PostContentCotainer({
   };
 
   return (
-    <section
-      className={cn(
-        "md:w-[calc(100%-250px)]  mx-auto gap-5  pr-0 relative ",
-        isVisible && "w-full! max-w-none md:pr-[250px]!"
-      )}
-    >
+    <section>
+      {/* toc */}
       <div
         className={cn(
-          `
-          z-30
-          fixed top-0 bg-background/80  left-auto  w-[280px]
-          md:p-0 p-5
-         
-          md:absolute h-full md:left-full md:w-[220px] order-1
-        
-       border-l
- 
-           `,
-          isVisible
-            ? "md:left-[calc(100%-210px)] -right-[0px]  "
-            : " -right-[280px] md:right-full border-l-transparent"
+          "pt-14 fixed -right-[250px] transition-all z-30 top-0 h-screen  w-[90%] border-l bg-muted/40 max-w-[250px]! ",
+          isVisible && "right-0"
         )}
         style={{
           backdropFilter: "blur(10px)",
           WebkitBackdropFilter: "blur(10px)",
+          transition: "right 0.75s cubic-bezier(0.77, 0.2, 0.05, 1)",
         }}
       >
+        {/* toc Contents */}
+        <div id="toc-target" className={cn("")} />
+
+        {/* btn- on off */}
         <span
-          className="bottom-1/6 top-auto md:top-10 absolute md:sticky! bg-background/70 -left-[55px] flex justify-center items-center cursor-pointer z-10 size-13.5 rounded-none border "
+          className={cn(
+            "bottom-1/10 top-auto fixed text-white  active:bg-indigo-950!  bg-background/70 -left-[55px] flex justify-center items-center cursor-pointer z-0! size-13.5 rounded-none border",
+            "dark:bg-indigo-500! "
+          )}
           onClick={toggleTocHandler}
           style={{
             backdropFilter: "blur(10px)",
             WebkitBackdropFilter: "blur(10px)",
           }}
         >
-          <List />
-          {/* <ChevronLeft
-            size={20}
-            className={cn(isVisible ? "rotate-180" : "")}
-          /> */}
-        </span>
-        <div
-          id="toc-target"
-          className={cn(
-            " md:sticky top-30 pt-5",
-            isVisible ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"
+          {isVisible ? (
+            <ChevronRight className="animate-wiggle" />
+          ) : (
+            <List className="animate-wiggle" />
           )}
-        />
+        </span>
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 max-w-[900px] mx-auto">
         {/* ---- post Tool bar ----- */}
         <PostToolbar
           categoryName={categoryName}

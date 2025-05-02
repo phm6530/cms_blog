@@ -94,7 +94,7 @@ export default function PostView({ contents }: { contents: string }) {
       {/* 포탈 */}
 
       <TocPortal>
-        <div className="sticky top-20 md:pl-5 min-h-[150px] text-left ">
+        <div className="sticky top-20 pl-5 min-h-[150px] text-left ">
           <p className="border-b pb-2 flex gap-2 items-center">
             <TableOfContents size={15} />
             Table of Content
