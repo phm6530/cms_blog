@@ -35,8 +35,8 @@ type CommentRow = {
   admin_email: string | null;
   admin_nickname: string | null;
   author_role: "guest" | "admin" | "super";
-  guest_img: string | null;
-  admin_img: string | null;
+  guest_img?: string | null;
+  admin_img?: string | null;
 };
 
 export function mapToCommentModel(rows: CommentRow[]): CommentItemModel[] {
@@ -56,16 +56,16 @@ export function mapToCommentModel(rows: CommentRow[]): CommentItemModel[] {
     const author =
       author_role === "admin" || author_role === "super"
         ? {
-            role: author_role!,
+            role: author_role,
             admin_email: admin_email!,
             nickname: admin_nickname!,
-            profile_img: admin_img,
+            profile_img: admin_img ?? null,
           }
         : {
-            role: author_role!,
+            role: author_role,
             guest_id: guest_id!,
             nickname: guest_nickname!,
-            profile_img: `${guest_img}.png`, //guest는 일단 Null처리
+            profile_img: guest_img ? `${guest_img}.png` : null,
           };
 
     // 구조 변경,
