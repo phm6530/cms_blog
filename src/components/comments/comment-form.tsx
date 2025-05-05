@@ -35,8 +35,8 @@ export default function CommentForm({
   parent_id?: null | number;
 }) {
   const { throttle } = useThrottling();
-  const params = useParams();
   const { commentsViewOff } = useStore();
+  const params = useParams();
   const session = useSession();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -136,7 +136,7 @@ export default function CommentForm({
                   {form.watch("comment").length} / 1000 자
                 </span>
               </div>
-              <Button className="py-3 px-5 h-auto! ">댓글 작성</Button>
+              <Button className="py-3 px-5 h-auto! text-xs ">댓글 작성</Button>
             </div>
           </div>
         </form>

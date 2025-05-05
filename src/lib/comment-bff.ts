@@ -11,6 +11,7 @@ type Author =
       guest_id: number;
       nickname: string;
       admin_email?: undefined;
+      profile_img: string | null;
     };
 
 export type CommentItemModel = {
@@ -34,7 +35,8 @@ type CommentRow = {
   admin_email: string | null;
   admin_nickname: string | null;
   author_role: "guest" | "admin" | "super";
-  profile_img: string | null;
+  guest_img: string | null;
+  admin_img: string | null;
 };
 
 export function mapToCommentModel(rows: CommentRow[]): CommentItemModel[] {
@@ -46,7 +48,8 @@ export function mapToCommentModel(rows: CommentRow[]): CommentItemModel[] {
       guest_id,
       guest_nickname,
       created_at,
-      profile_img,
+      guest_img,
+      admin_img,
       ...rest
     } = data;
 
@@ -56,13 +59,13 @@ export function mapToCommentModel(rows: CommentRow[]): CommentItemModel[] {
             role: author_role!,
             admin_email: admin_email!,
             nickname: admin_nickname!,
-            profile_img,
+            profile_img: admin_img,
           }
         : {
             role: author_role!,
             guest_id: guest_id!,
             nickname: guest_nickname!,
-            profile_img: null, //guest는 일단 Null처리
+            profile_img: `${guest_img}.png`, //guest는 일단 Null처리
           };
 
     // 구조 변경,

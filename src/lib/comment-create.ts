@@ -35,6 +35,7 @@ export async function ComemntCreateService({
         .values({
           nickname: data.guest,
           password: await bcrypt.hash(data.password, 10),
+          guest_icon: null,
         })
         .returning({ id: guestSchema.id });
 
@@ -47,6 +48,7 @@ export async function ComemntCreateService({
         parent_id: data.parent_id ?? null,
         author_id: row.id,
         author_type: "guest",
+
         ...(!!isCommentSchema
           ? {
               post_id: parseInt(postId!, 10),

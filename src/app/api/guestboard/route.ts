@@ -6,7 +6,9 @@ import { guestBoardSchema } from "@/db/schema/guest-board";
 import { mapToCommentModel } from "@/lib/comment-bff";
 import { ComemntCreateService } from "@/lib/comment-create";
 import { createCommentTree } from "@/lib/comment-mapping";
+import { REVALIDATE } from "@/type/constants";
 import { and, desc, eq, inArray } from "drizzle-orm";
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -25,6 +27,10 @@ export async function POST(req: NextRequest) {
       data,
       session,
     });
+
+    // revaildateTags
+    revalidateTag(REVALIDATE.GUEST_BOARD.GETBOARD);
+    revalidateTag(REVALIDATE.WEIGET.COMMENT);
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
@@ -50,7 +56,8 @@ export async function GET() {
       admin_nickname: usersTable.nickname,
       author_role: guestBoardSchema.author_type,
       parent_id: guestBoardSchema.parent_id,
-      profile_img: usersTable.profile_img,
+      guest_img: guestSchema.guest_icon,
+      admin_img: usersTable.profile_img,
     })
     .from(guestBoardSchema)
     .leftJoin(

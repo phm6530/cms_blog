@@ -34,8 +34,6 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
     });
   }, [api]);
 
-  console.log("api::", api);
-
   return (
     <section className="relative">
       <Carousel

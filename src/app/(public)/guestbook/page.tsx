@@ -2,10 +2,8 @@ import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 import GuestBookItem from "./components/guestbook-item";
-// import { BadgeInfo } from "lucide-react";
 import { CommentItemModel } from "@/lib/comment-bff";
 import CommentForm from "@/components/comments/comment-form";
-import MasonryLayout from "@/components/shared/MasonryLayout";
 
 export default async function GuestBookPage() {
   const response = await withFetchRevaildationAction<CommentItemModel[]>({
@@ -34,11 +32,9 @@ export default async function GuestBookPage() {
         <CommentForm targetSchema="guestbook" />
       </section>
 
-      <MasonryLayout gutter={50}>
-        {response.result.map((item, idx) => {
-          return <GuestBookItem deps={0} {...item} key={idx} />;
-        })}
-      </MasonryLayout>
+      {response.result.map((item, idx) => {
+        return <GuestBookItem deps={0} {...item} key={idx} />;
+      })}
     </div>
   );
 }

@@ -14,7 +14,9 @@ export default function ProfileUser({
   role: "super" | "admin" | "guest";
   createAt?: string;
 }) {
-  const img = profileImg || `/img/guest.png`;
+  const img =
+    role !== "guest" ? `${profileImg}` : `/img/guestbook/${profileImg}`;
+
   return (
     <div className="flex gap-3 items-center ">
       <div
@@ -39,12 +41,16 @@ export default function ProfileUser({
               </span>
             )}
           </div>
+
           {(role === "super" || role === "admin") && (
             <div className="relative ml-1">
-              <BadgeCheck className="text-teal-500  shadow-2xl z-1" size={20} />{" "}
               <BadgeCheck
-                className="text-teal-500  shadow-2xl z-1 absolute top-[0px] animate-ping"
-                size={20}
+                className="text-indigo-300 shadow-2xl z-1 mt-[1px]"
+                size={17}
+              />{" "}
+              <BadgeCheck
+                className="text-cyan-400/50  shadow-2xl z-1 absolute top-[0px] animate-ping"
+                size={17}
               />
             </div>
           )}

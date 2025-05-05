@@ -30,6 +30,13 @@ export default function GuestBookItem({
   const session = useSession();
   const router = useRouter();
 
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm({ defaultValues: { password: "" } });
+
   const { mutate } = useMutation({
     mutationFn: async (data?: { password?: string }) => {
       return await withClientFetch({
@@ -50,15 +57,13 @@ export default function GuestBookItem({
           color: "#38bdf8",
         },
       });
+
+      //비번초기화
+      reset();
+
       router.refresh();
     },
   });
-
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({ defaultValues: { password: "" } });
 
   const onDeleteHnadler = (data: { password: string }) => {
     mutate(data);
@@ -81,7 +86,7 @@ export default function GuestBookItem({
           profileImg={
             author.role === "admin" || author.role === "super"
               ? author.profile_img
-              : null
+              : author.profile_img
           }
           nickname={author.nickname}
           role={author.role}

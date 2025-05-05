@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { db } from "@/db/db";
 import { guestBoardSchema } from "@/db/schema/guest-board";
 import { commentVerfiyDelete } from "@/lib/comment-verify-delete";
+import { REVALIDATE } from "@/type/constants";
 import { eq } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
@@ -32,8 +33,9 @@ export async function DELETE(
       .delete(guestBoardSchema)
       .where(eq(guestBoardSchema.id, Number(id)));
 
-    revalidateTag(`/guestbook`);
-
+    // revaildateTags
+    revalidateTag(REVALIDATE.GUEST_BOARD.GETBOARD);
+    revalidateTag(REVALIDATE.WEIGET.COMMENT);
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
     if (err instanceof Error) {
