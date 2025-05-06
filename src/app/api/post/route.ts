@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
   // where..
   const whereQuery = and(
     category && category !== "all"
-      ? sql`LOWER(${categorySchema.group_name}) = ${category.toLowerCase()}`
+      ? sql`LOWER("category"."group_name") = ${category.toLowerCase()}`
       : undefined,
     group && group !== "all"
       ? sql`LOWER(${blogSubGroup.sub_group_name}) = ${group.toLowerCase()}`
@@ -54,6 +54,7 @@ export async function GET(req: NextRequest) {
     searchKeyword
       ? ilike(blogMetaSchema.post_title, `%${searchKeyword}%`)
       : undefined,
+
     // session 있으면 비밀글도 가져오기
     !!session ? undefined : eq(blogMetaSchema.status, "published"),
     !!cursor ? lt(blogMetaSchema.post_id, cursor) : undefined,
@@ -126,6 +127,10 @@ export async function GET(req: NextRequest) {
       .innerJoin(
         blogSubGroup,
         eq(blogMetaSchema.sub_group_id, blogSubGroup.sub_group_id)
+      )
+      .leftJoin(
+        categorySchema,
+        eq(categorySchema.group_id, blogSubGroup.group_id)
       )
       .where(whereQuery);
     searchCnt = rows.count;
