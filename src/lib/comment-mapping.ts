@@ -21,5 +21,10 @@ export function createCommentTree(
     }
   }
 
+  // 대댓글 오름차순으로 변경
+  for (const comment of rootComments) {
+    comment.children.sort((a, b) => a.id - b.id);
+  }
+
   return rootComments;
 }
