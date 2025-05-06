@@ -35,7 +35,7 @@ export async function ComemntCreateService({
         .values({
           nickname: data.guest,
           password: await bcrypt.hash(data.password, 10),
-          guest_icon: null,
+          guest_icon: `person_${Math.floor(Math.random() * 6) + 1}`, //게스트 아이콘 임의 생성
         })
         .returning({ id: guestSchema.id });
 
