@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
             value: "http://localhost:3000",
           },
           {
+            key: "Access-Control-Allow-Origin",
+            value: "https://www.h-creations.com",
+          },
+          {
             key: "Access-Control-Allow-Methods",
             value: "GET,DELETE,PATCH,POST,PUT,OPTIONS",
           },
