@@ -1228,7 +1228,7 @@
 .tiptap p {
   line-height: 2;
   letter-spacing: -0.01rem;
-  font-size: calc(1rem * var(--font-scale));
+  font-size: 1rem;
 }
 .tiptap :first-child {
   margin-top: 0;
@@ -1268,15 +1268,12 @@
   font-size: calc(1rem * var(--font-scale));
 }
 .tiptap p code {
-  border-radius: 0.5rem;
-  font-family: "popphine";
-  font-weight: 700;
-  color: #6a52f0;
-
-  border: 1px solid rgb(193 154 255 / 22%);
+  border-radius: 0.4rem;
+  font-family: "Poppins";
+  color: #ff7164;
+  border: 1px solid #ff716441;
   font-size: 0.9rem;
-  padding: 0.15rem 0.2rem;
-  background: rgba(255, 255, 255, 1);
+  padding: 0.15rem 0.4rem;
 }
 
 .tiptap:focus,
@@ -1330,7 +1327,8 @@
 .tiptap pre .hljs-string,
 .tiptap pre .hljs-symbol,
 .tiptap pre .hljs-bullet {
-  color: #b9f18d;
+  color: #df9776;
+  word-break: break-word;
 }
 .tiptap pre .hljs-title,
 .tiptap pre .hljs-section {
