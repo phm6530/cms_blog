@@ -37,6 +37,7 @@ export default function Error({
         <Button variant={"outline"} size={"lg"}>
           <Link href={"/"}>Home</Link>
         </Button>
+
         <Button
           size={"lg"}
           variant={"outline"}

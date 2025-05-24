@@ -68,16 +68,26 @@ export default function CommentForm({
         body: !!parent_id ? { ...data, parent_id } : data,
       });
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success("등록 되었습니다.", {
         style: {
           background: "#1e293b",
           color: "#38bdf8",
         },
       });
-      queryClient.invalidateQueries({
-        queryKey: [`${REVALIDATE.COMMENT}:${postId}`],
-      });
+
+      if (targetSchema === "comment") {
+        await queryClient.invalidateQueries({
+          queryKey: [`${REVALIDATE.COMMENT}:${postId}`],
+        });
+      }
+
+      if (targetSchema === "guestbook") {
+        await queryClient.invalidateQueries({
+          queryKey: [REVALIDATE.GUEST_BOARD.GETBOARD],
+        });
+      }
+
       form.reset(defaultValues(parent_id));
       router.refresh();
       if (!!parent_id) commentsViewOff();
@@ -128,7 +138,7 @@ export default function CommentForm({
               name={"comment"}
               placeholder="남기실 메세지를 입력해주세요"
               maxLength={1000}
-              className="flex-1 md:min-h-[100px] w-full bg-muted-foreground/5"
+              className="flex-1 md:min-h-[100px] w-full bg-muted-foreground/5 mr-auto!"
             />
             <div className="flex justify-between w-full">
               <div className="pt-2 text-sm flex gap-3 col-span-6 md:order-none placeholder:text-xs!">

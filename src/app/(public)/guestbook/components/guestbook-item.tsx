@@ -8,10 +8,10 @@ import ProfileUser from "@/components/ui/profile-user";
 import { useSession } from "next-auth/react";
 import ConfirmButton from "@/components/shared/confirm-button";
 import withClientFetch from "@/util/withClientFetch";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { HTTP_METHOD } from "@/type/constants";
+import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import { useForm } from "react-hook-form";
 import InputPassword from "@/components/ui/password-input";
 import { CommentItemModel } from "@/lib/comment-bff";
@@ -29,6 +29,7 @@ export default function GuestBookItem({
     useStore(); // Zustand로 공유
   const session = useSession();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -50,7 +51,10 @@ export default function GuestBookItem({
             : {},
       });
     },
-    onSuccess: () => {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [REVALIDATE.GUEST_BOARD.GETBOARD],
+      });
       toast.success("삭제 되었습니다", {
         style: {
           background: "#1e293b",

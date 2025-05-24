@@ -7,7 +7,7 @@ import { mapToCommentModel } from "@/lib/comment-bff";
 import { ComemntCreateService } from "@/lib/comment-create";
 import { createCommentTree } from "@/lib/comment-mapping";
 import { REVALIDATE } from "@/type/constants";
-import { and, desc, eq, inArray } from "drizzle-orm";
+import { and, desc, eq, inArray, isNotNull, isNull, lt } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -43,8 +43,16 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET() {
-  const rows = await db
+// 인피니티 스크롤 - cursor
+export async function GET(req: NextRequest) {
+  const qs = req.nextUrl.searchParams;
+  const cursor = qs.get("cursor");
+
+  const LIMIT = 10;
+  console.log(cursor);
+
+  // 공유할 Base Query
+  const baseQuery = db
     .select({
       id: guestBoardSchema.id,
       comment: guestBoardSchema.comment,
@@ -76,9 +84,39 @@ export async function GET() {
     )
     .orderBy(desc(guestBoardSchema.id));
 
-  const commentList = mapToCommentModel(rows);
+  // 부모 부터 가져옴,
+  const parents = await baseQuery
+    .where(
+      and(
+        !!cursor ? lt(guestBoardSchema.id, Number(cursor)) : undefined,
+        isNull(guestBoardSchema.parent_id)
+      )
+    )
+    .limit(LIMIT + 1); // 다음꺼 계산을 위해 + 1
+
+  const limitParents = parents.slice(0, LIMIT);
+
+  // 부모 Ids
+  const parentIds = limitParents.map((e) => e.id);
+
+  // 대댓글 list
+  const replies = await baseQuery.where(
+    and(
+      inArray(guestBoardSchema.parent_id, parentIds),
+      isNotNull(guestBoardSchema.parent_id)
+    )
+  );
+
+  const newArr = [...limitParents, ...replies];
+  const commentList = mapToCommentModel(newArr);
+
+  // console.log(commentList);
+
   return NextResponse.json({
     success: true,
-    result: createCommentTree(commentList),
+    result: {
+      list: createCommentTree(commentList),
+      isNextPage: parents.length > LIMIT,
+    },
   });
 }

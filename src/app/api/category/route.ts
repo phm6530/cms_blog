@@ -63,8 +63,6 @@ export async function GET() {
     }
   }
 
-  console.log("??");
-
   return NextResponse.json({
     success: true,
     result: {

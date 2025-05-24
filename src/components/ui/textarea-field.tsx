@@ -9,6 +9,7 @@ import {
   FormMessage,
 } from "./form";
 import { Textarea } from "./textarea";
+import { cn } from "@/lib/utils";
 
 export default function TextareaFormField({
   name,
@@ -25,13 +26,15 @@ export default function TextareaFormField({
         name={name}
         render={({ field }) => {
           return (
-            <FormItem className={className}>
-              {label && <FormLabel>{label}</FormLabel>}
-              <FormControl>
-                <Textarea {...field} {...rest} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+            <>
+              <FormItem className={cn("mr-auto", className)}>
+                {label && <FormLabel>{label}</FormLabel>}
+                <FormControl>
+                  <Textarea {...field} {...rest} />
+                </FormControl>
+              </FormItem>
+              <FormMessage className="mr-auto" />
+            </>
           );
         }}
       />

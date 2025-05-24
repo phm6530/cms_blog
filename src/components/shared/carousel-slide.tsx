@@ -44,7 +44,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
         }}
         setApi={setApi}
         className={cn(
-          "md:static!  top-0 md:w-full   w-[calc(100%+40px)]  left-0 ",
+          "md:static!  top-0 md:w-full   w-[calc(100%+40px)]  left-0",
           postList.length > 1 && "-translate-x-5 pl-5 md:pl-0 md:-translate-x-0"
         )}
       >
@@ -63,7 +63,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                 className={cn(
                   `w-full md:aspect-[16/7]  aspect-[16/17]  cursor-pointer grid border-border p-6 md:p-10  rounded-xl  flex-col bg-center bg-cover  relative
                   after:absolute after:inset-0 after:animate-opacity after:bg-cover after:bg-center after:bg-no-repeat after:content-['']
-                 after:bg-gradient-to-b md:after:bg-gradient-to-l after:from-white/30 after:via-black/30 after:to-black/80 md:after:to-via-black/20 after:z-1 after:rounded-xl!
+                 after:bg-gradient-to-b md:after:bg-gradient-to-l after:from-white/0 after:via-black/40 after:to-black/80 md:after:to-via-black/20 after:z-1 after:rounded-xl!
                   `
                 )}
                 style={{
@@ -121,8 +121,8 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-[-15px] md:flex hidden" />
-        <CarouselNext className="right-[-15px] md:flex hidden" />
+        <CarouselPrevious className="left-[-17px] md:flex hidden  bg-background! border-transparent! hover:border-border!" />
+        <CarouselNext className="right-[-22px] md:flex hidden bg-background! border-transparent! hover:border-border!" />
       </Carousel>
       <div className="mt-3 flex gap-1 justify-center">
         {Array.from({ length: count }).map((_, idx) => {
