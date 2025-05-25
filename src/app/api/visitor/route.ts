@@ -2,6 +2,7 @@ import { db } from "@/db/db";
 import { visitorSchema } from "@/db/schema/visitor/visitor";
 import { visitor_cnt } from "@/db/schema/visitor/visitor_cnt";
 import { DateUtils } from "@/util/date-uill";
+import { WithTransaction } from "@/util/withTransaction";
 import { eq, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -11,21 +12,22 @@ export async function GET(req: NextRequest) {
   const realIP = forwarded?.split(",")[0]?.trim() || "unknown";
   const userAgent = req.headers.get("user-agent") || "";
 
-  // 쿠키가 존재하는지 파악,
+  // 신규니?
   let isNewVisitor = false;
 
   if (!sessionCookie) {
     isNewVisitor = true;
+    await WithTransaction.run(async (tx) => {
+      await tx.insert(visitorSchema).values({
+        visitor_agent: userAgent,
+        ip: realIP,
+      });
 
-    await db.insert(visitorSchema).values({
-      visitor_agent: userAgent,
-      ip: realIP,
+      await tx
+        .update(visitor_cnt)
+        .set({ visitor_cnt: sql`${visitor_cnt.visitor_cnt} + 1` })
+        .where(eq(visitor_cnt.id, 1));
     });
-
-    await db
-      .update(visitor_cnt)
-      .set({ visitor_cnt: sql`${visitor_cnt.visitor_cnt} + 1` })
-      .where(eq(visitor_cnt.id, 1));
   }
 
   const [row] = await db
@@ -48,8 +50,6 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  console.log(isNewVisitor);
-
   if (isNewVisitor) {
     // 오늘
     const now = DateUtils.parseKoreanDate(new Date());
@@ -62,9 +62,11 @@ export async function GET(req: NextRequest) {
     const expireTime = now.add(seconds, "second");
     console.log(expireTime); //만료시간체크
 
+    const sessionId = crypto.randomUUID();
+
     response.cookies.set({
-      name: "session_id",
-      value: crypto.randomUUID(),
+      name: sessionId,
+      value: sessionId,
       maxAge: seconds,
       path: "/",
       httpOnly: true,
