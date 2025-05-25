@@ -1,16 +1,17 @@
 import { db } from "@/db/db";
 import { visitorSchema } from "@/db/schema/visitor/visitor";
 import { visitor_cnt } from "@/db/schema/visitor/visitor_cnt";
+import { DateUtils } from "@/util/date-uill";
 import { eq, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const sessionCookie = req.cookies.get("session_id");
-
   const forwarded = req.headers.get("x-forwarded-for");
   const realIP = forwarded?.split(",")[0]?.trim() || "unknown";
   const userAgent = req.headers.get("user-agent") || "";
 
+  // 쿠키가 존재하는지 파악,
   let isNewVisitor = false;
 
   if (!sessionCookie) {
@@ -47,11 +48,24 @@ export async function GET(req: NextRequest) {
     },
   });
 
+  console.log(isNewVisitor);
+
   if (isNewVisitor) {
+    // 오늘
+    const now = DateUtils.parseKoreanDate(new Date());
+    const todayStart = now.startOf("day"); // 오늘 00:00:00
+    const tomorrowStart = todayStart.add(1, "day"); // 내일 00:00:00
+
+    const seconds = tomorrowStart.diff(now, "second");
+
+    // 테스팅
+    const expireTime = now.add(seconds, "second");
+    console.log(expireTime); //만료시간체크
+
     response.cookies.set({
       name: "session_id",
       value: crypto.randomUUID(),
-      maxAge: 60 * 60 * 24,
+      maxAge: seconds,
       path: "/",
       httpOnly: true,
     });

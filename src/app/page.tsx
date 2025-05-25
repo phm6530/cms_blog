@@ -4,6 +4,8 @@ import RecentGuestBoard from "@/components/weiget/recent-guestboard";
 import RecentPost from "@/components/weiget/recent-post";
 
 export default function Home() {
+  console.log("ㅅㅂ");
+
   return (
     <>
       <div className="col-span-2  col-start-2 flex flex-col gap-10 w-full  ">

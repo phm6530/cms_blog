@@ -1,6 +1,5 @@
 "use client";
 import withClientFetch from "@/util/withClientFetch";
-
 import { useQuery } from "@tanstack/react-query";
 
 export default function VisitorWigetV2() {
