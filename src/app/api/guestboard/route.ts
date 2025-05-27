@@ -7,9 +7,21 @@ import { mapToCommentModel } from "@/lib/comment-bff";
 import { ComemntCreateService } from "@/lib/comment-create";
 import { createCommentTree } from "@/lib/comment-mapping";
 import { REVALIDATE } from "@/type/constants";
-import { and, desc, eq, inArray, isNotNull, isNull, lt } from "drizzle-orm";
+
+import {
+  and,
+  count,
+  desc,
+  eq,
+  gte,
+  inArray,
+  isNotNull,
+  isNull,
+  lt,
+} from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+import { DateUtils } from "@/util/date-uill";
 
 export async function POST(req: NextRequest) {
   try {
@@ -49,7 +61,6 @@ export async function GET(req: NextRequest) {
   const cursor = qs.get("cursor");
 
   const LIMIT = 10;
-  console.log(cursor);
 
   // 공유할 Base Query
   const baseQuery = db
@@ -110,13 +121,34 @@ export async function GET(req: NextRequest) {
   const newArr = [...limitParents, ...replies];
   const commentList = mapToCommentModel(newArr);
 
-  // console.log(commentList);
+  const status: { [key: string]: any } = {};
+
+  if (!cursor) {
+    // 전체
+    const [row] = await db.select({ count: count() }).from(guestBoardSchema);
+    const { startOfToday, endOfToday } = DateUtils.krUTC();
+
+    const rows = await db
+      .select({ count: count() })
+      .from(guestBoardSchema)
+      .where(
+        and(
+          gte(guestBoardSchema.created_at, startOfToday),
+          lt(guestBoardSchema.created_at, endOfToday),
+          isNull(guestBoardSchema.parent_id)
+        )
+      );
+
+    status["total"] = row.count;
+    status["today"] = rows[0].count;
+  }
 
   return NextResponse.json({
     success: true,
     result: {
       list: createCommentTree(commentList),
       isNextPage: parents.length > LIMIT,
+      ...(!cursor && { status }),
     },
   });
 }

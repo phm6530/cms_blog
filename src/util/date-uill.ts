@@ -63,6 +63,15 @@ export class DateUtils {
     return diffDays === 0;
   }
 
+  static krUTC() {
+    const startOfToday = dayjs().tz("Asia/Seoul").startOf("day").utc().toDate();
+    const endOfToday = dayjs().tz("Asia/Seoul").endOf("day").utc().toDate();
+    return {
+      startOfToday,
+      endOfToday,
+    };
+  }
+
   static fromNow(date: string) {
     return this.parseKoreanDate(date, "kr").fromNow();
   }

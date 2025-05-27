@@ -8,6 +8,21 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { useEffect, useRef } from "react";
 import LoadingSpinerV2 from "@/components/ui/loading-spinner-v2";
 
+type FirstPageResult = {
+  list: CommentItemModel[];
+  isNextPage: boolean;
+  status: { today: number; total: number };
+};
+
+type SubsequentPageResult = {
+  list: CommentItemModel[];
+  isNextPage: boolean;
+};
+
+type BoardListProps<T extends undefined | number> = T extends undefined
+  ? FirstPageResult
+  : SubsequentPageResult;
+
 export default function GuestBookPage() {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -21,10 +36,9 @@ export default function GuestBookPage() {
           endPoint += `?cursor=${curCursor}`;
         }
 
-        const response = await withFetchRevaildationAction<{
-          list: CommentItemModel[];
-          isNextPage: boolean;
-        }>({
+        const response = await withFetchRevaildationAction<
+          BoardListProps<typeof curCursor>
+        >({
           endPoint,
           options: {
             next: {
@@ -71,6 +85,15 @@ export default function GuestBookPage() {
 
   const result = data?.pages.flatMap((e) => e.list) ?? [];
 
+  const isFirstPageResult = (page: any): page is FirstPageResult => {
+    return page && "status" in page;
+  };
+
+  // JSX에서 사용
+  const firstPage = data?.pages[0];
+  const status =
+    firstPage && isFirstPageResult(firstPage) ? firstPage.status : null;
+
   return (
     <div className="max-w-[800px] mx-auto pt-[50px] pb-10">
       <span className="text-2xl md:text-3xl  font-SUIT-Regular flex items-center gap-5">
@@ -82,6 +105,22 @@ export default function GuestBookPage() {
       <section className="my-6">
         <CommentForm targetSchema="guestbook" />
       </section>
+
+      {isPending ? (
+        <></>
+      ) : (
+        <div className="flex gap-3 text-xs py-3">
+          <div className="flex gap-1">
+            <span>Today</span>
+            <span>{status?.today || 0}</span>
+          </div>
+          <span className="opacity-50">/</span>
+          <div className="flex gap-1">
+            <span>Total </span>
+            <span>{status?.total || 0}</span>
+          </div>
+        </div>
+      )}
 
       {isPending && (
         <section className="flex flex-col gap-5">
