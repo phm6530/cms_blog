@@ -6,7 +6,7 @@ import Link from "next/link";
 type WeigetComemnt = {
   post_id: number;
   comment: string;
-  createdAt: string;
+  created_at: string;
 };
 
 export default async function RecentGuestBoard() {
@@ -32,7 +32,7 @@ export default async function RecentGuestBoard() {
               className="text-[13px] grid grid-cols-[auto_1fr] gap-3 hover:underline items-start"
             >
               <p className=" leading-5 mt-[0px] text-xs">
-                {DateUtils.dateFormatKR(post.createdAt, "YY. MM. DD.")}
+                {DateUtils.dateFormatKR(post.created_at, "YY. MM. DD.")}
               </p>
               <p className="line-clamp-2 leading-5 text-xs">{post.comment}</p>
             </Link>
