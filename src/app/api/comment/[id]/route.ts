@@ -60,7 +60,11 @@ export async function GET(
       )
       .where(eq(commentSchema.post_id, parseInt(postId, 10)))
       .orderBy(asc(commentSchema.createdAt));
+
+    console.log(rows);
+
     const commentList = mapToCommentModel(rows);
+
     revalidatePath(`/category/blog`);
 
     return { success: true, result: createCommentTree(commentList) };

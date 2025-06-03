@@ -33,6 +33,9 @@ export default function CommentItem({
   const ref = useRef<HTMLInputElement>(null);
   const [lineClimp, setLineClimp] = useState<boolean>(false);
   const queryClient = useQueryClient();
+
+  console.log(author);
+
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;

@@ -9,9 +9,9 @@ export default function CommentList({ postId }: { postId: string }) {
   // const [list, setList] = useState<Array<Array<CommentItemModel>> | null>(null);
 
   /**
-   *
    * @description 부모는 오름차순으로, 자식은 내림차순으로 가져오기 ㅇㅇ
    */
+
   const { data, isLoading } = useInfiniteQuery({
     queryKey: [`${REVALIDATE.COMMENT}:${postId}`],
     queryFn: async ({ pageParam }: { pageParam: number }) => {
@@ -27,7 +27,7 @@ export default function CommentList({ postId }: { postId: string }) {
       }>({
         endPoint: baseEndpont,
         options: {
-          cache: "force-cache",
+          cache: "no-cache",
           next: {
             tags: [`${REVALIDATE.COMMENT}:${postId}`],
           },

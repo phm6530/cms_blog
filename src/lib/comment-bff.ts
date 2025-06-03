@@ -36,7 +36,7 @@ type CommentRow = {
   admin_nickname: string | null;
   author_role: "guest" | "admin" | "super";
   guest_img?: string | null;
-  admin_img?: string | null;
+  profile_img?: string | null;
 };
 
 export function mapToCommentModel(rows: CommentRow[]): CommentItemModel[] {
@@ -49,7 +49,7 @@ export function mapToCommentModel(rows: CommentRow[]): CommentItemModel[] {
       guest_nickname,
       created_at,
       guest_img,
-      admin_img,
+      profile_img,
       ...rest
     } = data;
 
@@ -59,7 +59,7 @@ export function mapToCommentModel(rows: CommentRow[]): CommentItemModel[] {
             role: author_role,
             admin_email: admin_email!,
             nickname: admin_nickname!,
-            profile_img: admin_img ?? null,
+            profile_img: profile_img ?? null,
           }
         : {
             role: author_role,
