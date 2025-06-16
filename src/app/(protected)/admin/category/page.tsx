@@ -9,6 +9,7 @@ import { CornerDownRight, Menu } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
+import CategoryRenameHandler from "./components/category-rename";
 
 export type DeleteCategoryProps = { categoryId: number; subGroupId?: number };
 
@@ -145,9 +146,11 @@ export default function Category() {
                   </span>
                 </div>
                 <div className="flex gap-2 ">
-                  <Button variant={"outline"} size={"sm"} className="text-xs">
-                    변경
-                  </Button>
+                  {/* 카테고리 이름 변경 */}
+                  <CategoryRenameHandler
+                    category={category.name}
+                    categoryId={category.id}
+                  />
                   <Button
                     variant={"outline"}
                     size={"sm"}
