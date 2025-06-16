@@ -74,7 +74,7 @@ export default function WirteForm({
   });
 
   /**---- 제출 ---- */
-  const { mutate } = useMutation({
+  const { mutate, isSuccess, isPending } = useMutation({
     mutationFn: async (
       body: z.infer<typeof wirtePostSchema> & { description: string }
     ) => {
@@ -234,6 +234,7 @@ export default function WirteForm({
           className={cn("p-6 text-xs", !isModeEdit && "ml-auto")}
           type={"submit"}
           onClick={form.handleSubmit(onSubmitHandler)}
+          disabled={isPending || isSuccess}
         >
           {!!editData ? "수정하기" : "포스팅 하기"}
         </Button>
