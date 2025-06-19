@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
       author_role: guestBoardSchema.author_type,
       parent_id: guestBoardSchema.parent_id,
       guest_img: guestSchema.guest_icon,
-      admin_img: usersTable.profile_img,
+      profile_img: usersTable.profile_img,
     })
     .from(guestBoardSchema)
     .leftJoin(
@@ -119,6 +119,7 @@ export async function GET(req: NextRequest) {
   );
 
   const newArr = [...limitParents, ...replies];
+
   const commentList = mapToCommentModel(newArr);
 
   const status: { [key: string]: any } = {};

@@ -30,6 +30,7 @@ export default function GuestBookItem({
   const session = useSession();
   const router = useRouter();
   const queryClient = useQueryClient();
+  console.log(author);
 
   const {
     register,
