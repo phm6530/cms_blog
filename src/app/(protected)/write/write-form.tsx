@@ -65,6 +65,7 @@ export default function WirteForm({
 
       return `${ENV.IMAGE_URL_PUBLIC}${test.url}`;
     },
+    editable: true, // 수정 여부
   });
 
   /**---- 초기 Form 세팅 ---- */
