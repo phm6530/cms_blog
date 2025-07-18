@@ -113,9 +113,9 @@ export default async function PostDetail({
   const contents = HtmlContentNormalizer.setImgUrl(blog_contents.contents);
 
   return (
-    <div className=" grid-layout pt-10 grid-cols-[1fr_250px] gap-10 grid">
+    <div className=" mx-0 md:mx-auto w-full! md:w-auto grid-layout md:pt-10 md:grid-cols-[1fr_250px] md:gap-10 grid">
       {/* 본문 영역 */}
-      <div className="">
+      <div>
         {/* header */}
         <PostVanner
           hasThumbnail={hasThumbnail}

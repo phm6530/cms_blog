@@ -23,7 +23,7 @@ export default function PostVanner({
         after:bg-gradient-to-b 
         `,
         hasThumbnail
-          ? " from:via-black/50 after:to-black/80 p-5 md:p-10 md:px-15 aspect-[16/18]  md:aspect-[16/9] text-white"
+          ? " from:via-black/50 after:to-black/80 p-5 md:p-10 md:px-15 aspect-[16/17]  md:aspect-[16/9] text-white"
           : "pt-10"
       )}
     >

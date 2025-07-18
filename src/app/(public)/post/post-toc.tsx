@@ -64,7 +64,7 @@ export default function PostToc() {
   const { getHeadings } = useSimpleEditor({ editable: false });
 
   const [list, setList] = useState<any[]>([]);
-  console.log(list);
+
   useEffect(() => {
     setTimeout(() => {
       const headings = getHeadings();
@@ -80,7 +80,7 @@ export default function PostToc() {
   };
 
   return (
-    <div className="border-l">
+    <div className="border-l hidden md:block">
       <div className="sticky top-20 pl-5 text-left ">
         <p className="border-b pb-2 flex gap-2 items-center">
           <TableOfContents size={15} />
