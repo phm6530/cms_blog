@@ -1,19 +1,3 @@
-// export async function generateStaticParams() {
-// withFetchRevaildationAction({});
-// let url = `${BASE_NEST_URL}/template?sort=all`;
-// url += "&page=1";
-// const response = await fetch(url, { cache: "force-cache" });
-// const {
-//   data: listResponse,
-// }: { data} =
-//   await response.json();
-// return listResponse.map((template) => {
-//   if ("id" in template) {
-//     return { id: template.id.toString() };
-//   }
-// });
-// }
-
 import CommentSection from "@/components/comments/comment-section";
 import { Badge } from "@/components/ui/badge";
 import { BlogDetailResponse } from "@/type/blog.type";
@@ -36,10 +20,34 @@ import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
 
 import PostLikeHandler from "../post-like-hanlder";
 import PostHandler from "../post-handler";
-import PostContentCotainer from "../post-contents-wrapper";
 import PostView from "../post-view";
 import { HtmlContentNormalizer } from "@/util/baseurl-slice";
 import LoadingSpiner from "@/components/animation/loading-spiner";
+import PostToolbar from "../post-toolbar";
+import PostToc from "../post-toc";
+import { PostItemModel } from "@/type/post.type";
+
+interface PostListApiResponse {
+  success: boolean;
+  result: {
+    list: PostItemModel[];
+  };
+}
+
+export async function generateStaticParams() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/post?category=all&group=all`,
+    {
+      cache: "force-cache",
+    }
+  );
+
+  const publicPosts: PostListApiResponse = await res.json();
+
+  return publicPosts.result.list.map((item) => ({
+    id: item.post_id + "",
+  }));
+}
 
 export async function generateMetadata({
   params,
@@ -102,74 +110,80 @@ export default async function PostDetail({
   }
 
   const hasThumbnail = Boolean(blog_metadata.thumbnail_url);
+  const contents = HtmlContentNormalizer.setImgUrl(blog_contents.contents);
 
   return (
-    <div className=" w-full gap-6">
-      {/* header */}
-      <PostVanner
-        hasThumbnail={hasThumbnail}
-        thumbnail_url={blog_metadata.thumbnail_url}
-      >
-        <div className={cn("py-5 flex flex-col relative z-1 animate-wiggle ")}>
-          <div className="flex gap-2 mt-auto mb-3 ">
-            <Badge
-              variant={"outline"}
-              className={cn(
-                blog_metadata.thumbnail_url &&
-                  "bg-white text-black rounded-full"
-              )}
-            >
-              {blog_sub_group.sub_group_name}
-            </Badge>
-            {DateUtils.isNew(blog_metadata.created_at) && (
+    <div className=" grid-layout pt-10 grid-cols-[1fr_250px] gap-10 grid">
+      {/* 본문 영역 */}
+      <div className="">
+        {/* header */}
+        <PostVanner
+          hasThumbnail={hasThumbnail}
+          thumbnail_url={blog_metadata.thumbnail_url}
+        >
+          <div
+            className={cn("py-5 flex flex-col relative z-1 animate-wiggle ")}
+          >
+            <div className="flex gap-2 mt-auto mb-3 ">
               <Badge
                 variant={"outline"}
-                className="relative rounded-full text-xs  border-rose-400 text-rose-400 "
+                className={cn(
+                  blog_metadata.thumbnail_url &&
+                    "bg-white text-black rounded-full"
+                )}
               >
-                New
+                {blog_sub_group.sub_group_name}
               </Badge>
-            )}
-            {/* 비공개 시에만... */}
-            {blog_metadata.status === POST_STATUS.PRIVATE && (
-              <Badge className="rounded-full">비공개</Badge>
-            )}
-          </div>
-          <h1
-            className={cn(
-              "text-3xl md:text-3xl mb-9 ",
-              blog_metadata.thumbnail_url &&
-                " max-w-[900px] leading-10 md:leading-13 break-keep drop-shadow-md"
-            )}
-            style={{
-              textShadow: "1px 3px 10px black/30",
-            }}
-          >
-            {blog_metadata.post_title}
-          </h1>
-
-          <div className="flex gap-2 ">
-            <div className="text-sm  opacity-60">
-              {DateUtils.dateFormatKR(blog_metadata.created_at, "YYYY. MM. DD")}
+              {DateUtils.isNew(blog_metadata.created_at) && (
+                <Badge
+                  variant={"outline"}
+                  className="relative rounded-full text-xs  border-rose-400 text-rose-400 "
+                >
+                  New
+                </Badge>
+              )}
+              {/* 비공개 시에만... */}
+              {blog_metadata.status === POST_STATUS.PRIVATE && (
+                <Badge className="rounded-full">비공개</Badge>
+              )}
             </div>
-            <div className="flex gap-3 items-center">
-              <Eye size={18} className="opacity-60" />{" "}
-              <span className="text-sm opacity-60">
-                {readingTImeKO(blog_contents.contents)}분 이내 소요
-              </span>
+            <h1
+              className={cn(
+                "text-3xl md:text-3xl mb-9 ",
+                blog_metadata.thumbnail_url &&
+                  " max-w-[900px] leading-10 md:leading-13 break-keep drop-shadow-md"
+              )}
+              style={{
+                textShadow: "1px 3px 10px black/30",
+              }}
+            >
+              {blog_metadata.post_title}
+            </h1>
+
+            <div className="flex gap-2 ">
+              <div className="text-sm  opacity-60">
+                {DateUtils.dateFormatKR(
+                  blog_metadata.created_at,
+                  "YYYY. MM. DD"
+                )}
+              </div>
+              <div className="flex gap-3 items-center">
+                <Eye size={18} className="opacity-60" />{" "}
+                <span className="text-sm opacity-60">
+                  {readingTImeKO(blog_contents.contents)}분 이내 소요
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      </PostVanner>
+        </PostVanner>
 
-      <div className="grid gap-5 grid-layout md:pt-10 relative">
-        <PostContentCotainer
+        <PostToolbar
           categoryName={category.group_name}
           groupName={blog_sub_group.sub_group_name}
-        >
+        />
+        <div className="grid gap-5 grid-layout md:pt-10 relative">
           {/* ------ TipTap Editor - custom lib ------ */}
-          <PostView
-            contents={HtmlContentNormalizer.setImgUrl(blog_contents.contents)}
-          />
+          <PostView contents={contents} />
 
           <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt} />
           <PostHandler postId={id} category={category.group_name} />
@@ -185,8 +199,11 @@ export default async function PostDetail({
               subGroupName={blog_sub_group.sub_group_name}
             />
           </Suspense>
-        </PostContentCotainer>
+        </div>
       </div>
+
+      {/* Post Toc */}
+      <PostToc />
     </div>
   );
 }

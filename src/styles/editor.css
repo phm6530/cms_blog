@@ -1031,6 +1031,16 @@
   box-shadow: none;
   background-color: transparent;
 }
+
+@media screen and (max-width: 768px) {
+  .simple-editor-content img {
+    width: 100% !important;
+  }
+  .tiptap p {
+    font-size: 12px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .tiptap-toolbar[data-variant="floating"] {
     width: 100%;
@@ -1211,12 +1221,6 @@
   cursor: text;
 }
 
-@media screen and (max-width: 768px) {
-  .simple-editor-content img {
-    width: 100% !important;
-  }
-}
-
 .tiptap {
   /* placeholder */
   /* Heading styles */
@@ -1359,6 +1363,7 @@
 .tiptap a {
   color: var(--tt-brand-color-400);
   cursor: pointer;
+  word-break: break-all;
 }
 .tiptap a:hover {
   color: var(--tt-brand-color-700);

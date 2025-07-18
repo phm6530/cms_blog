@@ -107,7 +107,7 @@ export default function PostView({ contents }: { contents: string }) {
             )}
           </div>
 
-          <div className="flex gap-1 mt-4">
+          <div className="flex  mt-4">
             <button
               onClick={() => scrollTop()}
               className="text-sm w-10 border flex items-center justify-center aspect-[16/16] group"

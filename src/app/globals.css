@@ -119,6 +119,10 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  html {
+    @apply md:text-base text-sm;
+  }
   body {
     @apply bg-background text-foreground  font-pretendard;
   }
