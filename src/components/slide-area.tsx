@@ -22,7 +22,7 @@ export default function SideArea() {
             @Web publisher <br /> @Front Developer
           </div>
         </div>
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-center ">
           <Button asChild variant={"ghost"}>
             <Link href={"https://open.kakao.com/o/sq4skkTf"} target="_blank">
               <MessageCircleMore />
