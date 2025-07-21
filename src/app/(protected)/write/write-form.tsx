@@ -196,6 +196,7 @@ export default function WirteForm({
             name="contents"
             control={form.control}
             render={({ field }) => {
+              console.log(field.value);
               return (
                 <FormItem>
                   <FormControl>
