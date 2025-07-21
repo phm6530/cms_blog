@@ -208,37 +208,46 @@ export default function WirteForm({
           />
         </EditorProvider>
       </div>
-      <div className="flex gap-2 py-3 justify-between">
-        {/* --임시 저장은 새글 작성시에만 가능 불러오기도 안되게 막음 -- */}
-        {isModeEdit && (
-          <>
-            <Button
-              className="p-6 text-xs ml-auto"
-              variant={"outline"}
-              type={"button"}
-            >
-              <span
-                className="border-r pr-4 hover:underline"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  draftSave();
-                }}
-              >
-                임시저장
-              </span>
-              <DraftDialog />
-            </Button>
-          </>
-        )}
 
-        <Button
-          className={cn("p-6 text-xs", !isModeEdit && "ml-auto")}
-          type={"submit"}
-          onClick={form.handleSubmit(onSubmitHandler)}
-          disabled={isPending || isSuccess}
-        >
-          {!!editData ? "수정하기" : "포스팅 하기"}
-        </Button>
+      {/* btn - area */}
+
+      <div
+        className="flex gap-2 py-3 z-10 justify-between fixed bottom-0  bg-secondary/60 w-full left-0"
+        style={{
+          backdropFilter: "blur(5px)",
+        }}
+      >
+        <div className="grid-layout flex gap-3">
+          {isModeEdit && (
+            <>
+              <Button
+                className="p-6 text-xs ml-auto"
+                variant={"outline"}
+                type={"button"}
+              >
+                <span
+                  className="border-r pr-4 hover:underline"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    draftSave();
+                  }}
+                >
+                  임시저장
+                </span>
+                <DraftDialog />
+              </Button>
+            </>
+          )}
+
+          <Button
+            className={cn("p-6 text-xs", !isModeEdit && "ml-auto")}
+            type={"submit"}
+            onClick={form.handleSubmit(onSubmitHandler)}
+            disabled={isPending || isSuccess}
+          >
+            {!!editData ? "수정하기" : "포스팅 하기"}
+          </Button>
+        </div>
       </div>
     </Form>
   );
