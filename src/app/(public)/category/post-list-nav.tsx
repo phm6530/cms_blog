@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
@@ -34,16 +33,17 @@ export default async function PostListNav({
   if (!response.success) {
     notFound();
   }
+
   const { category } = response.result;
   const curNavList = category[curCategory];
   const activeStyle = (subGroupName?: string) => {
     const isActive = selectGroup === subGroupName || selectGroup === undefined;
 
     return cn(
-      "rounded-full text-xs border border-foreground dark:border border-0!",
+      "rounded-full text-xs border border-foreground dark:border border-0! py-3 px-5 ",
       isActive
-        ? "text-white bg-black dark:bg-indigo-500! border-muted-foreground dark:border-indigo-400!"
-        : "border-0 border-border bg-zinc-100"
+        ? "text-white  border-muted-foreground bg-foreground text-secondary"
+        : "border-0 border-border bg-muted-foreground/10"
     );
   };
 
@@ -57,14 +57,14 @@ export default async function PostListNav({
       >
         <CarouselContent className="pl-5 md:pl-0 md:flex md:flex-wrap ">
           <CarouselItem className="basis-auto shrink-0">
-            <Button variant={"outline"} asChild className={activeStyle("all")}>
+            <button className={activeStyle("all")}>
               <Link href={`/category/${curCategory}`}>
                 전체보기{" "}
                 <span className="dark:text-indigo-100  dark:opacity-100 opacity-50 text-[10px]">
                   ({curNavList.postCnt})
                 </span>
               </Link>
-            </Button>
+            </button>
           </CarouselItem>
 
           {curNavList.subGroups.map((group, idx) => (
@@ -75,18 +75,14 @@ export default async function PostListNav({
               )}
               key={group.id}
             >
-              <Button
-                variant={"outline"}
-                asChild
-                className={activeStyle(group.subGroupName)}
-              >
+              <button className={activeStyle(group.subGroupName)}>
                 <Link href={`/category/${curCategory}/${group.subGroupName}`}>
                   {group.subGroupName}{" "}
                   <span className="dark:text-indigo-300 dark:opacity-100 opacity-50 text-xs">
                     ({group.postCount})
                   </span>
                 </Link>
-              </Button>
+              </button>
             </CarouselItem>
           ))}
 
@@ -95,30 +91,25 @@ export default async function PostListNav({
       </Carousel>
 
       <section className="w-full pl-5  gap-3 hidden flex-wrap mb-6 md:flex mt-10">
-        <Button variant={"outline"} asChild className={activeStyle("all")}>
+        <button className={activeStyle("all")}>
           <Link href={`/category/${curCategory}`}>
             전체보기{" "}
             <span className="dark:text-indigo-300 dark:opacity-100 opacity-50 text-xs">
               ({curNavList.postCnt})
             </span>
           </Link>
-        </Button>
+        </button>
 
         {curNavList.subGroups.map((group) => {
           return (
-            <Button
-              variant={"outline"}
-              asChild
-              key={group.id}
-              className={activeStyle(group.subGroupName)}
-            >
+            <button key={group.id} className={activeStyle(group.subGroupName)}>
               <Link href={`/category/${curCategory}/${group.subGroupName}`}>
                 {group.subGroupName}{" "}
                 <span className="dark:text-indigo-300 dark:opacity-100 opacity-50 text-xs">
                   ({group.postCount})
                 </span>
               </Link>
-            </Button>
+            </button>
           );
         })}
       </section>
