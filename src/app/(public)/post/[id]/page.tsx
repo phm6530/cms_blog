@@ -151,7 +151,7 @@ export default async function PostDetail({
               className={cn(
                 "text-3xl md:text-3xl mb-9 ",
                 blog_metadata.thumbnail_url &&
-                  " max-w-[900px] leading-10 md:leading-13 break-keep drop-shadow-md"
+                  " max-w-[900px]  font-bold leading-relaxed break-keep text-shadow-lg text-shadow-amber-50!  whitespace-pre-line"
               )}
               style={{
                 textShadow: "1px 3px 10px black/30",
