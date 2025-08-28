@@ -24,6 +24,8 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
   const [backDropTarget, setBackDropTarget] =
     useState<HTMLElement | null | null>(null);
 
+  console.log(session);
+
   const ref = useRef<string>(null);
   const closeRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();

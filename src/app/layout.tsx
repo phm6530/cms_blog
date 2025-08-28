@@ -11,6 +11,7 @@ import HeaderNav from "@/components/layout/header-nav";
 import GlobalNav from "@/components/layout/global-nav";
 import MainLayout from "@/components/layout/main-layout";
 import { Analytics } from "@vercel/analytics/react";
+import { auth } from "@/auth";
 
 export const metadata: Metadata = {
   title: "퍼블리셔와 개발자 그 어딘가",
@@ -22,12 +23,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+  console.log("세션 ~ ", session);
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
         <div id="backdrop-portal"></div>
         <Analytics />
-        <ClientProvider>
+        <ClientProvider session={session}>
           <MouseClickEffect>
             <HeaderNav />
             <GlobalNav />

@@ -1,25 +1,24 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { loginSchema } from "./schema";
 import InputField from "@/components/shared/inputField";
 import PasswordInputField from "@/components/shared/inputPasswordField";
 
-import LoginAction from "./action";
 import { toast } from "sonner";
 
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import useThrottling from "@/hook/useThrottling";
 import LoadingSpinnerWrapper from "@/components/ui/loading-disabled-wrapper";
+import { z } from "zod";
+import { loginAction } from "./actions";
+import { useRouter } from "next/navigation";
 
+type LoginInput = z.infer<typeof loginSchema>;
 export default function Page() {
+  const { status, update } = useSession();
   const router = useRouter();
-  const { update, status } = useSession();
-  const { throttle } = useThrottling();
 
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -29,22 +28,20 @@ export default function Page() {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    const res = await throttle(() => LoginAction(data), 1500);
-    if (!res) return;
-    if (res.error) {
-      toast.error(res.errorMessage);
-      form.setValue("password", "");
-      form.trigger("password");
-      return;
-    }
-
-    if (res.success) {
-      toast.success("로그인 되었습니다.");
+  const onSubmit = async (data: LoginInput) => {
+    console.log("??1323");
+    const result = await loginAction(data);
+    console.log("??1323");
+    console.log(result);
+    if (result?.error) {
+      toast.error(result.error);
+    } else {
       await update();
       router.refresh();
+      console.log("실행안됨????");
     }
   };
+
   return (
     <section className="max-w-[500px] mx-auto py-10">
       <LoadingSpinnerWrapper
@@ -62,19 +59,11 @@ export default function Page() {
           </form>
         </Form>
         <div className="auth-nav flex justify-center gap-2 p-4 items-center">
-          {/* <Link href={"/register"} className="text-xs">
-          관리자 생성
-        </Link>
-        <span className="opacity-40">|</span> */}
           <Button
             asChild
             variant={"link"}
             className="text-zinc-600 hover:text-zinc-400"
-          >
-            {/* <Link href={"/register"} className="text-xs">
-              비밀번호를 잊으셨나요?
-            </Link> */}
-          </Button>
+          ></Button>
         </div>
       </LoadingSpinnerWrapper>
     </section>

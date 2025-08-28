@@ -20,33 +20,3 @@ export default function HeaderNav() {
     </div>
   );
 }
-
-{
-  /* <div className="grid-layout flex items-center gap-5 ">
-        {navlist.map((link, idx) => {
-          if (link.href === "/login") {
-            if (!isClient || isLoading) {
-              return (
-                <Skeleton
-                  key={`skeleton-${idx}`}
-                  className="w-[40px] h-[12px] rounded-md"
-                />
-              );
-            } else if (session) {
-              return <Navsession />;
-            }
-          }
-
-          return (
-            <Link key={link.href} href={link.href} className="text-sm">
-              {link.name}
-            </Link>
-          );
-        })}
-
-        <Suspense fallback={<>loading..</>}>
-          <SearchInput name="keyword" className="placeholder:text-xs!" />
-        </Suspense>
-        <ThemeHandler />
-      </div> */
-}

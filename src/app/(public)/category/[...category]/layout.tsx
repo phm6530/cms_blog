@@ -16,6 +16,7 @@ export default async function Layout({
   const [category, group] = categoryList;
 
   const session = await auth();
+
   return (
     <>
       <div className=" md:hidden md:mb-10 mb-4 mt-4">

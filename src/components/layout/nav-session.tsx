@@ -1,12 +1,12 @@
 "use client";
 
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 import { Button } from "../ui/button";
-import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 
-export default function Navsession({ session }: { session: Session | null }) {
+export default function Navsession() {
+  const { data: session } = useSession();
   const isLogin = !!session?.user;
   const router = useRouter();
 

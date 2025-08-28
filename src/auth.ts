@@ -11,7 +11,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.nickname = user.nickname;
         token.role = user.role!;
       }
-
       return token;
     },
     session({ session, token }) {
@@ -28,39 +27,51 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Credentials({
       name: "credentials",
       credentials: {
-        email: {},
-        role: {},
-        profile_img: {},
-        nickname: {},
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
-      // 비동기
-      async authorize(
-        credentials: Partial<
-          Record<"email" | "role" | "profile_img" | "nickname", unknown>
-        >
-      ): Promise<{
-        email: string;
-        role: "admin" | "super";
-        image: string | null;
-        nickname: string;
-      } | null> {
-        const email = credentials.email;
-        const role = credentials.role as "admin" | "super";
-        const nickname = credentials.nickname as string;
-        const profile_img = credentials.profile_img as string;
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
 
-        if (typeof email !== "string" || typeof role !== "string") {
-          return null;
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/authorization`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email: credentials.email,
+                password: credentials.password,
+              }),
+            }
+          );
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message || "인증에 실패했습니다.");
+          }
+
+          if (!data?.user) {
+            throw new Error("사용자 정보를 받아오지 못했습니다.");
+          }
+
+          return {
+            id: data.user.id,
+            email: data.user.email,
+            nickname: data.user.nickname,
+            role: data.user.role,
+            image: data.user.image,
+          };
+        } catch (e) {
+          throw new Error((e as Error).message);
         }
-
-        return { email, role, image: profile_img, nickname };
       },
     }),
   ],
-
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30일
-    updateAge: 15 * 60, //15분
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 15 * 60,
   },
 });

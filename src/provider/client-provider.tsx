@@ -10,6 +10,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { Session } from "next-auth";
 
 const errorHandler = (error: Error) => {
   toast.warning(error.message, {
@@ -35,7 +36,13 @@ const queryClient = new QueryClient({
   }),
 });
 
-export default function ClientProvider({ children }: { children: ReactNode }) {
+export default function ClientProvider({
+  children,
+  session,
+}: {
+  children: ReactNode;
+  session: Session | null;
+}) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider
@@ -44,7 +51,7 @@ export default function ClientProvider({ children }: { children: ReactNode }) {
         defaultTheme="dark"
         enableColorScheme={false}
       >
-        <SessionProvider>{children}</SessionProvider>
+        <SessionProvider session={session}>{children}</SessionProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
