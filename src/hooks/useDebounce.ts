@@ -1,23 +1,43 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
-export default function useDebounce(
-  cb: (e: any) => void,
+export default function useDebounce<T extends (...args: any[]) => void>(
+  cb: T,
   delay: number = 1000
 ) {
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const cbRef = useRef(cb);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // cb 변경 시 최신 값 보관
+  useEffect(() => {
+    cbRef.current = cb;
+  }, [cb]);
 
   const debounce = useCallback(
-    (e: any) => {
+    (...args: Parameters<T>) => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-
       timeoutRef.current = setTimeout(() => {
-        cb(e); // callback
+        cbRef.current(...args);
       }, delay);
     },
-    [cb, delay]
+    [delay]
   );
 
-  return { debounce };
+  const cancel = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }, []);
+
+  const flush = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      cbRef.current();
+      timeoutRef.current = null;
+    }
+  }, []);
+
+  return { debounce, cancel, flush };
 }
