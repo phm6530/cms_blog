@@ -42,4 +42,4 @@ yarn-error.log*
 
 # docker volumn
 postgres-data
-drizzle
+drizzle/
