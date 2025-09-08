@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, Minus, Plus, RotateCw, TypeIcon } from "lucide-react";
 import Link from "next/link";
-import { useLayoutEffect, useState } from "react";
+import { useState } from "react";
 
 export default function PostToolbar({
   categoryName,
@@ -16,24 +16,11 @@ export default function PostToolbar({
   const [size, setSize] = useState(1);
 
   const applyTextSize = (scale: number) => {
-    const contentElement = document.querySelector(
-      ".ProseMirror"
-    ) as HTMLDivElement;
-    if (contentElement) {
-      contentElement.style.setProperty("--font-scale", scale.toString());
-    }
+    document.documentElement.style.setProperty(
+      "--font-scale",
+      scale.toString()
+    );
   };
-
-  useLayoutEffect(() => {
-    // 초기 CSS 변수 설정
-    const contentElement = document.querySelector(
-      ".ProseMirror"
-    ) as HTMLDivElement;
-    if (contentElement) {
-      // 변수이용해서 css 값전달
-      contentElement.style.setProperty("--font-scale", "1");
-    }
-  }, []);
 
   const incrementTextSize = () => {
     const newSize = Math.min(size + 0.1, 1.4);

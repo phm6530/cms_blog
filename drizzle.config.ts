@@ -5,14 +5,9 @@ dotenv.config({ path: ".env.local" });
 
 export default defineConfig({
   dialect: "postgresql",
-  out: "./drizzle", // 마이그렝리ㅕㄴ ㄴ파일
-  schema: "./src/db/schema", // ✅ 여기 수정
+  out: "./drizzle",
+  schema: "./src/db/schema",
   dbCredentials: {
-    host: "localhost",
-    user: process.env.LOCAL_DB_USER!,
-    password: process.env.LOCAL_DB_PASSWORD!,
-    database: process.env.LOCAL_DB_NAME!,
-    port: 7000,
-    ssl: false,
+    url: process.env.DATABASE_URL!, // postgres://postgres:[password]@db.[project-ref].supabase.co:5432/postgres
   },
 });

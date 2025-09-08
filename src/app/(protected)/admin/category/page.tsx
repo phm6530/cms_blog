@@ -16,8 +16,10 @@ export type DeleteCategoryProps = { categoryId: number; subGroupId?: number };
 export default function Category() {
   const router = useRouter();
   const queryClient = useQueryClient();
+
   const { data, isLoading } = useQuery({
     queryKey: ["test"],
+
     queryFn: async () => {
       return await withFetchRevaildationAction<{
         category: { [key: string]: CategoryModel };
