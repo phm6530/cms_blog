@@ -838,8 +838,7 @@ code.hljs {
   display: inline-block;
   text-align: center;
   vertical-align: baseline;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+
   text-transform: capitalize;
   color: var(--tt-kbd);
 }
@@ -1283,9 +1282,10 @@ code.hljs {
 }
 
 .tiptap p {
-  line-height: 1.9;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
+  line-height: 2;
+  margin-block-start: 1.2em;
+  font-size: calc(1rem * var(--font-scale));
+  margin-block-end: 1.2em;
   letter-spacing: -0.01rem;
 }
 .tiptap :first-child {
@@ -1305,9 +1305,7 @@ code.hljs {
 .tiptap h4,
 .tiptap h5,
 .tiptap h6 {
-  line-height: 1.8;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
+  line-height: 2;
   letter-spacing: -0.01rem;
 }
 .tiptap .tiptap-image-upload-error-text {

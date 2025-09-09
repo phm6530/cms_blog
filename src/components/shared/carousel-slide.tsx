@@ -21,11 +21,11 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
   const [count, setCount] = React.useState(0);
   const router = useRouter();
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (!api) {
       return;
     }
-    console.log("???");
+
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
 
@@ -106,17 +106,6 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                     </span>
                   </div>
                 </div>
-
-                {/* <div className=" rounded-xl relative overflow-hidden aspect-[16/10] md:aspect-[16/17]">
-                  {data.thumbnail_url && (
-                    <Image
-                      src={`${unsplashS3Mapping(data.thumbnail_url)}`}
-                      fill
-                      alt=""
-                      style={{ objectFit: "cover" }}
-                    />
-                  )}
-                </div> */}
               </div>
             </CarouselItem>
           ))}
@@ -124,7 +113,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
         <CarouselPrevious className="left-[-17px] md:flex hidden  bg-background! border-transparent! hover:border-border!" />
         <CarouselNext className="right-[-22px] md:flex hidden bg-background! border-transparent! hover:border-border!" />
       </Carousel>
-      <div className="mt-3 flex gap-1 justify-center">
+      <div className="mt-3 flex gap-1 justify-center h-3">
         {Array.from({ length: count }).map((_, idx) => {
           return (
             <div
