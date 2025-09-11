@@ -734,6 +734,7 @@ code.hljs {
 .hljs-regexp,
 .hljs-string {
   color: #a5d6ff;
+  word-break: break-all;
 }
 
 .hljs-built_in,
@@ -1282,11 +1283,12 @@ code.hljs {
 }
 
 .tiptap p {
-  line-height: 2;
+  line-height: 1.9;
   margin-block-start: 1.2em;
   font-size: calc(1rem * var(--font-scale));
   margin-block-end: 1.2em;
   letter-spacing: -0.01rem;
+  word-break: keep-all;
 }
 .tiptap :first-child {
   margin-top: 0;
