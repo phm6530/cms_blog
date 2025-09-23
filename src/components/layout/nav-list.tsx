@@ -42,7 +42,6 @@ export default function NavList({
 
   useLayoutEffect(() => {
     const el = document.getElementById("backdrop-portal");
-
     if (el) {
       setBackDropTarget(el);
     }
