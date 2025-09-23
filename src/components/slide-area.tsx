@@ -2,8 +2,8 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { Github, Hammer, MessageCircleMore } from "lucide-react";
 import CategoryWegiet from "./weiget/category-weiget";
-import VisitorWigetV2 from "./weiget/visitor-weiget-v2";
 import Link from "next/link";
+import RecentComment from "./weiget/recent-comments";
 
 export default function SideArea() {
   return (
@@ -42,7 +42,7 @@ export default function SideArea() {
       </div>
 
       <CategoryWegiet />
-      <VisitorWigetV2 />
+      <RecentComment />
     </div>
   );
 }

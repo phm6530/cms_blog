@@ -17,14 +17,16 @@ export enum BREAKPOINT {
   XXL = 1536,
 }
 
-export default function NavList({ categoryList }: { categoryList: string[] }) {
+export default function NavList({
+  categories,
+}: {
+  categories: Array<{ label: string; postCnt: number }>;
+}) {
   const isDesktop = useMediaQuery(`(min-width:${BREAKPOINT.MD}px)`);
   const session = useSession();
   const [toggle, setToggle] = useState<boolean>(false);
   const [backDropTarget, setBackDropTarget] =
     useState<HTMLElement | null | null>(null);
-
-  console.log(session);
 
   const ref = useRef<string>(null);
   const closeRef = useRef<HTMLDivElement>(null);
@@ -48,10 +50,8 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
 
   function pathnameActive(target: string) {
     const encoded = encodeURIComponent(target);
-
     if (pathname === `/${encoded}`) return true;
     if (pathname.startsWith(`/category/${encoded}`)) return true;
-
     return false;
   }
 
@@ -69,7 +69,7 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
       <div
         className={cn(
           `fixed flex flex-col ease-side p-5 md:flex-row! bg-background md:bg-transparent! top-0 gap-0 z-100 md:z-10 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto`,
-          `md:static md:flex-row   md:h-auto md:border-0 md:gap-5 md:p-0  md:items-center`,
+          `md:static md:flex-row   md:h-auto md:border-0 md:gap-8 md:p-0  md:items-center`,
           toggle ? "left-[100px]" : "left-full"
         )}
         // inline으로 반영
@@ -87,22 +87,31 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
           </span>
         )}
         {/* cateogry list */}
-        {categoryList.map((e) => {
+        {categories.map((e, idx) => {
           return (
             <Link
-              href={`/category/${e}`}
+              href={`/category/${e.label}`}
               className={cn(
-                "text-sm md:p-0 py-4 border-t md:border-t-0 transition-all ",
-                pathnameActive(e) && "dark:text-indigo-300"
+                "hover:text-indigo-300",
+                "text-base md:text-sm py-4 border-t md:border-t-0  transition-all flex gap-2 items-center"
               )}
-              key={e}
+              key={`${e.label}:${idx}`}
             >
-              {e.toUpperCase()}
+              <span
+                className={cn(
+                  pathnameActive(e.label) && "dark:text-indigo-300 underline"
+                )}
+              >
+                {e.label.toUpperCase()}
+              </span>
+              <span className="opacity-50 text-[11px] text-primary">
+                ({e.postCnt})
+              </span>
             </Link>
           );
         })}
 
-        <Link
+        {/* <Link
           href={"/guestbook"}
           className={cn(
             "text-sm md:p-0 py-4 border-t md:border-t-0 border-b md:border-b-0 transition-all ",
@@ -110,7 +119,7 @@ export default function NavList({ categoryList }: { categoryList: string[] }) {
           )}
         >
           GUEST BOARD
-        </Link>
+        </Link> */}
 
         {session.data?.user && (
           <>
