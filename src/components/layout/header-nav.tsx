@@ -7,8 +7,6 @@ export default function HeaderNav() {
   return (
     <div className=" gap-5 z-10">
       <div className="grid-layout flex items-center  py-2 ">
-        <VisitorWiget />
-
         <Suspense fallback={<>loading..</>}>
           <SearchInput
             name="keyword"

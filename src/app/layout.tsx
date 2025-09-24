@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "../styles/editor.css";
-
 import ClientProvider from "@/provider/client-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/layout/footer";
@@ -24,7 +23,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  console.log("세션 ~ ", session);
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
@@ -32,17 +31,13 @@ export default async function RootLayout({
         <Analytics />
         <ClientProvider session={session}>
           <MouseClickEffect>
-            <HeaderNav />
             <GlobalNav />
-
             <MainLayout>
-              <SideArea />
+              <div className=" mx-auto">{children}</div>
 
-              <div className="w-full ">{children}</div>
+              <Toaster />
+              <Footer />
             </MainLayout>
-
-            <Toaster />
-            <Footer />
           </MouseClickEffect>
         </ClientProvider>
       </body>

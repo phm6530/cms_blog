@@ -23,7 +23,7 @@ export default function VisitorWiget() {
 
   return (
     <>
-      <div className="flex items-center gap-3  rounded-3xl">
+      <div className="flex items-center gap-3  rounded-3xl p-5 bg-zinc-50/5 mt-10">
         {isLoading ? (
           <div className="flex items-center justify-center h-8">
             <div className="size-5 border-2 border-t-transparent border-zinc-400 rounded-full animate-spin "></div>
@@ -31,7 +31,7 @@ export default function VisitorWiget() {
         ) : (
           <>
             <div className="flex gap-3 items-end  ">
-              <span className="opacity-50 text-xs">TODAY</span>
+              <span className="opacity-50 text-xs">오늘 방문자</span>
               <span className="animate-wiggle text-xs">
                 {data?.result.today_cnt ?? 0}
               </span>

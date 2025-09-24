@@ -1,16 +1,15 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { Github, Hammer, MessageCircleMore } from "lucide-react";
-import CategoryWegiet from "./weiget/category-weiget";
+
 import Link from "next/link";
-import RecentComment from "./weiget/recent-comments";
 
 export default function SideArea() {
   return (
-    <div className="max-w-[250px] md:block hidden w-full pt-15 border-r border-secondary-foreground/10 ">
+    <div className="max-w-[250px] fixed left-0  h-full z-100 w-full pt-15 border-r border-secondary-foreground/10 ">
       <div className="rounded-lg">
         <div className="flex items-center flex-col">
-          <div className="max-w-[180px] w-[90%] relative aspect-[16/16] rounded-full overflow-hidden border-5 border-foreground/10">
+          <div className="max-w-[180px]  relative size-30 rounded-full overflow-hidden border-2 border-foreground/10">
             <Image
               src={"/img/my-dog.jpg"}
               fill
@@ -41,8 +40,8 @@ export default function SideArea() {
         </div>
       </div>
 
-      <CategoryWegiet />
-      <RecentComment />
+      {/* <CategoryWegiet /> */}
+      {/* <RecentComment /> */}
     </div>
   );
 }

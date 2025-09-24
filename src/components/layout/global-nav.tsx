@@ -4,6 +4,7 @@ import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction"
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import NavList from "./nav-list";
+import HeaderNav from "./header-nav";
 
 export default async function GlobalNav() {
   const response = await withFetchRevaildationAction<{
@@ -30,16 +31,15 @@ export default async function GlobalNav() {
 
   return (
     <>
-      <section className="py-3   flex justify-between  border-b sticky md:static top-0 bg-background z-5">
-        <div className="grid-layout items-center flex justify-between z-20 border-secondary-foreground/10 ">
-          <Link href={"/"}>
-            <h1 className="text-xl md:text-3xl font-Poppins">
-              PHM{"'"} DEV BLOG
-            </h1>
-          </Link>
-          <NavList categories={categories} />
-        </div>
-      </section>
+      <div className="grid grid-cols-[auto_1fr_1fr] fixed top-0 w-full py-3 px-30 border-b items-center  z-20 border-secondary-foreground/10 ">
+        <Link href={"/"}>
+          <h1 className="text-white text-xl md:text-xl font-bold font-SUIT-Regular pr-26">
+            PHM{"'"} DEV BLOG
+          </h1>
+        </Link>
+        <NavList categories={categories} />
+        <HeaderNav />
+      </div>
     </>
   );
 }
