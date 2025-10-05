@@ -10,8 +10,3 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: cms_blog
       POSTGRES_DB: cms_blog
-    deploy:
-      resources:
-        limits:
-          cpus: "0.50"
-          memory: 512M

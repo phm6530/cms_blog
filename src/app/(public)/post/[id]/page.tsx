@@ -1,9 +1,7 @@
 import CommentSection from "@/components/comments/comment-section";
 import { Badge } from "@/components/ui/badge";
-import { BlogDetailResponse } from "@/type/blog.type";
-import { POST_STATUS, REVALIDATE } from "@/type/constants";
+import { POST_STATUS } from "@/type/constants";
 import { DateUtils } from "@/util/date-uill";
-import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { notFound } from "next/navigation";
 
 import SelectPage from "@/components/info-component/secrect-page";
@@ -26,6 +24,7 @@ import LoadingSpiner from "@/components/animation/loading-spiner";
 import PostToolbar from "../post-toolbar";
 import PostToc from "../post-toc";
 import { PostItemModel } from "@/type/post.type";
+import { getPostItem } from "./page-service";
 
 interface PostListApiResponse {
   success: boolean;
@@ -55,20 +54,15 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const data = await withFetchRevaildationAction<BlogDetailResponse>({
-    endPoint: `api/post/${id}`,
-    options: {
-      cache: "force-cache",
-      next: {
-        tags: [`${REVALIDATE.POST.DETAIL}:${id}`],
-      },
-    },
-  });
 
-  if (!data || !data.result) {
+  // getService
+  const data = await getPostItem({ id });
+
+  if (!data) {
     notFound();
   }
-  const { blog_metadata } = data.result;
+
+  const { blog_metadata } = data;
 
   return {
     title: `${blog_metadata.post_title}`,
@@ -89,21 +83,14 @@ export default async function PostDetail({
   const { id } = await params;
   const session = await auth();
 
-  const data = await withFetchRevaildationAction<BlogDetailResponse>({
-    endPoint: `api/post/${id}`,
-    options: {
-      cache: "force-cache",
-      next: {
-        tags: [`${REVALIDATE.POST.DETAIL}:${id}`],
-      },
-    },
-  });
+  // getService
+  const data = await getPostItem({ id });
 
-  if (!data || !data.result) {
+  if (!data) {
     notFound();
   }
-  const { blog_metadata, blog_contents, blog_sub_group, category } =
-    data.result;
+
+  const { blog_metadata, blog_contents, blog_sub_group, category } = data;
 
   if (!session && blog_metadata.status === POST_STATUS.PRIVATE) {
     return <SelectPage />; //View에따라 공개여부

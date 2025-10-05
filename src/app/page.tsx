@@ -9,8 +9,8 @@ export default function Home() {
   return (
     <>
       <div
-        className="relative w-full h-160 bg-cover bg-center p-5 md:p-10 md:px-15"
-        style={{ backgroundImage: 'url("/img/keyboard_11.jpg")' }}
+        className="relative w-full h-160 bg-cover bg-center p-5 md:p-10 md:px-15 grayscale-75"
+        style={{ backgroundImage: 'url("/img/k6.jpg")' }}
       >
         {/* gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-black/100 pointer-events-none" />
