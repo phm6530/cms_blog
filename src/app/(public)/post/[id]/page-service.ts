@@ -3,11 +3,14 @@ import { blogContentsSchema } from "@/db/schema/blog-contents";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
 import { blogSubGroup, categorySchema } from "@/db/schema/category";
 import { pinnedPostSchema } from "@/db/schema/post/pinned-post";
+import { REVALIDATE } from "@/type/constants";
 import { eq } from "drizzle-orm";
+import { unstable_cache } from "next/cache";
 
 type GetPostItem = { id: string };
 
-export async function getPostItem({ id }: GetPostItem) {
+async function _getPostItem({ id }: GetPostItem) {
+  console.log("Detail post - get  ");
   if (!id) throw new Error("id가 누락되었습니다.");
 
   const [rows] = await db
@@ -17,11 +20,11 @@ export async function getPostItem({ id }: GetPostItem) {
       blogContentsSchema,
       eq(blogContentsSchema.post_id, blogMetaSchema.post_id)
     )
-    .leftJoin(
+    .innerJoin(
       blogSubGroup,
       eq(blogSubGroup.sub_group_id, blogMetaSchema.sub_group_id)
     )
-    .leftJoin(
+    .innerJoin(
       categorySchema,
       eq(categorySchema.group_id, blogMetaSchema.category_id)
     )
@@ -36,3 +39,13 @@ export async function getPostItem({ id }: GetPostItem) {
   }
   return rows;
 }
+type RawPostItem = Awaited<ReturnType<typeof _getPostItem>>;
+
+const getPostItem = async <T extends RawPostItem>(id: string): Promise<T> =>
+  unstable_cache(
+    () => _getPostItem({ id }) as Promise<T>,
+    [`${REVALIDATE.POST.DETAIL}:${id}`],
+    { tags: [`${REVALIDATE.POST.DETAIL}:${id}`] }
+  )();
+
+export default getPostItem;

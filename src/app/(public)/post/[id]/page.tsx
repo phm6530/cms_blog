@@ -24,8 +24,10 @@ import LoadingSpiner from "@/components/animation/loading-spiner";
 import PostToolbar from "../post-toolbar";
 import PostToc from "../post-toc";
 import { PostItemModel } from "@/type/post.type";
-import { getPostItem } from "./page-service";
+import getPostItem from "./page-service";
+import { BlogDetailResponse } from "@/type/blog.type";
 
+// List get
 interface PostListApiResponse {
   success: boolean;
   result: {
@@ -56,7 +58,7 @@ export async function generateMetadata({
   const { id } = await params;
 
   // getService
-  const data = await getPostItem({ id });
+  const data = await getPostItem<BlogDetailResponse>(id);
 
   if (!data) {
     notFound();
@@ -84,7 +86,7 @@ export default async function PostDetail({
   const session = await auth();
 
   // getService
-  const data = await getPostItem({ id });
+  const data = await getPostItem(id);
 
   if (!data) {
     notFound();
@@ -96,7 +98,6 @@ export default async function PostDetail({
     return <SelectPage />; //View에따라 공개여부
   }
 
-  const hasThumbnail = Boolean(blog_metadata.thumbnail_url);
   const contents = HtmlContentNormalizer.setImgUrl(blog_contents.contents);
 
   return (
@@ -104,10 +105,7 @@ export default async function PostDetail({
       {/* 본문 영역 */}
       <div>
         {/* header */}
-        <PostVanner
-          hasThumbnail={hasThumbnail}
-          thumbnail_url={blog_metadata.thumbnail_url}
-        >
+        <PostVanner thumbnail_url={blog_metadata.thumbnail_url}>
           <div
             className={cn("py-5 flex flex-col relative z-1 animate-wiggle ")}
           >
@@ -172,7 +170,7 @@ export default async function PostDetail({
           {/* ------ TipTap Editor - custom lib ------ */}
           <PostView contents={contents} />
 
-          <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt} />
+          <PostLikeHandler postId={+id} likeCnt={blog_metadata.like_cnt ?? 0} />
           <PostHandler postId={id} category={category.group_name} />
 
           {/* ---- 댓글 ----- */}

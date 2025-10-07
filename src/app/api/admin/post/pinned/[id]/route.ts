@@ -17,6 +17,6 @@ export async function DELETE(
       throw new Error("잘못된 요청입니다.");
     }
     await db.delete(pinnedPostSchema).where(eq(pinnedPostSchema.id, +id));
-    revalidateTag(REVALIDATE.PINNED_POST);
+    revalidateTag(REVALIDATE.POST.PINNED_POST);
   });
 }

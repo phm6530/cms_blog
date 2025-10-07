@@ -15,6 +15,7 @@ import { DateUtils } from "@/util/date-uill";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
+
 export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);

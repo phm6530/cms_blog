@@ -1,19 +1,28 @@
-// import "dotenv/config";
-// import { usersTable } from "@/db/schema";
-// import { db } from "@/db/db";
-// import bcrypt from "bcryptjs";
+import "dotenv/config";
+import { db } from "@/db/db";
+import bcrypt from "bcryptjs";
+import { sql } from "drizzle-orm";
 
-// async function main() {
-//   const ps = "zlahdzl12!";
-//   const password = await bcrypt.hash(ps, 10);
+async function main() {
+  const plainText = process.env.MY_PASSWORD as string;
+  const password = await bcrypt.hash(plainText, 10);
+  console.log(password);
 
-//   console.log(password);
+  const comparePassword = await bcrypt.compare(
+    plainText,
+    "$2b$10$Hk6bcT0mBlwu2Vgrwm/1Bu5pj8xbF9f1s3SXfwrAc3nAJww5xVoWS"
+  );
+  console.log(comparePassword);
+}
 
-//   const tet = await bcrypt.compare(
-//     "zlahdzl12!",
-//     "$2b$10$pDRfdc7Of47kxfcFCyBhu.bwtGu7Oh9Z0Y.D1Eei.b4If3AnVEPHO"
-//   );
-//   console.log(tet);
-// }
-
-// main();
+// 연결확인
+async function testConnection() {
+  try {
+    const result = await db.execute(sql`SELECT 1`);
+    console.log("DB 연결 성공:", result);
+  } catch (err) {
+    console.error("DB 연결 실패:", err);
+  }
+}
+testConnection();
+main();

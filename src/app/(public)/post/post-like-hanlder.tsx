@@ -42,7 +42,6 @@ export default function PostLikeHandler({
         endPoint: `api/post/${postId}/like?action=${
           optimisticLike ? "unlike" : "like"
         }`,
-        // requireAuth: true,
       });
     },
 

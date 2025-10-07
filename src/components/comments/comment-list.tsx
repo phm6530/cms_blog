@@ -27,7 +27,7 @@ export default function CommentList({ postId }: { postId: string }) {
       }>({
         endPoint: baseEndpont,
         options: {
-          cache: "no-cache",
+          cache: "force-cache",
           next: {
             tags: [`${REVALIDATE.COMMENT}:${postId}`],
           },
@@ -56,14 +56,7 @@ export default function CommentList({ postId }: { postId: string }) {
   return (
     <section className="mt-5 mb-10">
       <div className="border-b py-4 ">댓글 {flatData.length} 개 </div>
-      {/* {flatData.length > 10 && (
-        <div
-          onClick={() => setMoreView(true)}
-          className="text-center text-sm py-3 border cursor-pointer hover:underline"
-        >
-          이전 댓글 보기 ({flatData.length - 10})
-        </div>
-      )} */}
+
       <div>
         {flatData.length === 0 ? (
           <div className="py-30 text-center border-b">

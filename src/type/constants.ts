@@ -2,6 +2,7 @@ export enum POST_KEY {
   LIST = "POST_LIST",
   CATEGORY = "POST_CATEGORY",
   DETAIL = "POST_DETAIL",
+  PINNED_POST = "PIINED_POST",
 }
 
 export enum GUEST_BOARD {
@@ -18,7 +19,6 @@ export const REVALIDATE = {
   COMMENT: "COMMENT",
   GUEST_BOARD: GUEST_BOARD,
   WEIGET: WEIGET,
-  PINNED_POST: "PIINED_POST",
 };
 
 export const ENV = {

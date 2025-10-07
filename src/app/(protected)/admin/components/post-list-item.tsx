@@ -18,9 +18,7 @@ export default function PostListItem({
 }: AdminPostItemModel) {
   const [isPending, setPending] = useState<boolean>(false);
 
-  const setPendingHandler = (e: boolean) => {
-    setPending(e);
-  };
+  const setPendingHandler = (e: boolean) => setPending(e);
 
   return (
     <article className="flex p-4 animate-wiggle hover:bg-indigo-400/5 items-center justify-between">

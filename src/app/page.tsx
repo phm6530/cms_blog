@@ -1,7 +1,5 @@
 import PinnedPosts from "@/components/weiget/pinned-post";
 import RecentComment from "@/components/weiget/recent-comments";
-import RecentGuestBoard from "@/components/weiget/recent-guestboard";
-
 import RecentPost from "@/components/weiget/recent-post";
 import VisitorWiget from "@/components/weiget/visitor-weiget";
 

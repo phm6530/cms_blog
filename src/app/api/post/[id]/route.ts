@@ -72,7 +72,7 @@ export async function PUT(
 
     //고정콘텐츠 일경우는 메인 쪽도 초기화
     if (!!body.pinnedPost) {
-      revalidateTag(REVALIDATE.PINNED_POST);
+      revalidateTag(REVALIDATE.POST.PINNED_POST);
     }
 
     revalidateTag(`${REVALIDATE.POST.DETAIL}:${id}`);
@@ -128,7 +128,7 @@ export async function DELETE(
 
     //고정된 post면
     if (!!pinned_post) {
-      revalidateTag(REVALIDATE.PINNED_POST);
+      revalidateTag(REVALIDATE.POST.PINNED_POST);
     }
 
     revalidateTag(`${REVALIDATE.POST.DETAIL}:${id}`); // 없애고

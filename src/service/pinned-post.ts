@@ -24,11 +24,11 @@ const _getPinnedPosts = async <T>(): Promise<T> => {
       comment_count: sql<number>`COUNT(${commentSchema.id})`.as("comment_cnt"),
     })
     .from(pinnedPostSchema)
-    .leftJoin(
+    .innerJoin(
       blogMetaSchema,
       eq(pinnedPostSchema.post_id, blogMetaSchema.post_id)
     )
-    .leftJoin(
+    .innerJoin(
       blogSubGroup,
       eq(blogSubGroup.sub_group_id, blogMetaSchema.sub_group_id)
     )
@@ -55,9 +55,9 @@ const _getPinnedPosts = async <T>(): Promise<T> => {
 
 const getPinnedPosts = unstable_cache(
   _getPinnedPosts,
-  [REVALIDATE.PINNED_POST],
+  [REVALIDATE.POST.PINNED_POST],
   {
-    tags: [REVALIDATE.PINNED_POST],
+    tags: [REVALIDATE.POST.PINNED_POST],
   }
 );
 

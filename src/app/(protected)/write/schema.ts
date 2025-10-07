@@ -17,7 +17,7 @@ export const wirtePostSchema = z.object({
         val.group > 0,
       {
         message: "포스팅 그룹을 선택해주세요.",
-        path: [], // 에러 메시지를 postGroup 전체에 표시
+        path: [],
       }
     ),
   thumbnail: z.string().nullable(),

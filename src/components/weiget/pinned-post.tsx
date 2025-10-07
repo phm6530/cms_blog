@@ -10,6 +10,7 @@ export default async function PinnedPosts() {
   if (!response) {
     notFound();
   }
+
   const data = response;
 
   return (
