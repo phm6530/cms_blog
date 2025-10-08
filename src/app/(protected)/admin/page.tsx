@@ -11,12 +11,14 @@ export default async function AdminPage() {
       <section className="w-full grid grid-cols-2 border p-5">
         <div className="rounded-2xl">
           <div className="relative size-30 overflow-hidden border-5">
-            <Image
-              src={session!.user.image!}
-              fill
-              style={{ objectFit: "cover" }}
-              alt="myprofile"
-            />
+            {session!.user.image && (
+              <Image
+                src={session!.user.image!}
+                fill
+                style={{ objectFit: "cover" }}
+                alt="myprofile"
+              />
+            )}
             <Button variant={"outline"} className="absolute left-0 top-0">
               사진
             </Button>

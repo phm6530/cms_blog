@@ -6,7 +6,7 @@ import { sql } from "drizzle-orm";
 async function main() {
   const plainText = process.env.MY_PASSWORD as string;
   const password = await bcrypt.hash(plainText, 10);
-  console.log(password);
+  console.log("passwordMatch", password);
 
   const comparePassword = await bcrypt.compare(
     plainText,
@@ -17,6 +17,7 @@ async function main() {
 
 // 연결확인
 async function testConnection() {
+  console.log(process.env.STATUS);
   try {
     const result = await db.execute(sql`SELECT 1`);
     console.log("DB 연결 성공:", result);

@@ -9,17 +9,18 @@ class Database {
     if (!Database.instance) {
       let connection;
 
-      // r
+      //
       if (process.env.STATUS === "DEV") {
         console.log("local server : connection");
         connection = postgres({
           host: process.env.POSTGRES_HOST!,
-          port: +(process.env.POSTGRES_PORT ?? 5432),
+          port: +process.env.POSTGRES_PORT!,
           user: process.env.POSTGRES_USER!,
           password: process.env.POSTGRES_PASSWORD!,
           database: process.env.POSTGRES_DB!,
         });
       } else {
+        console.log("PROD server : connection");
         connection = postgres(process.env.DATABASE_URL!, {
           prepare: false,
         });

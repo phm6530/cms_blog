@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate:dev": "cross-env STATUS=DEV drizzle-kit migrate  && echo $env:STATUS",
+    "migrate:prod": "cross-env STATUS=PROD drizzle-kit migrate  && echo $env:STATUS"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.787.0",

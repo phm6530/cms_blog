@@ -15,6 +15,20 @@
       "when": 1759832256641,
       "tag": "0001_add-visitor-table",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1759903742757,
+      "tag": "0002_nervous_screwball",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1759904487314,
+      "tag": "0003_light_rawhide_kid",
+      "breakpoints": true
     }
   ]
 }
