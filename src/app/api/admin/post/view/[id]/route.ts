@@ -31,7 +31,7 @@ export async function PATCH(
       await db
         .delete(pinnedPostSchema)
         .where(eq(pinnedPostSchema.id, body.pinnedId));
-      revalidateTag(REVALIDATE.PINNED_POST); // Pin 했던거면 풀기
+      revalidateTag(REVALIDATE.POST.PINNED_POST); // Pin 했던거면 풀기
     }
 
     revalidateTag(`${REVALIDATE.POST.DETAIL}:${id}`); //해당 Post

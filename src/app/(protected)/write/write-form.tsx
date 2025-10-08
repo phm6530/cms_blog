@@ -38,13 +38,14 @@ import {
   SimpleToolTip,
   useSimpleEditor,
 } from "@squirrel309/my-testcounter";
+import getPostItem from "@/app/(public)/post/[id]/page-service";
 
 export default function WirteForm({
   postGroupItems,
   editData,
 }: {
   postGroupItems: { [key: string]: CategoryModel };
-  editData?: BlogDetailResponse;
+  editData?: Awaited<ReturnType<typeof getPostItem>>;
 }) {
   const { throttle } = useThrottling();
   const searchParams = useSearchParams();

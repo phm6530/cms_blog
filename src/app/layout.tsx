@@ -4,11 +4,8 @@ import "../styles/editor.css";
 import ClientProvider from "@/provider/client-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/layout/footer";
-import SideArea from "@/components/slide-area";
 import MouseClickEffect from "@/components/shared/mouse-clickeffect";
-import HeaderNav from "@/components/layout/header-nav";
 import GlobalNav from "@/components/layout/global-nav";
-import MainLayout from "@/components/layout/main-layout";
 import { Analytics } from "@vercel/analytics/react";
 import { auth } from "@/auth";
 
@@ -25,19 +22,16 @@ export default async function RootLayout({
   const session = await auth();
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ko" suppressHydrationWarning>
       <body>
         <div id="backdrop-portal"></div>
         <Analytics />
         <ClientProvider session={session}>
           <MouseClickEffect>
             <GlobalNav />
-            <MainLayout>
-              <div className=" mx-auto">{children}</div>
-
-              <Toaster />
-              <Footer />
-            </MainLayout>
+            <div className="pt-15 grid-layout">{children}</div>
+            <Toaster />
+            <Footer />
           </MouseClickEffect>
         </ClientProvider>
       </body>

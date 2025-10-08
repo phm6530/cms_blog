@@ -1,11 +1,11 @@
 import { db } from "@/db/db";
-import { categorySchema, blogSubGroup } from "@/db/schema/category";
-import { blogMetaSchema } from "@/db/schema/blog-metadata";
+import { blogMetaSchema, blogSubGroup, categorySchema } from "@/db/schema";
 import { CategoryModel } from "@/type/blog-group";
+import { REVALIDATE } from "@/type/constants";
 import { eq, sql } from "drizzle-orm";
-import { NextResponse } from "next/server";
+import { unstable_cache } from "next/cache";
 
-export async function GET() {
+const _getCategories = async () => {
   const hashMap = new Map<string, CategoryModel>();
 
   const rows = await db
@@ -63,11 +63,18 @@ export async function GET() {
     }
   }
 
-  return NextResponse.json({
-    success: true,
-    result: {
-      category: Object.fromEntries(hashMap),
-      count,
-    },
-  });
-}
+  return {
+    categories: Object.fromEntries(hashMap),
+    count,
+  };
+};
+
+const getCategories = unstable_cache(
+  _getCategories,
+  [REVALIDATE.POST.CATEGORY],
+  {
+    tags: [REVALIDATE.POST.CATEGORY],
+  }
+);
+
+export default getCategories;

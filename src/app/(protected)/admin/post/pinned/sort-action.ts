@@ -20,7 +20,7 @@ export async function replaceSortAction(
       );
     });
     // 메인 고정글 순서 변경
-    revalidateTag(REVALIDATE.PINNED_POST);
+    revalidateTag(REVALIDATE.POST.PINNED_POST);
 
     return { success: true };
   } catch (err) {

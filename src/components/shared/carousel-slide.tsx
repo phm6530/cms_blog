@@ -48,38 +48,51 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
           {postList.map((data, index) => (
             <CarouselItem
               key={index}
-              className="w-[50px]  md:basis-1/3 overflow-hidden"
+              className="flex gap-[3rem]   basis-1/1 overflow-hidden"
             >
               <div
-                className="aspect-[16/11] bg-cover "
-                style={{
-                  backgroundClip: "padding-box",
-                  backgroundImage: `url(${unsplashS3Mapping(
-                    data.thumbnail_url
-                  )})`,
-                }}
                 onClick={() => router.push(`/post/${data.post_id}`)}
-              ></div>{" "}
-              <div className="flex flex-col  items-start  z-10 mt-auto  ">
-                <div className="flex gap-2 mt-5">
+                className=" relative  overflow-hidden w-[60%]  after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-2xl after:bg-no-repeat after:content-['']
+        after:bg-gradient-to-b after:from-black-0 after:via-black/0 after:to-black/80  aspect-[16/11]   text-white"
+              >
+                <div
+                  className="absolute  w-full h-full  rounded-2xl bg-center top-0 left-0    "
+                  style={{
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center center",
+                    animation: `
+            bgScaleInit 5s cubic-bezier(0, 0.75, 0, 0.62) forwards, 
+            bgScaleLoop 10s 5s ease  infinite alternate,
+            opacity .5s ease-out forwards`,
+                    backgroundImage: `url(${unsplashS3Mapping(
+                      data.thumbnail_url
+                    )})`,
+                  }}
+                ></div>
+                <span
+                  className="absolute p-5 bottom-0 text-xs z-2 bg-red-50/5 rounded-tr-2xl"
+                  style={{
+                    backdropFilter: "blur(4px)",
+                  }}
+                >
+                  Pin - {current}
+                </span>
+              </div>
+              <div className="flex flex-col   z-10  py-10 w-[40%] ">
+                <div className="flex gap-2 ">
                   <Badge
                     variant={"outline"}
                     className="z-1 rounded-full  md:text-xs! text-[10px]"
                   >
                     {data.sub_group_name}
                   </Badge>
-                  {/* <Badge
-                    variant={"outline"}
-                    className="z-1 rounded-full bg-yellow-400 text-black md:text-xs! text-[10px]"
-                  >
-                    pinned
-                  </Badge> */}
                 </div>
 
-                <h1 className="text-shadow md:w-[80%]   leading-relaxed  mt-3 md:mt-5 z-10  text-2xl md:text-lg  break-keep whitespace-pre-line font-bold">
+                <h1 className="text-shadow leading-snug  mt-3 z-10  text-2xl md:text-3xl  break-keep whitespace-pre-line ">
                   {data.post_title}
                 </h1>
-                <p className="text-sm w-[70%] md:block md:text-xs leading-relaxed z-10  md:mt-5 mt-2 line-clamp-2 md:line-clamp-2! max-w-[400px] opacity-90 dark:text-[#cccccc]">
+                <p className="text-sm  line-clamp-4 md:text-sm leading-relaxed z-10 mt-6   opacity-90 text-muted-foreground">
                   {data.post_description}
                 </p>
 

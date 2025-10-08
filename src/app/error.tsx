@@ -26,7 +26,7 @@ export default function Error({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-8">
+    <div className="flex flex-col items-center justify-center gap-8 h-screen">
       <h1 className="text-destructive flex gap-4 items-center">
         <CircleSlash className="w-10 h-10" /> Not Found Page
       </h1>

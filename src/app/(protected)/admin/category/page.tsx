@@ -1,15 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { CategoryModel } from "@/type/blog-group";
-import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
+import { HTTP_METHOD } from "@/type/constants";
 import withClientFetch from "@/util/withClientFetch";
-import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CornerDownRight, Menu } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 import CategoryRenameHandler from "./components/category-rename";
+import { actionCategories } from "./action/fetch-categories";
 
 export type DeleteCategoryProps = { categoryId: number; subGroupId?: number };
 
@@ -19,22 +19,7 @@ export default function Category() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["test"],
-
-    queryFn: async () => {
-      return await withFetchRevaildationAction<{
-        category: { [key: string]: CategoryModel };
-        count: number;
-      }>({
-        endPoint: "api/category",
-        options: {
-          cache: "force-cache",
-          next: {
-            tags: [REVALIDATE.POST.CATEGORY],
-          },
-        },
-      });
-    },
-    staleTime: 10000,
+    queryFn: async () => await actionCategories(),
   });
   /**
    * @param id 유무에 따라 Category 추가 or Group 추가 분기
@@ -106,7 +91,7 @@ export default function Category() {
     return "loading...";
   }
 
-  const categoryList = data?.result;
+  const categoryList = data;
   const addCategoryHandler = ({ id }: { id?: number }) => {
     const item = prompt("카테고리 명을 입력해주세요");
     if (!item) return;
@@ -134,7 +119,7 @@ export default function Category() {
           </Button>
         </div>
       </div>
-      {Object.values(categoryList!.category).map((category, idx) => {
+      {Object.values(categoryList!.categories).map((category, idx) => {
         return (
           <React.Fragment key={`${category.id}-${idx}`}>
             <div className="py-3 px-6 border-b">

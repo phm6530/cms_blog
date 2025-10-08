@@ -1,45 +1,35 @@
-import { CategoryModel } from "@/type/blog-group";
-import { REVALIDATE } from "@/type/constants";
-import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import NavList from "./nav-list";
 import HeaderNav from "./header-nav";
+import getCategories from "@/service/get-category";
 
 export default async function GlobalNav() {
-  const response = await withFetchRevaildationAction<{
-    category: { [key: string]: CategoryModel };
-    count: number;
-  }>({
-    endPoint: "api/category",
-    options: {
-      cache: "force-cache",
-      next: {
-        tags: [REVALIDATE.POST.CATEGORY],
-      },
-    },
-  });
+  const response = await getCategories();
 
-  if (!response.success) {
+  if (!response) {
     notFound();
   }
-  const { category } = response.result;
-
-  const categories = Object.entries(category).map((e) => {
+  const { categories } = response;
+  const mappingCategories = Object.entries(categories).map((e) => {
     return { label: e[1].name, postCnt: e[1].postCnt };
   });
-
   return (
-    <>
-      <div className="grid grid-cols-[auto_1fr_1fr] fixed top-0 w-full py-3 px-30 border-b items-center  z-20 border-secondary-foreground/10 ">
+    <div
+      className="fixed w-full z-100 bg-background/50 "
+      style={{
+        backdropFilter: "blur(20px)",
+      }}
+    >
+      <div className="grid-layout flex  justify-between items-center ">
         <Link href={"/"}>
-          <h1 className="text-white text-xl md:text-xl font-bold font-SUIT-Regular pr-26">
-            PHM{"'"} DEV BLOG
+          <h1 className=" text-xl md:text-xl font-bold font-SUIT-Regular pr-26">
+            Phm, Dev Blog
           </h1>
         </Link>
-        <NavList categories={categories} />
+        <NavList categories={mappingCategories} />
         <HeaderNav />
       </div>
-    </>
+    </div>
   );
 }

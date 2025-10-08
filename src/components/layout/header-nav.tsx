@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import SearchInput from "../ui/search-input";
 import ThemeHandler from "./ThemeHandler";
-import VisitorWiget from "../weiget/visitor-weiget";
 
 export default function HeaderNav() {
   return (

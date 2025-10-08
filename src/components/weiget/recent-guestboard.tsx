@@ -21,9 +21,13 @@ export default async function RecentGuestBoard() {
   });
 
   return (
-    <div className="  flex flex-col gap-4 mt-6">
-      <p className=" border-b text-sm pb-2 border-foreground/20 ">방명록</p>
+    <div className="  flex flex-col gap-4 ">
+      <p className=" border-b  pb-2 border-foreground/20 text-xs">방명록</p>
       <div className="flex flex-col gap-2">
+        {response.result?.length === 0 && (
+          <span className="text-xs">등록된 방명록이 없습니다.</span>
+        )}
+
         {response.result?.slice(0, 5)?.map((post, idx) => {
           return (
             <Link

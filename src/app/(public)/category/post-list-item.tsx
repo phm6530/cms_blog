@@ -30,17 +30,36 @@ export const PostItem = forwardRef<
     ref
   ) => {
     return (
-      <Link href={`/post/${post_id}`} className="border-b">
+      <Link href={`/post/${post_id}`}>
         <div
           ref={ref}
           className={cn(
-            "transition-all  border-l-indigo-500 animate-wiggle group grid-cols-1 cursor-pointer grid  gap-5 items-center py-3   last:border-b-0",
+            " border-l-indigo-500 flex animate-wiggle group cursor-pointer  flex-col  gap-5 ",
 
-            thumbnail_url && "grid-cols-[minmax(0,5fr)_minmax(100px,2fr)]",
+            thumbnail_url &&
+              "grid-cols-[minmax(0,5fr)_minmax(100px,2fr)] group",
             className
           )}
         >
-          <div className="flex flex-col gap-2 py-1 md:py-3!">
+          {thumbnail_url && (
+            <div className="h-32 w-full relative overflow-hidden rounded-xl group border-red-300 border-3">
+              <div
+                className="w-full h-full ml-auto absolute inset-0 
+       transition-transform duration-700 ease-in-out 
+       group-hover:translate-y-20"
+              >
+                <Image
+                  src={`${unsplashS3Mapping(thumbnail_url)}`}
+                  alt=""
+                  fill
+                  style={{ objectFit: "cover" }}
+                  unoptimized
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-2 py-1 ">
             <div className="flex gap-3 mb-2">
               <Badge variant={"secondary"} className="text-[10px] rounded-full">
                 {sub_group_name}
@@ -51,7 +70,7 @@ export const PostItem = forwardRef<
               </div>
             </div>
 
-            <p className="group-hover:underline [text-shadow:_0px_0px_1px_rgba(0,0,0,1)] text-base md:text-xl! tracking-tight">
+            <p className="group-hover:underline [text-shadow:_0px_0px_1px_rgba(0,0,0,1)] text-base md:text-base tracking-tight">
               {!!keyword ? (
                 <HighlightKeyword text={post_title} keyword={keyword} />
               ) : (
@@ -59,7 +78,7 @@ export const PostItem = forwardRef<
               )}
             </p>
 
-            <p className="line-clamp-2 text-xs md:text-[13px]! text-muted-foreground leading-5 tracking-tight md:mb-4 break-words">
+            <p className="line-clamp-2 text-xs  text-muted-foreground leading-5 tracking-tight md:mb-4 break-words">
               {post_description}
             </p>
             <p className="text-xs text-muted-foreground mt-1 flex gap-3 ">
@@ -75,18 +94,7 @@ export const PostItem = forwardRef<
               </span>
             </p>
           </div>
-          {thumbnail_url && (
-            <div className="max-w-[150px] w-full ml-auto  aspect-[1/1] md:aspect-[16/11]  rounded-xl relative overflow-hidden ">
-              <Image
-                src={`${unsplashS3Mapping(thumbnail_url)}`}
-                alt=""
-                fill
-                style={{ objectFit: "cover" }}
-                unoptimized
-              />
-            </div>
-          )}
-        </div>{" "}
+        </div>
       </Link>
     );
   }

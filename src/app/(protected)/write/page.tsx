@@ -1,11 +1,11 @@
-import { CategoryModel } from "@/type/blog-group";
-import { REVALIDATE, WRITE_MODE } from "@/type/constants";
-import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
+import { WRITE_MODE } from "@/type/constants";
 import { notFound } from "next/navigation";
 import WirteForm from "./write-form";
-import { BlogDetailResponse } from "@/type/blog.type";
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+import getCategories from "@/service/get-category";
+import getPostItem from "@/app/(public)/post/[id]/page-service";
 
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+type PostItemType = Awaited<ReturnType<typeof getPostItem>>;
 export default async function Page(props: {
   params: any;
   searchParams: SearchParams;
@@ -14,49 +14,33 @@ export default async function Page(props: {
   const postId = searchParams.postId;
   const mode = searchParams.mode;
 
-  let editData: BlogDetailResponse | undefined = undefined;
+  let editData: PostItemType | undefined;
 
   // 카테고리
-  const response = await withFetchRevaildationAction<{
-    category: { [key: string]: CategoryModel };
-    count: number;
-  }>({
-    endPoint: "api/category",
-    options: {
-      cache: "force-cache",
-      next: {
-        tags: [REVALIDATE.POST.CATEGORY],
-      },
-    },
-  });
-
+  const response = await getCategories();
   // 수정일 때 Data 가져오기
   if (mode === WRITE_MODE.EDIT) {
-    const editResponse = await withFetchRevaildationAction<BlogDetailResponse>({
-      endPoint: `api/post/${postId}`,
-      options: {
-        cache: "force-cache",
-        next: {
-          tags: [`${REVALIDATE.POST.DETAIL}:${postId}`],
-        },
-      },
-    });
+    const editResponse = await getPostItem(postId + "");
 
-    if (!editResponse.success) {
+    if (!editResponse) {
       notFound();
     }
-    editData = editResponse.result;
+    if (editResponse) {
+      editData = editResponse;
+    }
   }
 
-  if (!response.success) {
+  if (!response) {
     notFound();
   }
-
-  const { category } = response.result;
+  console.log(response);
 
   return (
     <>
-      <WirteForm postGroupItems={category} {...(editData && { editData })} />
+      <WirteForm
+        postGroupItems={response.categories}
+        {...(editData && { editData })}
+      />
     </>
   );
 }

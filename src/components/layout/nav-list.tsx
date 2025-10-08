@@ -67,8 +67,8 @@ export default function NavList({
 
       <div
         className={cn(
-          `fixed flex flex-col ease-side p-5 md:flex-row! bg-background md:bg-transparent! top-0 gap-0 z-100 md:z-10 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto`,
-          `md:static md:flex-row   md:h-auto md:border-0 md:gap-5 md:p-0  md:items-center`,
+          `fixed flex flex-col mr-auto ease-side p-5 md:flex-row! bg-background md:bg-transparent! top-0 gap-0 z-100 md:z-10 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto`,
+          `md:static md:flex-row   md:h-auto md:border-0 md:gap-8 md:p-0  md:items-center`,
           toggle ? "left-[100px]" : "left-full"
         )}
         style={{
@@ -100,11 +100,11 @@ export default function NavList({
                   pathnameActive(e.label) && "dark:text-indigo-300 underline"
                 )}
               >
-                {e.label.toUpperCase()}
+                {e.label}
               </span>
-              <span className="opacity-50 text-[11px] text-primary">
+              {/* <span className="opacity-50 text-[11px] text-primary">
                 ({e.postCnt})
-              </span>
+              </span> */}
             </Link>
           );
         })}

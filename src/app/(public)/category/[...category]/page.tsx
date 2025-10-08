@@ -91,23 +91,22 @@ export default function CategoryPage() {
   }
 
   return (
-    <section className=" flex flex-col">
-      <div className="flex flex-col">
-        {flatPageDatas?.length === 0 ? (
-          <div className="py-5">등록된 콘텐츠가 없습니다.</div>
-        ) : (
-          flatPageDatas?.map((item, idx) => {
-            const isLast = flatPageDatas.length - 2 === idx;
-            return (
-              <PostItem
-                {...item}
-                key={`${item?.post_id}-${idx}`}
-                ref={isLast ? ref : undefined}
-              />
-            );
-          })
-        )}
-      </div>
+    <section className=" grid grid-cols-3 w-full gap-10">
+      {flatPageDatas?.length === 0 ? (
+        <div className="py-5">등록된 콘텐츠가 없습니다.</div>
+      ) : (
+        flatPageDatas?.map((item, idx) => {
+          const isLast = flatPageDatas.length - 2 === idx;
+          return (
+            <PostItem
+              {...item}
+              key={`${item?.post_id}-${idx}`}
+              ref={isLast ? ref : undefined}
+            />
+          );
+        })
+      )}
+
       {isFetching && (
         <>
           <LoadingSpinerV2 text="loading ..." />

@@ -1,9 +1,6 @@
 // Blog 게시물 상태
-export enum POST_STATUS {
-  DRAFT = "draft",
-  PUBLISHED = "published",
-  PRIVATE = "private",
-}
+
+import { POST_STATUS } from "./constants";
 
 export interface BlogMetadata {
   post_id: number;

@@ -3,7 +3,6 @@ import withClientFetch from "@/util/withClientFetch";
 import { useQuery } from "@tanstack/react-query";
 
 export default function VisitorWigetV2() {
-  // visitor...
   const { data, isLoading } = useQuery<{
     result: {
       allVisitor_cnt: number;
@@ -21,30 +20,23 @@ export default function VisitorWigetV2() {
   });
 
   return (
-    <>
-      <div className="flex flex-col  gap-3   border-t pt-5 pb-5">
-        {isLoading ? (
-          <div className="flex  justify-center h-8">
-            <div className="size-5 border-2 border-t-transparent border-zinc-400 rounded-full animate-spin "></div>
-          </div>
-        ) : (
-          <>
-            <div className="flex flex-col gap-3 ">
-              <span className="opacity-50 text-[11px]">TODAY</span>
-              <span className="animate-wiggle">
-                {data?.result.today_cnt ?? 0}
-              </span>
-            </div>
-            <div className="flex flex-col gap-1  text-xs">
-              <span className=" opacity-50 text-xs">TOTAL</span>
-              <span className="animate-wiggle text-2xl flex items-center gap-2">
-                {/* <span className="opacity-50 text-[11px]">TOTAL</span> */}
-                {(data?.result.allVisitor_cnt ?? 0).toLocaleString()}
-              </span>
-            </div>
-          </>
-        )}
-      </div>
-    </>
+    <div className="flex flex-col">
+      {isLoading ? (
+        <div className="flex justify-center p-2">
+          <div className="size-5 border-2 border-t-transparent border-zinc-400 rounded-full animate-spin" />
+        </div>
+      ) : (
+        <div className="flex items-center gap-3 text-lg ">
+          <span className="text-sm text-muted-foreground">안녕하세요?</span>
+          <span>
+            오늘{" "}
+            <span className="font-semibold text-red-500 underline">
+              {data?.result.today_cnt ?? 0}
+            </span>{" "}
+            번째 방문자시네요!
+          </span>
+        </div>
+      )}
+    </div>
   );
 }

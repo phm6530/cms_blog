@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     });
 
     // 초기화
-    revalidateTag(REVALIDATE.PINNED_POST);
+    revalidateTag(REVALIDATE.POST.PINNED_POST);
     return inserted;
   });
 }
