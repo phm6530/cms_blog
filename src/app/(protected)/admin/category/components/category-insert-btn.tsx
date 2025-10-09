@@ -44,15 +44,17 @@ export default function CategoryInsertTrigger({
 
   const { mutate, isPending } = useMutation({
     mutationFn: async ({
-      id,
       categoryName,
       description,
     }: {
-      id?: number;
       categoryName: string;
       description?: string;
     }) => {
-      const res = await insertCategory({ id, categoryName, description });
+      const res = await insertCategory({
+        categoryId,
+        categoryName,
+        description,
+      });
       if (!res.success) {
         throw new Error(res.error);
       }

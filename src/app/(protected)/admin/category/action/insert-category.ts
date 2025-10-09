@@ -8,11 +8,11 @@ import { actionWrapper } from "@/util/action-wrapper";
 import { and, eq, ilike } from "drizzle-orm";
 
 export async function insertCategory({
-  id,
+  categoryId,
   categoryName,
   description,
 }: {
-  id?: number;
+  categoryId?: number;
   categoryName: string;
   description?: string;
 }) {
@@ -21,20 +21,20 @@ export async function insertCategory({
   /**
    * @description id 있으면 subGorup 처리
    **/
-  const addGroup = !!id ? "subgorup" : "category";
+  const isSub = categoryId != null;
 
   const insertService = async () => {
     if (!session?.user) {
       throw new Error("권한 없음....");
     }
 
-    if (addGroup === "subgorup" && id) {
+    if (isSub) {
       const row = await db
         .select()
         .from(blogSubGroup)
         .where(
           and(
-            eq(blogSubGroup.group_id, id),
+            eq(blogSubGroup.group_id, categoryId),
             eq(blogSubGroup.sub_group_name, categoryName)
           )
         );
@@ -45,7 +45,7 @@ export async function insertCategory({
 
       await db.insert(blogSubGroup).values({
         sub_group_name: categoryName,
-        group_id: id,
+        group_id: categoryId,
       });
     } else {
       const row = await db
