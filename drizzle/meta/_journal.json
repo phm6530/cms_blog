@@ -29,6 +29,20 @@
       "when": 1759904487314,
       "tag": "0003_light_rawhide_kid",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1759985011546,
+      "tag": "0004_short_shooting_star",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1759989876746,
+      "tag": "0005_outstanding_liz_osborn",
+      "breakpoints": true
     }
   ]
 }

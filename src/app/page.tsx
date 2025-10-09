@@ -14,7 +14,7 @@ export default async function Home() {
           <div className="mt-auto pb-10  items-end gap-20 w-full">
             <div className="flex flex-col items-start pt-16">
               <div className="text-5xl ">Phm, Dev Blog</div>
-              <p className="text-muted-foreground mt-5">
+              <p className="text-muted-foreground my-5">
                 프론트엔드 개발자 , PHM입니다. 저를 기록합니다.
               </p>
             </div>

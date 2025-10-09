@@ -78,6 +78,8 @@ export default function CategoryPage() {
     };
   }, [data, fetchNextPage]);
 
+  console.log(data);
+
   const flatPageDatas = data?.pages.flatMap((page) => page.list);
 
   if (isPending || !data) {

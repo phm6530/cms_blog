@@ -67,7 +67,7 @@ export const PostItem = forwardRef<
               </div>
             </div>
 
-            <p className="group-hover:underline [text-shadow:_0px_0px_1px_rgba(0,0,0,1)] text-base md:text-base tracking-tight">
+            <p className="group-hover:underline text-base md:text-base tracking-tight">
               {!!keyword ? (
                 <HighlightKeyword text={post_title} keyword={keyword} />
               ) : (
@@ -75,7 +75,7 @@ export const PostItem = forwardRef<
               )}
             </p>
 
-            <p className="line-clamp-2 text-xs  text-muted-foreground leading-5 tracking-tight md:mb-4 break-words">
+            <p className="line-clamp-2 text-sm  text-muted-foreground leading-5 tracking-tight md:mb-4 break-words">
               {post_description}
             </p>
             <p className="text-xs text-muted-foreground mt-1 flex gap-3 ">

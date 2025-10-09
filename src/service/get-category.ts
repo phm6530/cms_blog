@@ -7,7 +7,6 @@ import { unstable_cache } from "next/cache";
 
 const _getCategories = async () => {
   const hashMap = new Map<string, CategoryModel>();
-
   const rows = await db
     .select({
       groupId: categorySchema.group_id,
@@ -16,6 +15,7 @@ const _getCategories = async () => {
       subGroupName: blogSubGroup.sub_group_name,
       thumb: blogSubGroup.default_thum,
       postCount: sql<number>`COUNT(${blogMetaSchema.post_id})`.as("postCount"),
+      groupDescription: categorySchema.group_description,
     })
     .from(categorySchema)
     .leftJoin(blogSubGroup, eq(categorySchema.group_id, blogSubGroup.group_id))
@@ -29,7 +29,8 @@ const _getCategories = async () => {
       categorySchema.group_name,
       blogSubGroup.sub_group_id,
       blogSubGroup.sub_group_name,
-      blogSubGroup.default_thum
+      blogSubGroup.default_thum,
+      categorySchema.group_description
     );
 
   let count = 0;
@@ -42,6 +43,7 @@ const _getCategories = async () => {
       hashMap.set(items.groupName, {
         id: items.groupId,
         name: items.groupName,
+        description: items.groupDescription,
         postCnt: 0,
         subGroups: [],
       });

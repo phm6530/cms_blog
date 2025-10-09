@@ -10,6 +10,7 @@ import React from "react";
 import { toast } from "sonner";
 import CategoryRenameHandler from "./components/category-rename";
 import { actionCategories } from "./action/fetch-categories";
+import CategoryInsertBtn from "./components/category-insert-btn";
 
 export type DeleteCategoryProps = { categoryId: number; subGroupId?: number };
 
@@ -19,44 +20,10 @@ export default function Category() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["test"],
-    queryFn: async () => await actionCategories(),
-  });
-  /**
-   * @param id 유무에 따라 Category 추가 or Group 추가 분기
-   */
-  const { mutate } = useMutation({
-    mutationFn: async ({ id, item }: { id?: number; item: string }) => {
-      return await withClientFetch<{
-        category: { [key: string]: CategoryModel };
-        count: number;
-      }>({
-        endPoint: "api/admin/category",
-        options: {
-          method: HTTP_METHOD.POST,
-          body: JSON.stringify({
-            ...(!!id
-              ? {
-                  id,
-                  categoryName: item,
-                }
-              : {
-                  categoryName: item,
-                }),
-          }),
-        },
-      });
-    },
-    onSuccess: () => {
-      toast.success("카테고리가 추가 되었습니다.", {
-        style: {
-          background: "#1e293b",
-          color: "#38bdf8",
-        },
-      });
-      router.refresh();
-      queryClient.invalidateQueries({
-        queryKey: ["test"],
-      });
+    queryFn: async () => {
+      const res = await actionCategories();
+      if (!res.success) throw new Error(res.error); // 여기서 react-query의 error 플로우로 넘김
+      return res.data;
     },
   });
 
@@ -92,11 +59,23 @@ export default function Category() {
   }
 
   const categoryList = data;
-  const addCategoryHandler = ({ id }: { id?: number }) => {
-    const item = prompt("카테고리 명을 입력해주세요");
-    if (!item) return;
-    mutate({ item, id });
-  };
+
+  // const addCategoryHandler = ({ id }: { id?: number }) => {
+  //   const item = prompt("카테고리 명을 입력해주세요");
+  //   if (!item) return;
+  //   mutate({ item, id });
+  // };
+
+  // const handleAddCategorySubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.currentTarget);
+  //   const categoryName = formData.get("categoryName") as string;
+  //   if (!categoryName) {
+  //     toast.error("카테고리 명을 입력해주세요.");
+  //     return;
+  //   }
+  //   addCategoryHandler({ item: categoryName });
+  // };
 
   const deleteCategoryHandler = (data: DeleteCategoryProps) => {
     const item = confirm("삭제하시겠습니까?");
@@ -108,27 +87,18 @@ export default function Category() {
     <>
       <div className=" py-3 px-6 border flex justify-between items-center">
         <span>전체글 ( {categoryList?.count} )</span>
-
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            variant={"ghost"}
-            onClick={() => addCategoryHandler({})}
-          >
-            추가
-          </Button>
-        </div>
+        <CategoryInsertBtn />
       </div>
       {Object.values(categoryList!.categories).map((category, idx) => {
         return (
           <React.Fragment key={`${category.id}-${idx}`}>
-            <div className="py-3 px-6 border-b">
+            <div className="py-3 ">
               {/* 카테고리 영역 */}
-              <div className="flex justify-between items-center bg-secondary p-2">
+              <div className="flex justify-between items-center p-2">
                 <div className="flex items-center gap-3 ">
                   <Menu size={15} />
 
-                  <span className="font-semibold">
+                  <span className="">
                     {category.name} ({category.postCnt})
                   </span>
                 </div>
@@ -138,14 +108,14 @@ export default function Category() {
                     category={category.name}
                     categoryId={category.id}
                   />
-                  <Button
+                  {/* <Button
                     variant={"outline"}
                     size={"sm"}
                     className="text-xs"
                     onClick={() => addCategoryHandler({ id: category.id })}
                   >
                     추가
-                  </Button>
+                  </Button> */}
                   <Button
                     variant={"outline"}
                     size={"sm"}

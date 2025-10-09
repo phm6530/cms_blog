@@ -1,0 +1,4 @@
+ALTER TABLE "blog_sub_group" DROP CONSTRAINT "blog_sub_group_group_id_category_group_id_fk";
+--> statement-breakpoint
+ALTER TABLE "blog_metadata" ADD CONSTRAINT "blog_metadata_sub_group_id_blog_sub_group_sub_group_id_fk" FOREIGN KEY ("sub_group_id") REFERENCES "public"."blog_sub_group"("sub_group_id") ON DELETE restrict ON UPDATE cascade;--> statement-breakpoint
+ALTER TABLE "blog_sub_group" ADD CONSTRAINT "blog_sub_group_group_id_category_group_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."category"("group_id") ON DELETE restrict ON UPDATE cascade;
