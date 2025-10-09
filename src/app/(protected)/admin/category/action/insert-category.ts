@@ -10,14 +10,16 @@ import { and, eq, ilike } from "drizzle-orm";
 export async function insertCategory({
   id,
   categoryName,
+  description,
 }: {
   id?: number;
   categoryName: string;
+  description?: string;
 }) {
   const session = await auth();
 
   /**
-   * @description id있으면 subGorup 처리
+   * @description id 있으면 subGorup 처리
    **/
   const addGroup = !!id ? "subgorup" : "category";
 
@@ -55,6 +57,7 @@ export async function insertCategory({
       }
       await db.insert(categorySchema).values({
         group_name: categoryName,
+        group_description: description,
       });
     }
   };

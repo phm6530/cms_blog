@@ -15,7 +15,7 @@ type ActionOptions = {
 };
 
 export async function actionWrapper<T>(
-  cb: () => Promise<T>,
+  cb: (...arg: any) => Promise<T>,
   options?: ActionOptions
 ): Promise<ActionResult<T>> {
   try {

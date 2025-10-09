@@ -4,7 +4,7 @@ import Link from "next/link";
 import PostListNav from "../post-list-nav";
 import SearchInput from "@/components/ui/search-input";
 import { auth } from "@/auth";
-import { Pen, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import getCategories from "@/service/get-category";
 
 export async function generateStaticParams() {
@@ -42,12 +42,12 @@ export default async function Layout({
   const session = await auth();
   const allCategories = await getCategories();
 
-  const currentCategoryData = allCategories
-    ? Object.values(allCategories.categories).find(
-        (c) => c.name.toLowerCase() === category.toLowerCase()
-      )
-    : null;
   const curCategory = decodeURIComponent(category);
+
+  const keys = Object.values(allCategories.categories).filter(
+    (e) => e.name.toLocaleLowerCase() === curCategory.toLocaleLowerCase()
+  );
+
   const curSubCategory = group ? decodeURIComponent(group) : null;
 
   return (
@@ -67,7 +67,8 @@ export default async function Layout({
             )}
           </div>
           <p className="text-muted-foreground mt-5 mb-3">
-            {currentCategoryData?.description || "등록된 설명이 없습니다."}
+            {keys[0].description ||
+              "프론트엔드 개발자 , PHM입니다. 저를 기록합니다."}
           </p>
           {session?.user && (
             <Button className=" text-xs mt-4 px-10" asChild>

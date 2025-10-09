@@ -1,23 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { CategoryModel } from "@/type/blog-group";
-import { HTTP_METHOD } from "@/type/constants";
-import withClientFetch from "@/util/withClientFetch";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CornerDownRight, Menu } from "lucide-react";
-import { useRouter } from "next/navigation";
 import React from "react";
-import { toast } from "sonner";
-import CategoryRenameHandler from "./components/category-rename";
 import { actionCategories } from "./action/fetch-categories";
-import CategoryInsertBtn from "./components/category-insert-btn";
+import CategoryInsertTrigger from "./components/category-insert-btn";
+import CategoryModify from "./components/category-modify";
+import { useQuery } from "@tanstack/react-query";
 
 export type DeleteCategoryProps = { categoryId: number; subGroupId?: number };
 
 export default function Category() {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-
   const { data, isLoading } = useQuery({
     queryKey: ["test"],
     queryFn: async () => {
@@ -27,32 +19,26 @@ export default function Category() {
     },
   });
 
-  const { mutate: deleteMutate } = useMutation({
-    mutationFn: async ({ categoryId, subGroupId }: DeleteCategoryProps) => {
-      return await withClientFetch<{
-        category: { [key: string]: CategoryModel };
-        count: number;
-      }>({
-        endPoint: "api/admin/category",
-        options: {
-          method: HTTP_METHOD.DELETE,
-          body: JSON.stringify({ categoryId, subGroupId }),
-        },
-      });
-    },
-    onSuccess: () => {
-      toast.success("카테고리가 삭제되었습니다.", {
-        style: {
-          background: "#1e293b",
-          color: "#38bdf8",
-        },
-      });
-      router.refresh();
-      queryClient.invalidateQueries({
-        queryKey: ["test"],
-      });
-    },
-  });
+  // const { mutate: deleteMutate } = useMutation({
+  //   mutationFn: async ({
+  //     categoryId,
+  //     subGroupId: groupId,
+  //   }: DeleteCategoryProps) => {
+  //     return await modifyCategory({ groupId, categoryId });
+  //   },
+  //   onSuccess: () => {
+  //     toast.success("카테고리가 삭제되었습니다.", {
+  //       style: {
+  //         background: "#1e293b",
+  //         color: "#38bdf8",
+  //       },
+  //     });
+  //     router.refresh();
+  //     queryClient.invalidateQueries({
+  //       queryKey: ["test"],
+  //     });
+  //   },
+  // });
 
   if (isLoading && !data) {
     return "loading...";
@@ -60,34 +46,25 @@ export default function Category() {
 
   const categoryList = data;
 
-  // const addCategoryHandler = ({ id }: { id?: number }) => {
-  //   const item = prompt("카테고리 명을 입력해주세요");
-  //   if (!item) return;
-  //   mutate({ item, id });
-  // };
-
-  // const handleAddCategorySubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const formData = new FormData(e.currentTarget);
-  //   const categoryName = formData.get("categoryName") as string;
-  //   if (!categoryName) {
-  //     toast.error("카테고리 명을 입력해주세요.");
-  //     return;
-  //   }
-  //   addCategoryHandler({ item: categoryName });
-  // };
-
   const deleteCategoryHandler = (data: DeleteCategoryProps) => {
     const item = confirm("삭제하시겠습니까?");
     if (!item) return;
-    deleteMutate(data);
+    // deleteMutate(data);
   };
 
   return (
     <>
       <div className=" py-3 px-6 border flex justify-between items-center">
         <span>전체글 ( {categoryList?.count} )</span>
-        <CategoryInsertBtn />
+        <CategoryInsertTrigger>
+          <Button
+            type="button"
+            variant={"outline"}
+            className="text-xs shadow-none bg-transparent! hover:border-zinc-400"
+          >
+            + 카테고리 추가
+          </Button>
+        </CategoryInsertTrigger>
       </div>
       {Object.values(categoryList!.categories).map((category, idx) => {
         return (
@@ -95,27 +72,49 @@ export default function Category() {
             <div className="py-3 ">
               {/* 카테고리 영역 */}
               <div className="flex justify-between items-center p-2">
-                <div className="flex items-center gap-3 ">
-                  <Menu size={15} />
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-3 ">
+                    <Menu size={15} />
 
-                  <span className="">
-                    {category.name} ({category.postCnt})
-                  </span>
+                    <span className="">
+                      {category.name} ({category.postCnt})
+                    </span>
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    설명 : {category.description ?? "없음"}
+                  </div>
                 </div>
                 <div className="flex gap-2 ">
-                  {/* 카테고리 이름 변경 */}
-                  <CategoryRenameHandler
-                    category={category.name}
+                  {/* 카테고리 - 수정*/}
+                  <CategoryModify
+                    {...(category.description
+                      ? { description: category.description }
+                      : {})}
+                    categoryName={category.name}
                     categoryId={category.id}
-                  />
-                  {/* <Button
-                    variant={"outline"}
-                    size={"sm"}
-                    className="text-xs"
-                    onClick={() => addCategoryHandler({ id: category.id })}
                   >
-                    추가
-                  </Button> */}
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="text-xs p-0 shadow-none bg-transparent! hover:border-zinc-400"
+                    >
+                      수정
+                    </Button>
+                  </CategoryModify>
+
+                  {/* 카테고리 이름 변경 */}
+                  <CategoryInsertTrigger
+                    categoryName={category.name}
+                    categoryId={category.id}
+                  >
+                    <Button
+                      type="button"
+                      variant={"ghost"}
+                      className="text-xs p-0 shadow-none bg-transparent! hover:border-zinc-400"
+                    >
+                      그룹 추가
+                    </Button>
+                  </CategoryInsertTrigger>
                   <Button
                     variant={"outline"}
                     size={"sm"}
