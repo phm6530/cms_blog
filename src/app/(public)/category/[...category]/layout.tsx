@@ -5,6 +5,8 @@ import PostListNav from "../post-list-nav";
 import SearchInput from "@/components/ui/search-input";
 import { auth } from "@/auth";
 import { PostBreadcrumb } from "../post-breadcrumb";
+import NavCategories from "@/components/nav-categories";
+import { Pen } from "lucide-react";
 
 export default async function Layout({
   params,
@@ -33,31 +35,18 @@ export default async function Layout({
           <p className="text-muted-foreground mt-3">
             프론트엔드 개발자 , PHM입니다. 저를 기록합니다.
           </p>
+          {session?.user && (
+            <Button className=" text-xs mt-4 px-10" asChild>
+              <Link className="flex" href={"/write"}>
+                글쓰기 <Pen />
+              </Link>
+            </Button>
+          )}
         </div>
-
-        <div className=" flex gap-2">
-          <div className="w-full overflow-hidden left-0 absolute md:static! top-[5px]">
-            <PostListNav
-              curCategory={curCategory}
-              curSubGroup={curSubCategory}
-            />
-          </div>
-        </div>
+        {/* <NavCategories /> */}{" "}
+        <PostListNav curCategory={curCategory} curSubGroup={curSubCategory} />
       </div>
-
-      <div className="flex justify-between items-center gap-5 border-b pb-4 mb-10 mt-10">
-        <PostBreadcrumb paths={[curCategory, curSubCategory].filter(Boolean)} />
-
-        {session?.user && (
-          <Button className="ml-auto text-xs " variant={"ghost"}>
-            <Link className="flex" href={"/write"}>
-              글쓰기
-            </Link>
-          </Button>
-        )}
-      </div>
-
-      {children}
+      <div className="py-10">{children}</div>
     </>
   );
 }

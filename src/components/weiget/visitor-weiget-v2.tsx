@@ -20,7 +20,7 @@ export default function VisitorWigetV2() {
   });
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       {isLoading ? (
         <div className="flex justify-center p-2">
           <div className="size-5 border-2 border-t-transparent border-zinc-400 rounded-full animate-spin" />

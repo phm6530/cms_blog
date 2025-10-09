@@ -255,10 +255,6 @@
     font-style: normal;
   }
 
-  .grid-layout {
-    @apply max-w-[1100px] mx-auto w-[calc(100%-2.5rem)] md:w-[calc(100%-30px)];
-  }
-
   /*Mobile */
   .nav {
     @apply flex-col;
@@ -290,6 +286,7 @@
   --animate-opacity: opacity 1.4s ease;
   --animate-bgscale: bgScale 5s cubic-bezier(0.2, 0.56, 0.38, 0.41) infinite
     forwards alternate;
+
   @keyframes fadeIn {
     0% {
       transform: translateY(30px);
@@ -328,4 +325,9 @@
 /* Main Layout */
 @utility grid-layout {
   @apply max-w-[1100px] mx-auto w-[calc(100%-2.5rem)] md:w-full md:px-5;
+}
+
+@utility w-calc-* {
+  width: calc(100% - --spacing(--value(integer)));
+  width: calc(100% - --value([length]));
 }

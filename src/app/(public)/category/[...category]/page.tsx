@@ -93,7 +93,9 @@ export default function CategoryPage() {
   return (
     <section className=" grid grid-cols-3 w-full gap-10">
       {flatPageDatas?.length === 0 ? (
-        <div className="py-5">등록된 콘텐츠가 없습니다.</div>
+        <div className="py-5 text-center  col-span-full">
+          등록된 콘텐츠가 없습니다.
+        </div>
       ) : (
         flatPageDatas?.map((item, idx) => {
           const isLast = flatPageDatas.length - 2 === idx;

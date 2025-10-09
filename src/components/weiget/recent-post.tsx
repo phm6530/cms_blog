@@ -2,9 +2,7 @@ import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { PostItemModel } from "@/type/post.type";
 import PostItem from "@/app/(public)/category/post-list-item";
-
 import VisitorWigetV2 from "./visitor-weiget-v2";
-import { Github, Briefcase } from "lucide-react";
 import Link from "next/link";
 
 type PortfolioProject = {
@@ -56,7 +54,7 @@ export default async function RecentPost() {
   ];
 
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-col ">
       {/* 상단 위젯 박스 */}
       <div className="grid grid-cols-2 gap-10 bg-secondary/40 p-5 mb-20 mt-5 rounded-xl">
         {/* 방문자 위젯 */}
@@ -91,9 +89,7 @@ export default async function RecentPost() {
 
       {/* 최근 포스팅 */}
       <div className="flex flex-col">
-        <h2 className="col-span-full mb-4 text-lg font-semibold">
-          최근 포스팅
-        </h2>
+        <h2 className="col-span-full mb-4 text-lg ">최근 포스팅</h2>
         <div className="grid grid-cols-3 gap-8 space-y-12">
           {!posts?.length ? (
             <div className="col-span-full text-sm text-muted-foreground">

@@ -42,12 +42,9 @@ export const PostItem = forwardRef<
           )}
         >
           {thumbnail_url && (
-            <div className="h-32 w-full relative overflow-hidden rounded-xl group border-red-300 border-3">
-              <div
-                className="w-full h-full ml-auto absolute inset-0 
-       transition-transform duration-700 ease-in-out 
-       group-hover:translate-y-20"
-              >
+            <div className="w-full relative overflow-hidden rounded-xl group aspect-[16/10]">
+              <div className="w-full h-full ml-auto absolute inset-0  transition-all group-hover:scale-110">
+                <div className="absolute inset-0 z-1 bg-gradient-to-b from-zinc-950/0 to-zinc-50/20 opacity-0 group-hover:opacity-100 transition-all"></div>
                 <Image
                   src={`${unsplashS3Mapping(thumbnail_url)}`}
                   alt=""

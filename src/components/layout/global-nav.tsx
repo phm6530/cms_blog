@@ -24,7 +24,7 @@ export default async function GlobalNav() {
       <div className="grid-layout flex  justify-between items-center ">
         <Link href={"/"}>
           <h1 className=" text-xl md:text-xl font-bold font-SUIT-Regular pr-26">
-            Phm, Dev Blog
+            Dev Blog
           </h1>
         </Link>
         <NavList categories={mappingCategories} />
