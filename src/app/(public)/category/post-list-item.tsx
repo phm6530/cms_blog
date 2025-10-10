@@ -34,7 +34,7 @@ export const PostItem = forwardRef<
         <div
           ref={ref}
           className={cn(
-            " border-l-indigo-500 flex  group cursor-pointer  flex-col  gap-5 ",
+            " border-l-indigo-500 flex  group cursor-pointer  flex-col  gap-5 invisible",
 
             thumbnail_url &&
               "grid-cols-[minmax(0,5fr)_minmax(100px,2fr)] group",

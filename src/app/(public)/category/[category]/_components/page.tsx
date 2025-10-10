@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 import PostItem from "../../post-list-item";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import PostItemSkeleton from "../../post-item-skeleton";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import LoadingSpinerV2 from "@/components/ui/loading-spinner-v2";
 import getBlogList from "@/service/get-blog-list";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 export type InitialReturnData = Awaited<ReturnType<typeof getBlogList>>["list"];
 type CategoryPage = {
@@ -22,10 +23,10 @@ export default function CategoryPage({
   initalIsNextPage,
 }: CategoryPage) {
   const ref = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<Array<{ page: number; doms: HTMLDivElement[] }>>([]);
 
   const paths = usePathname();
   const [categoryName, groupName] = paths.split("/").slice(2);
-
   const decodingcategoryName = decodeURIComponent(categoryName);
   const isSubGroup = groupName ?? "all";
 
@@ -77,6 +78,23 @@ export default function CategoryPage({
       enabled: false,
     });
 
+  useGSAP(() => {
+    const lastPage = itemRefs.current.at(-1);
+    if (!lastPage) return;
+    console.log(itemRefs.current);
+
+    const { doms } = lastPage;
+    const tl = gsap.timeline({ defaults: { autoAlpha: 0 } });
+    tl.from(doms, {
+      y: 50,
+      autoAlpha: 0,
+      stagger: 0.05,
+      filter: "blur(15px)",
+      ease: "power2.inOut",
+      duration: 0.6,
+    });
+  }, [data.pages.length]);
+
   useEffect(() => {
     if (!ref.current) return;
 
@@ -113,8 +131,6 @@ export default function CategoryPage({
     );
   }
 
-  useGSAP(() => {}, {});
-
   return (
     <section className=" grid grid-cols-3 w-full gap-10 relative">
       {flatPageDatas?.length === 0 ? (
@@ -122,16 +138,24 @@ export default function CategoryPage({
           등록된 콘텐츠가 없습니다.
         </div>
       ) : (
-        flatPageDatas?.map((item, idx) => {
-          const isLast = flatPageDatas.length - 2 === idx;
-          return (
+        data.pages.map((page, pageIdx) =>
+          page.list.map((item) => (
             <PostItem
+              key={item.post_id}
               {...item}
-              key={`${item?.post_id}-${idx}`}
-              ref={isLast ? ref : undefined}
+              ref={(el) => {
+                if (!el) return;
+
+                const current = itemRefs.current[pageIdx];
+                if (current) {
+                  if (!current.doms.includes(el)) current.doms.push(el);
+                } else {
+                  itemRefs.current[pageIdx] = { page: pageIdx, doms: [el] };
+                }
+              }}
             />
-          );
-        })
+          ))
+        )
       )}
 
       {isFetching && (
