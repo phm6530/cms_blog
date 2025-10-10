@@ -7,7 +7,6 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 export default function CommentList({ postId }: { postId: string }) {
   // falt할랫더니 다밀려서 성능 이슈있을수있음 이게나음
-  // const [list, setList] = useState<Array<Array<CommentItemModel>> | null>(null);
 
   /**
    * @description 부모는 오름차순으로, 자식은 내림차순으로 가져오기 ㅇㅇ
@@ -56,7 +55,7 @@ export default function CommentList({ postId }: { postId: string }) {
 
   return (
     <section className="mt-5">
-      <div>
+      <div className="">
         {flatData.length === 0 ? (
           <div className="py-30 text-center border-b">
             <p className="text-base md:text-base">

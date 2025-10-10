@@ -1,11 +1,22 @@
 import { z } from "zod";
 
+// 타입 정의
+export type CommentSchemaShape = {
+  comment: string;
+  parent_id?: number;
+  guest?: string;
+  password?: string;
+};
+
 // 로그인 되었는지, 부모가있는지에 따라 스키마 다르게 처리
-export const dynamicSchema = (existParent: boolean, session: boolean) => {
+export const dynamicSchema = (
+  existParent: boolean,
+  session: boolean
+): z.ZodType<CommentSchemaShape> => {
   let schema = z.object({
     comment: z
       .string()
-      .min(2, { message: "2글자 이상 기재해주세요" })
+      .min(2, { message: "내용은 2글자 이상 기재해주세요" })
       .max(1000, { message: "1000자 이하로 기재해주세요" }),
   });
 
@@ -17,8 +28,12 @@ export const dynamicSchema = (existParent: boolean, session: boolean) => {
 
   if (!session) {
     schema = schema.extend({
-      guest: z.string().min(2, { message: "2글자 이상으로 설정해주세요" }),
-      password: z.string().min(2, { message: "4글자 이상으로 설정해주세요" }),
+      guest: z
+        .string()
+        .min(2, { message: "닉네임은 2글자 이상으로 설정해주세요" }),
+      password: z
+        .string()
+        .min(2, { message: "비밀번호는 4글자 이상으로 설정해주세요" }),
     });
   }
 

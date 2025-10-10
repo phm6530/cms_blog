@@ -14,8 +14,6 @@ import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 import PostVanner from "../post-vanner-bg";
 import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
-import PostLikeHandler from "../post-like-hanlder";
-import PostHandler from "../post-handler";
 import PostView from "../post-view";
 import { HtmlContentNormalizer } from "@/util/baseurl-slice";
 import LoadingSpiner from "@/components/animation/loading-spiner";
@@ -104,7 +102,7 @@ export default async function PostDetail({
   const contents = HtmlContentNormalizer.setImgUrl(blog_contents.contents);
 
   return (
-    <div className=" mx-0 md:mx-auto w-full! md:w-auto  md:pt-0 md:grid-cols-[1fr_250px] md:gap-20 grid">
+    <div className=" mx-0 md:mx-auto w-full! md:w-auto  md:pt-0 md:grid-cols-[1fr_250px] md:gap-30 grid">
       {/* 본문 영역 */}
       <div className="pt-10">
         <PostVanner thumbnail_url={blog_metadata.thumbnail_url}>
@@ -161,9 +159,8 @@ export default async function PostDetail({
           {/* ------ TipTap Editor - custom lib ------ */}
           <PostView contents={contents} />
 
-          <PostHandler postId={id} category={category.group_name} />
-
           {/* ---- 댓글 ----- */}
+          <h1 className="text-2xl">Comments</h1>
           <CommentSection postId={id} />
 
           {/* ---- post Tool bar ----- */}

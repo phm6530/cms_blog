@@ -1062,6 +1062,7 @@ code.hljs {
     flex: 0 0 auto;
   }
 }
+
 .tiptap-toolbar[data-variant="floating"] {
   --tt-toolbar-padding: 0.25rem;
   --tt-toolbar-border-width: 1px;

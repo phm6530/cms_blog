@@ -1,13 +1,13 @@
 import { cn } from "@/lib/utils";
 import { DateUtils } from "@/util/date-uill";
-import { BadgeCheck, UserRound } from "lucide-react";
+import { UserRound } from "lucide-react";
 import Image from "next/image";
 
 export default function ProfileUser({
+  createAt,
   profileImg,
   nickname,
   role,
-  createAt,
 }: {
   profileImg?: string | null;
   nickname: string;
@@ -18,7 +18,7 @@ export default function ProfileUser({
     role !== "guest" ? `${profileImg}` : `/img/guestbook/${profileImg}`;
 
   return (
-    <div className="flex gap-3 items-center ">
+    <div className="grid grid-cols-[45px_1fr] gap-3 items-center ">
       <div
         className={cn(
           "size-10  rounded-full bg-gray-500/10 flex justify-center items-center relative overflow-hidden",
@@ -26,31 +26,31 @@ export default function ProfileUser({
         )}
       >
         {!profileImg ? (
-          <UserRound className="text-secondary-foreground/80" />
+          <UserRound />
         ) : (
           <Image src={img} alt="" fill style={{ objectFit: "cover" }} />
         )}
       </div>
-      <div className="flex flex-col">
-        <div className="col-span-2 flex items-start gap-2">
-          <div className="flex flex-col">
-            <span className="text-sm">{nickname} </span>
-          </div>
 
-          {(role === "super" || role === "admin") && (
-            <div className="relative ml-1">
-              <BadgeCheck
-                className="text-indigo-300 shadow-2xl z-1 mt-[1px]"
-                size={17}
-              />{" "}
-              <BadgeCheck
-                className="text-cyan-400/50  shadow-2xl z-1 absolute top-[0px] animate-ping"
-                size={17}
-              />
-            </div>
+      <div className="flex flex-col gap-1">
+        <div className="col-span-2 flex items-center gap-2">
+          <div className="flex flex-col">
+            <span className="text-sm font-bold">{nickname} </span>
+          </div>
+          <div className="text-xs text-muted-foreground">
+            {role === "super" || role === "admin" ? (
+              <span className="relative ">관리자</span>
+            ) : (
+              <span>Guest</span>
+            )}
+          </div>
+          {createAt && (
+            <span className="text-xs opacity-50 ml-auto">
+              {DateUtils.fromNow(createAt)}
+            </span>
           )}
         </div>
-      </div>{" "}
+      </div>
     </div>
   );
 }

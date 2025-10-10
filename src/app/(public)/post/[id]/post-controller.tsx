@@ -10,6 +10,7 @@ import { useRef, useState, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import PostLikeHandler from "../post-like-hanlder";
+import AdminPannal from "../post-adminPannal";
 
 export default function PostController({
   postId,
@@ -100,16 +101,16 @@ export default function PostController({
   );
 
   return (
-    <div className="flex flex-col gap-11">
+    <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-6">
         <div className="flex gap-4 items-center">
           <div
-            className="size-10 bg-red-50 rounded-full bg-cover relative"
+            className="size-10 shadow-xl border-2 shadow-muted-foreground  rounded-full bg-gray-500/10 flex justify-center items-center relative  bg-cover"
             style={{
               backgroundImage: "url(/img/my-dog.jpg)",
             }}
           >
-            <div className="absolute bottom-0 -right-1 size-3 bg-teal-500 rounded-full border-2 border-background"></div>
+            {/* <div className="absolute bottom-0 -right-1 size-3 bg-teal-500 rounded-full border-2 border-background"></div> */}
           </div>
           <div>
             <h1 className="text-lg">Phm_</h1>
@@ -133,7 +134,7 @@ export default function PostController({
         <div
           ref={controllerRef}
           className={cn(
-            "absolute inset-0 flex flex-col gap-7 ",
+            "absolute inset-0 flex flex-col gap-10 ",
             toggle && "pointer-events-none"
           )}
         >
@@ -155,7 +156,7 @@ export default function PostController({
           </div>
 
           <div className="flex flex-col gap-2">
-            <h2 className="text-xs text-muted-foreground">게시물 통계</h2>
+            <h2 className="text-xs text-muted-foreground">포스트 인사이트</h2>
             <div className="flex gap-2 ">
               <div className="grid grid-cols-2 gap-2 items-center">
                 <span className="flex gap-1 items-center text-xs  size-7 justify-center text-muted-foreground rounded-lg bg-foreground/3">
@@ -167,6 +168,7 @@ export default function PostController({
               <PostLikeHandler postId={postId} likeCnt={like_cnt} />
             </div>
           </div>
+          <AdminPannal postId={postId} category={sub_group_name} />
         </div>
 
         {/* TOC */}

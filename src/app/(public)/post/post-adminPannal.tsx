@@ -6,16 +6,17 @@ import useThrottling from "@/hook/useThrottling";
 import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import withClientFetch from "@/util/withClientFetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Settings } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export default function PostHandler({
+export default function AdminPannal({
   postId,
   category,
 }: {
-  postId: string;
+  postId: number;
   category: string;
 }) {
   const router = useRouter();
@@ -56,24 +57,36 @@ export default function PostHandler({
     throttle(async () => mutate(), 1000);
   };
 
+  if (!session.data?.user) {
+    return null;
+  }
+
   return (
-    <div className="flex gap-2 mt-3.5 border-b pb-5 mb-5">
+    <div className="flex gap-2 flex-col border-t pt-5">
+      <div className="flex items-center gap-3 text-xs">
+        관리자 패널 <Settings size={12} />{" "}
+      </div>
       {session.data?.user && (
-        <>
+        <div className="flex gap-2">
           <ConfirmButton title={"삭제하시겠습니까?"} cb={onDeleteHandler}>
-            <Button className="text-xs cursor-pointer" variant={"outline"}>
+            <Button
+              className="text-xs cursor-pointer bg-transparent! px-2"
+              variant={"outline"}
+              size={"sm"}
+            >
               삭제
             </Button>
           </ConfirmButton>
 
           <Button
             asChild
-            className="text-xs cursor-pointer"
+            className="text-xs cursor-pointer bg-transparent! px-2 "
             variant={"outline"}
+            size={"sm"}
           >
             <Link href={`/write?mode=edit&postId=${postId}`}>수정</Link>
           </Button>
-        </>
+        </div>
       )}
     </div>
   );
