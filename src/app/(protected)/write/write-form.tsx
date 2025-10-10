@@ -23,7 +23,6 @@ import { ENV, HTTP_METHOD, POST_STATUS, WRITE_MODE } from "@/type/constants";
 import { v4 as uuidv4 } from "uuid";
 import transformHtmlToPlainText from "@/util/domParse";
 import { useRouter, useSearchParams } from "next/navigation";
-import { BlogDetailResponse } from "@/type/blog.type";
 import WirteSelectCategory from "./write-select-category";
 import SelectField from "@/components/ui/select-field";
 import { HtmlContentNormalizer } from "@/util/baseurl-slice";

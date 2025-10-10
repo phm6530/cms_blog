@@ -82,12 +82,13 @@ export default async function Layout({
                 글쓰기 <Plus />
               </Link>
             </Button>
-          )}{" "}
-          {/* <NavCategories /> */}
+          )}
         </div>
         {/* <NavCategories /> */}{" "}
         <PostListNav subGroups={subGroups} categoryProps={categoryProps} />
       </div>
+
+      {/* list - Wrapper */}
       <div className="py-10">{children}</div>
     </>
   );
