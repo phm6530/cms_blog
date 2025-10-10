@@ -4,15 +4,15 @@ import { Badge } from "@/components/ui/badge";
 import { DateUtils } from "@/util/date-uill";
 import { HighlightKeyword } from "@/util/keyword-highlist";
 import BadgeNew from "@/components/shared/badge-new";
-import { PostItemModel } from "@/type/post.type";
 import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
 import PostStats from "@/components/post-stats";
+import { InitialReturnData } from "./[category]/_components/page";
 
 export const PostItem = forwardRef<
   HTMLDivElement,
-  PostItemModel & { keyword?: string; className?: string }
+  InitialReturnData[number] & { keyword?: string; className?: string }
 >(
   (
     {
@@ -79,7 +79,7 @@ export const PostItem = forwardRef<
               {post_description}
             </p>
             <div className="text-xs text-muted-foreground mt-1 flex gap-3 ">
-              <PostStats comment_cnt={comment_count} like_cnt={like_cnt} />
+              <PostStats comment_cnt={comment_count} like_cnt={like_cnt ?? 0} />
 
               <span className="border-l-2 pl-3 text-xs">
                 {DateUtils.dateFormatKR(created_at, "YY. MM. DD")}

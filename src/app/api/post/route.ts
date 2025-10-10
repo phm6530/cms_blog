@@ -25,6 +25,13 @@ import { eq, sql } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
+/**
+ *
+ * 해당 APi는 외부에도 사용하기
+ * 떄문에 유지하기
+ *
+ */
+
 export async function GET(req: NextRequest) {
   const qs = req.nextUrl.searchParams;
   const groupTag = qs.get("group");

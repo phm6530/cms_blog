@@ -18,7 +18,7 @@ type GetBlogList = (args: {
   curPostId: number | null;
 }) => Promise<any>;
 
-const getBlogList: GetBlogList = async ({
+export default async function getBlogList({
   categoryTag,
   groupTag,
   searchKeyword,
@@ -26,7 +26,7 @@ const getBlogList: GetBlogList = async ({
   cursor,
   limit,
   curPostId,
-}) => {
+}: GetBlogList extends (args: infer T) => any ? T : never) {
   const whereQuery = and(
     categoryTag && categoryTag !== "all"
       ? sql`LOWER("category"."group_name") = ${categoryTag.toLowerCase()}`
@@ -37,8 +37,6 @@ const getBlogList: GetBlogList = async ({
     searchKeyword
       ? ilike(blogMetaSchema.post_title, `%${searchKeyword}%`)
       : undefined,
-
-    // session 있으면 비밀글도 가져오기
     !!permission ? undefined : eq(blogMetaSchema.status, "published"),
     !!cursor ? lte(blogMetaSchema.post_id, cursor) : undefined,
     !!curPostId ? not(eq(blogMetaSchema.post_id, +curPostId)) : undefined
@@ -85,25 +83,24 @@ const getBlogList: GetBlogList = async ({
   const flatRows = rows
     .slice(0, limit)
     .map(
-      ({ blog_metadata, blog_sub_group, comment_count, is_pinned, pin_id }) => {
-        return {
-          ...blog_metadata,
-          sub_group_name: blog_sub_group.sub_group_name,
-          comment_count: +comment_count,
-          pin: {
-            is_pinned,
-            pin_id,
-          },
-        };
-      }
+      ({
+        blog_metadata,
+        blog_sub_group,
+        comment_count,
+        is_pinned,
+        pin_id,
+      }) => ({
+        ...blog_metadata,
+        sub_group_name: blog_sub_group.sub_group_name,
+        comment_count: +comment_count,
+        pin: { is_pinned, pin_id },
+      })
     );
 
   let searchCnt = 0;
-  if (!!searchKeyword) {
-    const [rows] = await db
-      .select({
-        count: sql<number>`COUNT(*)`.as("count"),
-      })
+  if (searchKeyword) {
+    const [row] = await db
+      .select({ count: sql<number>`COUNT(*)`.as("count") })
       .from(blogMetaSchema)
       .innerJoin(
         blogSubGroup,
@@ -114,14 +111,13 @@ const getBlogList: GetBlogList = async ({
         eq(categorySchema.group_id, blogSubGroup.group_id)
       )
       .where(whereQuery);
-    searchCnt = rows.count;
 
-    return {
-      list: flatRows,
-      searchCnt,
-      rowsCnt: rows.count,
-    };
+    searchCnt = row.count;
   }
-};
 
-export default getBlogList;
+  return {
+    list: flatRows,
+    searchCnt,
+    rowsCnt: rows.length,
+  };
+}
