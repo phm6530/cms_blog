@@ -6,7 +6,7 @@ import {
   commentSchema,
   pinnedPostSchema,
 } from "@/db/schema";
-import { and, desc, eq, ilike, lte, not, sql } from "drizzle-orm";
+import { and, desc, eq, ilike, lt, lte, not, sql } from "drizzle-orm";
 
 type GetBlogList = (args: {
   categoryTag: string | null;
@@ -27,6 +27,7 @@ export default async function getBlogList({
   limit,
   curPostId,
 }: GetBlogList extends (args: infer T) => any ? T : never) {
+  console.log("cursor:", cursor);
   const whereQuery = and(
     categoryTag && categoryTag !== "all"
       ? sql`LOWER("category"."group_name") = ${categoryTag.toLowerCase()}`
@@ -38,7 +39,7 @@ export default async function getBlogList({
       ? ilike(blogMetaSchema.post_title, `%${searchKeyword}%`)
       : undefined,
     !!permission ? undefined : eq(blogMetaSchema.status, "published"),
-    !!cursor ? lte(blogMetaSchema.post_id, cursor) : undefined,
+    !!cursor ? lt(blogMetaSchema.post_id, cursor) : undefined,
     !!curPostId ? not(eq(blogMetaSchema.post_id, +curPostId)) : undefined
   );
 

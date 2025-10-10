@@ -9,6 +9,7 @@ import PostItemSkeleton from "../../post-item-skeleton";
 import { useEffect, useRef } from "react";
 import LoadingSpinerV2 from "@/components/ui/loading-spinner-v2";
 import getBlogList from "@/service/get-blog-list";
+import { useGSAP } from "@gsap/react";
 
 export type InitialReturnData = Awaited<ReturnType<typeof getBlogList>>["list"];
 type CategoryPage = {
@@ -28,52 +29,53 @@ export default function CategoryPage({
   const decodingcategoryName = decodeURIComponent(categoryName);
   const isSubGroup = groupName ?? "all";
 
-  const { data, fetchNextPage, isFetching, isPending } = useInfiniteQuery<{
-    list: InitialReturnData;
-    isNextPage: boolean;
-  }>({
-    queryKey: [REVALIDATE.POST.LIST, decodingcategoryName, isSubGroup],
-    queryFn: async ({ pageParam }) => {
-      const limit = 10;
-      const cursor = pageParam !== 0 ? pageParam : null; // 일단 초기 0, APi 변경후에 받을예정임
+  const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
+    useInfiniteQuery<{
+      list: InitialReturnData;
+      isNextPage: boolean;
+    }>({
+      queryKey: [REVALIDATE.POST.LIST, decodingcategoryName, isSubGroup],
+      queryFn: async ({ pageParam }) => {
+        const limit = 10;
+        const cursor = pageParam !== 0 ? pageParam : null; // 일단 초기 0, APi 변경후에 받을예정임
 
-      let baseUrl = `api/post?category=${decodingcategoryName}&group=${isSubGroup}`;
-      baseUrl += `&cursor=${cursor}&limit=${limit}`;
+        let baseUrl = `api/post?category=${decodingcategoryName}&group=${isSubGroup}`;
+        baseUrl += `&cursor=${cursor}&limit=${limit}`;
 
-      const response = await withFetchRevaildationAction<{
-        list: InitialReturnData;
-        isNextPage: boolean;
-      }>({
-        endPoint: baseUrl,
-        options: {
-          cache: "force-cache",
-          next: {
-            tags: [
-              REVALIDATE.POST.LIST,
-              `${REVALIDATE.POST.LIST}:${decodingcategoryName}:${isSubGroup}`,
-            ],
+        const response = await withFetchRevaildationAction<{
+          list: InitialReturnData;
+          isNextPage: boolean;
+        }>({
+          endPoint: baseUrl,
+          options: {
+            cache: "force-cache",
+            next: {
+              tags: [
+                REVALIDATE.POST.LIST,
+                `${REVALIDATE.POST.LIST}:${decodingcategoryName}:${isSubGroup}`,
+              ],
+            },
           },
-        },
-      });
-      if (!response.success) {
-        throw new Error(response.message);
-      }
-      return response.result;
-    },
-    getNextPageParam: (lastPage) => {
-      if (lastPage.isNextPage) {
-        return lastPage.list.at(-1)?.post_id;
-      }
-    },
-    initialPageParam: 0,
-    initialData: {
-      pages: [{ list: initalData, isNextPage: initalIsNextPage }],
-      pageParams: [0],
-    },
-    staleTime: 1000 * 60,
-    gcTime: 1000 * 60 * 5,
-    enabled: false,
-  });
+        });
+        if (!response.success) {
+          throw new Error(response.message);
+        }
+        return response.result;
+      },
+      getNextPageParam: (lastPage) => {
+        if (lastPage.isNextPage) {
+          return lastPage.list.at(-1)?.post_id;
+        }
+      },
+      initialPageParam: 0,
+      initialData: {
+        pages: [{ list: initalData, isNextPage: initalIsNextPage }],
+        pageParams: [0],
+      },
+      staleTime: 1000 * 60,
+      gcTime: 1000 * 60 * 5,
+      enabled: false,
+    });
 
   useEffect(() => {
     if (!ref.current) return;
@@ -111,8 +113,10 @@ export default function CategoryPage({
     );
   }
 
+  useGSAP(() => {}, {});
+
   return (
-    <section className=" grid grid-cols-3 w-full gap-10">
+    <section className=" grid grid-cols-3 w-full gap-10 relative">
       {flatPageDatas?.length === 0 ? (
         <div className="py-5 text-center  col-span-full">
           등록된 콘텐츠가 없습니다.
@@ -134,6 +138,14 @@ export default function CategoryPage({
         <>
           <LoadingSpinerV2 text="loading ..." />
         </>
+      )}
+
+      {/* //InfinityScrollTriger */}
+      {hasNextPage && (
+        <div
+          ref={ref}
+          className="w-full h-5  col-span-full absolute bottom-10"
+        />
       )}
     </section>
   );

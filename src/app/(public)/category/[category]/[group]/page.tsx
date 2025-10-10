@@ -17,7 +17,7 @@ const getCachedList = (categoryTag: string, groupTag: string) =>
       });
       return { list, rowsCnt };
     },
-    [`${REVALIDATE.POST.LIST}:${categoryTag}:all`],
+    [`${REVALIDATE.POST.LIST}:${categoryTag}:${groupTag}`],
     { tags: [REVALIDATE.POST.LIST] }
   )();
 export default async function Page({
