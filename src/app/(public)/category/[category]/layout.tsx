@@ -41,14 +41,16 @@ export default async function Layout({
   const { category } = await params;
   const session = await auth();
   const allCategories = await getCategories();
+  const { categories } = allCategories;
 
-  const curCategory = decodeURIComponent(category);
+  const categoryName = decodeURIComponent(category);
 
   const keys = Object.values(allCategories.categories).filter(
-    (e) => e.name.toLocaleLowerCase() === curCategory.toLocaleLowerCase()
+    (e) => e.name.toLocaleLowerCase() === categoryName.toLocaleLowerCase()
   );
 
-  // const curSubCategory = group ? decodeURIComponent(group) : null;
+  const { subGroups, ...rest } = { ...categories[categoryName] };
+  const categoryProps = rest;
 
   return (
     <>
@@ -58,7 +60,9 @@ export default async function Layout({
       <div className="mt-auto   items-end  w-full">
         <div className="flex flex-col items-start pt-16 pb-2">
           <TitleBlurAnimation
-            title={curCategory.slice(0, 1).toUpperCase() + curCategory.slice(1)}
+            title={
+              categoryName.slice(0, 1).toUpperCase() + categoryName.slice(1)
+            }
             mutedText={
               keys[0].description ||
               "프론트엔드 개발자 , PHM입니다. 저를 기록합니다."
@@ -82,7 +86,7 @@ export default async function Layout({
           {/* <NavCategories /> */}
         </div>
         {/* <NavCategories /> */}{" "}
-        {/* <PostListNav curCategory={curCategory} curSubGroup={curSubCategory} /> */}
+        <PostListNav subGroups={subGroups} categoryProps={categoryProps} />
       </div>
       <div className="py-10">{children}</div>
     </>

@@ -1,41 +1,40 @@
+"use client";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
-import getCategories from "@/service/get-category";
 import { CategoryModel } from "@/type/blog-group";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { useSelectedLayoutSegments } from "next/navigation";
 import React from "react";
 
-export default async function PostListNav({
-  curCategory,
-  curSubGroup,
-}: {
-  curCategory: string;
-  curSubGroup: string | null;
-}) {
-  const response = await getCategories();
-  if (!response) notFound();
+type OmitThumb = Omit<CategoryModel["subGroups"], "thumb">;
 
-  const { categories } = response;
-  const curNavList = categories[curCategory];
-  const subCategories: CategoryModel["subGroups"] = [
+export default function PostListNav({
+  subGroups,
+  categoryProps,
+}: {
+  subGroups: OmitThumb;
+  categoryProps: Omit<CategoryModel, "subGroups">;
+}) {
+  const [groupSegment] = useSelectedLayoutSegments();
+
+  const navArr: Array<Omit<OmitThumb[number], "thumb">> = [
     {
-      id: 0,
+      id: categoryProps.id,
       subGroupName: "전체보기",
+      postCount: categoryProps.postCnt,
       thumb: null,
-      postCount: curNavList.postCnt,
     },
-    ...curNavList.subGroups,
+    ...subGroups,
   ];
 
   return (
     <>
       {/* 모바일 */}
-      <Carousel className="md:hidden block" opts={{ dragFree: true }}>
+      {/* <Carousel className="md:hidden block" opts={{ dragFree: true }}>
         <CarouselContent className="pl-5">
           {subCategories.map((group, idx) => {
             const href =
@@ -70,25 +69,26 @@ export default async function PostListNav({
             );
           })}
         </CarouselContent>
-      </Carousel>
+      </Carousel> */}
 
       {/* 데스크탑 */}
       <section className="w-full  mt-8 hidden md:block">
         {/* 서브 카테고리 목록 */}
 
         <div className="flex items-center gap-6 flex-wrap border-b py-4 pt-6">
-          {subCategories.map((group, idx) => {
+          {navArr.map((group, idx) => {
             const href =
               idx === 0
-                ? `/category/${curCategory}`
-                : `/category/${curCategory}/${group.subGroupName}`;
+                ? `/category/${categoryProps.name}`
+                : `/category/${categoryProps.name}/${group.subGroupName}`;
 
             const isActive =
-              (idx === 0 && !curSubGroup) || curSubGroup === group.subGroupName;
+              (idx === 0 && groupSegment === undefined) ||
+              group.subGroupName === decodeURIComponent(groupSegment ?? "");
 
             return (
-              <React.Fragment key={group.id}>
-                <Link href={href} className={cn(" transition-all")}>
+              <React.Fragment key={`${group.id}:${idx}`}>
+                <Link href={href} className={cn("transition-all")}>
                   <span
                     className={cn(
                       "transition-all text-sm",
@@ -103,9 +103,9 @@ export default async function PostListNav({
                     ({group.postCount})
                   </span>
                 </Link>
-                {idx < subCategories.length - 1 && (
+                {/* {idx < subCategories.length - 1 && (
                   <span className="opacity-20">|</span>
-                )}
+                )} */}
               </React.Fragment>
             );
           })}
