@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/carousel";
 import { PostItemModel } from "@/type/post.type";
 import { Badge } from "../ui/badge";
-import { DateUtils } from "@/util/date-uill";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
@@ -53,8 +52,8 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
             >
               <div
                 onClick={() => router.push(`/post/${data.post_id}`)}
-                className=" relative  overflow-hidden w-[55%]  after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-2xl after:bg-no-repeat after:content-['']
-        after:bg-gradient-to-b after:from-black-0 after:via-black/0 after:to-black/80  aspect-[16/11]   text-white"
+                className=" relative  overflow-hidden w-[65%]  after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-2xl after:bg-no-repeat after:content-['']
+        after:bg-gradient-to-b after:from-black-0 after:via-black/0 after:to-black/80  aspect-[16/12]   text-white"
               >
                 <div
                   className="absolute  w-full h-full  rounded-2xl bg-center top-0 left-0    "
@@ -96,15 +95,12 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                   {data.post_title}
                 </h1>
 
-                <p className="text-sm  line-clamp-4 md:text-sm leading-relaxed z-10 mt-6   opacity-90 text-muted-foreground">
+                <p className="text-sm  line-clamp-3 md:text-sm leading-relaxed z-10 mt-6   opacity-90 text-muted-foreground">
                   {data.post_description}
                 </p>
 
                 <div className="text-xs  flex gap-3 z-1  mt-auto">
                   <Button className="text-xs p-5 px-6">Read More</Button>
-                  <span className="border-l text-xs border-border/30  mt-5 text-white">
-                    {DateUtils.dateFormatKR(data.created_at, "YY. MM. DD")}
-                  </span>
                 </div>
               </div>
             </CarouselItem>

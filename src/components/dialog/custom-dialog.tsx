@@ -28,7 +28,9 @@ export function DialogDemo({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+          <DialogDescription className="whitespace-pre-line mt-5">
+            {description}
+          </DialogDescription>
         </DialogHeader>
         {children}
       </DialogContent>

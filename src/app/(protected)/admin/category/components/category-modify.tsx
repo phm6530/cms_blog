@@ -32,13 +32,15 @@ export default function CategoryModify({
   categoryName,
   categoryId,
   groupId,
+  groupName,
   children,
   description,
 }: {
-  categoryName?: string;
   categoryId: number;
-  description?: string;
+  categoryName?: string;
   groupId?: string;
+  groupName?: string;
+  description?: string;
   children: React.ReactNode;
 }) {
   const router = useRouter();
@@ -50,10 +52,10 @@ export default function CategoryModify({
 
   const defaults = useMemo(
     () => ({
-      categoryName: categoryName ?? "",
+      categoryName: isSub ? groupName : categoryName,
       ...(isSub ? {} : { description: description ?? "" }),
     }),
-    [categoryName, description, isSub]
+    [categoryName, description, isSub, groupName]
   );
 
   const form = useForm<z.infer<typeof categorySchema>>({
@@ -73,10 +75,12 @@ export default function CategoryModify({
         categoryId,
         categoryName,
         description,
+        ...(groupId && { groupId: Number(groupId) }),
       });
       if (!res.success) {
         throw new Error(res.error);
       }
+
       return res.data as {
         id: number;
         categoryName: string;
@@ -84,20 +88,17 @@ export default function CategoryModify({
       };
     },
     onSuccess: (next) => {
-      toast.success(
-        isSub
-          ? "그룹 정보가 수정 되었습니다."
-          : `[${categoryName}] 정보가 수정되었습니다.`
-      );
-
-      // 응답 값으로 바로 리셋 (제어형 보장 위해 빈 문자열 처리)
       form.reset({
         categoryName: next.categoryName ?? "",
         ...(isSub ? {} : { description: next.description ?? "" }),
       });
       queryClient.invalidateQueries({ queryKey: ["test"] });
       router.refresh();
-
+      toast.success(
+        isSub
+          ? "그룹 정보가 수정 되었습니다."
+          : `[${categoryName}] 정보가 수정되었습니다.`
+      );
       // 다이얼로그 닫기 필요 시: DialogClose ref 클릭 or onOpenChange(false)
     },
   });
@@ -109,7 +110,7 @@ export default function CategoryModify({
   return (
     <DialogDemo
       trigger={children}
-      title={isSub ? `${categoryName} - 수정` : `${categoryName} - 수정`}
+      title={isSub ? `${groupName} - 수정` : `${categoryName} - 수정`}
       description="추가 후 서브 그룹을 만들 수 있습니다."
     >
       <FormProvider {...form}>

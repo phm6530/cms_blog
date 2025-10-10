@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import InputPassword from "../ui/password-input";
 import { CommentItemModel } from "@/lib/comment-bff";
 import { useLayoutEffect, useRef, useState } from "react";
+import { DateUtils } from "@/util/date-uill";
 
 export default function CommentItem({
   id: commentId,
@@ -34,13 +35,12 @@ export default function CommentItem({
   const [lineClimp, setLineClimp] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
-  console.log(author);
-
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
     const oneLineHight = 34;
     const height = el.scrollHeight;
+
     if (height >= oneLineHight * 3) {
       setLineClimp(true);
     }
@@ -99,16 +99,23 @@ export default function CommentItem({
     >
       {!!isReply && <Reply size={13} className="rotate-180 opacity-60 mt-2" />}
       <div className="flex flex-col gap-2  w-full">
-        <ProfileUser
-          profileImg={
-            author.role === "admin" || author.role === "super"
-              ? author.profile_img
-              : null
-          }
-          nickname={author.nickname}
-          role={author.role}
-          createAt={created_at}
-        />
+        <div className="flex items-center justify-between">
+          <ProfileUser
+            profileImg={
+              author.role === "admin" || author.role === "super"
+                ? author.profile_img
+                : null
+            }
+            nickname={author.nickname}
+            role={author.role}
+            createAt={created_at}
+          />
+          {created_at && (
+            <span className="text-xs opacity-50">
+              {DateUtils.fromNow(created_at)}
+            </span>
+          )}
+        </div>
         <div className="pl-0 py-2">
           <div
             ref={ref}
@@ -118,7 +125,7 @@ export default function CommentItem({
             )}
           >
             {comment}
-          </div>{" "}
+          </div>
           {lineClimp && (
             <div
               className="text-xs p-1 mt-3 items-center flex gap-1 cursor-pointer text-violet-400"

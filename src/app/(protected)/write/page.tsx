@@ -2,7 +2,7 @@ import { WRITE_MODE } from "@/type/constants";
 import { notFound } from "next/navigation";
 import WirteForm from "./write-form";
 import getCategories from "@/service/get-category";
-import getPostItem from "@/app/(public)/post/[id]/page-service";
+import getPostItem from "@/app/(public)/post/[id]/action/page-service";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 type PostItemType = Awaited<ReturnType<typeof getPostItem>>;

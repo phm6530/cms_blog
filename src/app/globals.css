@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
 :root {
   --font-scale: 1;
 }
@@ -121,11 +122,15 @@
     @apply border-border outline-ring/50;
   }
 
+  p {
+    @apply text-foreground/90 text-base leading-relaxed tracking-tight;
+  }
+
   html {
     @apply md:text-base text-sm;
   }
   body {
-    @apply bg-background text-foreground  font-pretendard;
+    @apply bg-background text-foreground  font-SUIT-Regular;
   }
 
   button {
@@ -283,7 +288,7 @@
   --animate-wiggle: wiggle 0.5s ease;
   --animate-fadein: fadeIn 0.5s ease;
   --animate-close: close 0.5s 0.5s ease;
-  --animate-opacity: opacity 1.4s ease;
+  --animate-opacity: opacity 1.4s ease forwards;
   --animate-bgscale: bgScale 5s cubic-bezier(0.2, 0.56, 0.38, 0.41) infinite
     forwards alternate;
 
@@ -310,6 +315,7 @@
   --font-pretendard: "Pretendard Variable";
   --font-Poppins: "Poppins";
   --font-SUIT-Regular: "SUIT-Regular";
+  --font-NanumSquare: "NanumSquare", sans-serif;
 }
 
 @layer base {

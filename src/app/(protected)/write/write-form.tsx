@@ -38,7 +38,7 @@ import {
   SimpleToolTip,
   useSimpleEditor,
 } from "@squirrel309/my-testcounter";
-import getPostItem from "@/app/(public)/post/[id]/page-service";
+import getPostItem from "@/app/(public)/post/[id]/action/page-service";
 
 export default function WirteForm({
   postGroupItems,

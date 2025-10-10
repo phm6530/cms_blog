@@ -12,10 +12,10 @@ type ModifyCategory = {
   categoryId: number;
   description?: string;
 };
-/**
- * @description id있으면 subGorup 처리
- **/
 
+/**
+ * @description id있으면 subGroup 수정, 없으면 category 수정
+ **/
 export const modifyCategory = async ({
   groupId,
   categoryId,
@@ -25,44 +25,50 @@ export const modifyCategory = async ({
   const isSub = groupId != null;
 
   const session = await auth();
-  if (!session?.user) {
-    throw new Error("권한 없음....");
-  }
+  if (!session?.user) throw new Error("권한 없음");
 
-  const insertService = async () => {
+  const execModify = async () => {
     if (isSub) {
-      const row = await db
+      // 동일 그룹명 존재 여부 검사 (현재 그룹 제외)
+
+      const dup = await db
         .select()
         .from(blogSubGroup)
         .where(
           and(
             eq(blogSubGroup.group_id, groupId),
-            eq(blogSubGroup.sub_group_name, categoryName)
+            eq(blogSubGroup.sub_group_name, categoryName),
+            ne(blogSubGroup.sub_group_id, categoryId)
           )
         );
 
-      if (row.length !== 0) {
-        throw new Error("이미 존재하는 그룹 명입니다.");
-      }
+      if (dup.length > 0) throw new Error("이미 존재하는 서브 그룹 명입니다.");
+      console.log(categoryName);
 
-      return await db.insert(blogSubGroup).values({
-        sub_group_name: categoryName,
-        group_id: groupId,
-      });
+      const [row] = await db
+        .update(blogSubGroup)
+        .set({
+          sub_group_name: categoryName,
+        })
+        .where(eq(blogSubGroup.sub_group_id, groupId))
+        .returning({
+          id: blogSubGroup.sub_group_id,
+          subGroupName: blogSubGroup.sub_group_name,
+        });
+      console.log(row);
+      return row;
     } else {
-      const rows = await db
+      const dup = await db
         .select()
         .from(categorySchema)
         .where(
           and(
             eq(categorySchema.group_name, categoryName),
-            ne(categorySchema.group_id, categoryId) // 현재 수정 중인 카테고리는 제외
+            ne(categorySchema.group_id, categoryId)
           )
         );
 
-      if (rows.length !== 0) {
-        throw new Error("이미 존재하는 카테고리 명입니다.");
-      }
+      if (dup.length > 0) throw new Error("이미 존재하는 카테고리 명입니다.");
 
       const [row] = await db
         .update(categorySchema)
@@ -70,18 +76,18 @@ export const modifyCategory = async ({
           group_name: categoryName,
           group_description: description,
         })
-        .where(eq(categorySchema.group_id, categoryId!))
+        .where(eq(categorySchema.group_id, categoryId))
         .returning({
           id: categorySchema.group_id,
           categoryName: categorySchema.group_name,
           description: categorySchema.group_description,
         });
-
+      console.log(row);
       return row;
     }
   };
 
-  return await actionWrapper(insertService, {
+  return await actionWrapper(execModify, {
     tags: [REVALIDATE.POST.CATEGORY],
   });
 };

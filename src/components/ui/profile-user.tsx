@@ -35,11 +35,6 @@ export default function ProfileUser({
         <div className="col-span-2 flex items-start gap-2">
           <div className="flex flex-col">
             <span className="text-sm">{nickname} </span>
-            {createAt && (
-              <span className="text-xs opacity-50">
-                {DateUtils.fromNow(createAt)}
-              </span>
-            )}
           </div>
 
           {(role === "super" || role === "admin") && (

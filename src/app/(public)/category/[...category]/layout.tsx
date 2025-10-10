@@ -6,6 +6,7 @@ import SearchInput from "@/components/ui/search-input";
 import { auth } from "@/auth";
 import { Plus } from "lucide-react";
 import getCategories from "@/service/get-category";
+// import NavCategories from "@/components/nav-categories";
 
 export async function generateStaticParams() {
   const allCategories = await getCategories();
@@ -76,7 +77,8 @@ export default async function Layout({
                 글쓰기 <Plus />
               </Link>
             </Button>
-          )}
+          )}{" "}
+          {/* <NavCategories /> */}
         </div>
         {/* <NavCategories /> */}{" "}
         <PostListNav curCategory={curCategory} curSubGroup={curSubCategory} />

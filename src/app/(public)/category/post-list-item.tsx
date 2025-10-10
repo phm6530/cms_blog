@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle } from "lucide-react";
 import { DateUtils } from "@/util/date-uill";
 import { HighlightKeyword } from "@/util/keyword-highlist";
 import BadgeNew from "@/components/shared/badge-new";
@@ -9,6 +8,7 @@ import { PostItemModel } from "@/type/post.type";
 import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
+import PostStats from "@/components/post-stats";
 
 export const PostItem = forwardRef<
   HTMLDivElement,
@@ -78,18 +78,13 @@ export const PostItem = forwardRef<
             <p className="line-clamp-2 text-sm  text-muted-foreground leading-5 tracking-tight md:mb-4 break-words">
               {post_description}
             </p>
-            <p className="text-xs text-muted-foreground mt-1 flex gap-3 ">
-              <span className="flex gap-1 items-center text-xs">
-                <MessageCircle className="size-4" /> {comment_count}
-              </span>
-              <span className="flex gap-1 items-center text-xs">
-                <Heart className="size-4" /> {like_cnt}
-              </span>
+            <div className="text-xs text-muted-foreground mt-1 flex gap-3 ">
+              <PostStats comment_cnt={comment_count} like_cnt={like_cnt} />
 
               <span className="border-l-2 pl-3 text-xs">
                 {DateUtils.dateFormatKR(created_at, "YY. MM. DD")}
               </span>
-            </p>
+            </div>
           </div>
         </div>
       </Link>

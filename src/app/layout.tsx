@@ -29,7 +29,7 @@ export default async function RootLayout({
         <ClientProvider session={session}>
           <MouseClickEffect>
             <GlobalNav />
-            <div className="pt-15 grid-layout">{children}</div>
+            <div className="grid-layout pt-15">{children}</div>
             <Toaster />
             <Footer />
           </MouseClickEffect>

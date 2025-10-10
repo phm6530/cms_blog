@@ -8,7 +8,7 @@ export default function PostVanner({
   children,
 }: {
   thumbnail_url: string | null;
-  children: ReactNode;
+  children?: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -16,13 +16,13 @@ export default function PostVanner({
     <section
       ref={ref}
       className={cn(
-        `relative flex  overflow-hidden  md:h-auto  max-w-[1100px]   w-full mx-auto 
-        after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-2xl after:bg-no-repeat after:content-['']
+        `relative flex  overflow-hidden  md:h-auto  w-full mx-auto 
+        after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-3xl after:bg-no-repeat after:content-['']
         after:bg-gradient-to-b 
         `,
         !!thumbnail_url
-          ? " from:via-black/50 after:to-black/80 p-5 md:p-10 md:px-15 aspect-[16/17]  md:aspect-[16/9] text-white"
-          : "pt-10"
+          ? " after:via-zinc-500/40 after:to-zinc-900/80 p-1  md:px-12 aspect-[16/17]  md:aspect-[16/12] text-white"
+          : ""
       )}
     >
       {thumbnail_url && (

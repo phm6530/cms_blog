@@ -43,7 +43,7 @@ export default async function RelatedPosts({
       {response.result?.list.length !== 0 && (
         <>
           <h1 className="mb-4"> 관련 게시물</h1>
-          <section className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-4 mb-10">
+          <section className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-10 mb-10">
             {response.result?.list.map((e, idx) => {
               return (
                 <Link href={`${e.post_id}`} key={`${e.post_id}:${idx}`}>

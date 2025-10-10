@@ -1,20 +1,29 @@
 import { db } from "@/db/db";
+import { commentSchema } from "@/db/schema";
 import { blogContentsSchema } from "@/db/schema/blog-contents";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
 import { blogSubGroup, categorySchema } from "@/db/schema/category";
 import { pinnedPostSchema } from "@/db/schema/post/pinned-post";
 import { REVALIDATE } from "@/type/constants";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 
 type GetPostItem = { id: string };
 
 async function _getPostItem({ id }: GetPostItem) {
-  console.log("Detail post - get  ");
   if (!id) throw new Error("id가 누락되었습니다.");
 
   const [rows] = await db
-    .select()
+    .select({
+      blog_metadata: blogMetaSchema,
+      blog_contents: blogContentsSchema,
+      blog_sub_group: blogSubGroup,
+      category: categorySchema,
+      pinned_post: pinnedPostSchema,
+      comment_cnt: sql<number>`
+      (SELECT COUNT(*) FROM ${commentSchema} WHERE ${commentSchema.post_id} = ${blogMetaSchema.post_id})
+    `,
+    })
     .from(blogMetaSchema)
     .innerJoin(
       blogContentsSchema,
@@ -32,6 +41,7 @@ async function _getPostItem({ id }: GetPostItem) {
       pinnedPostSchema,
       eq(pinnedPostSchema.post_id, blogMetaSchema.post_id)
     )
+    .leftJoin(commentSchema, eq(commentSchema.post_id, blogMetaSchema.post_id))
     .where(eq(blogContentsSchema.post_id, +id));
 
   if (!rows || Object.keys(rows).length === 0) {
