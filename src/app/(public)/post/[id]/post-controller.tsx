@@ -157,9 +157,9 @@ export default function PostController({
 
           <div className="flex flex-col gap-2">
             <h2 className="text-xs text-muted-foreground">포스트 인사이트</h2>
-            <div className="flex gap-2 ">
+            <div className="flex gap-0 ">
               <div className="grid grid-cols-2 gap-2 items-center">
-                <span className="flex gap-1 items-center text-xs  size-7 justify-center text-muted-foreground rounded-lg bg-foreground/3">
+                <span className="flex gap-1 items-center text-xs  size-7 justify-center text-muted-foreground rounded-lg bg-foreground/2">
                   <MessageSquareMore size={13} />
                 </span>
                 <span className="text-xs ">{comment_cnt}</span>

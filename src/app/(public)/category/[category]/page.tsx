@@ -3,7 +3,7 @@
 import { REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { useParams } from "next/navigation";
-import PostItem from "../../category/post-list-item";
+import PostItem from "../post-list-item";
 import { PostItemModel } from "@/type/post.type";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import PostItemSkeleton from "../post-item-skeleton";

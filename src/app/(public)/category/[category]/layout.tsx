@@ -6,40 +6,39 @@ import SearchInput from "@/components/ui/search-input";
 import { auth } from "@/auth";
 import { Plus } from "lucide-react";
 import getCategories from "@/service/get-category";
+import TitleBlurAnimation from "@/components/ani-components/title-blur-animation";
 // import NavCategories from "@/components/nav-categories";
 
-export async function generateStaticParams() {
-  const allCategories = await getCategories();
-  if (!allCategories) return [];
+// export async function generateStaticParams() {
+//   const allCategories = await getCategories();
+//   if (!allCategories) return [];
 
-  const params: { category: string[] }[] = [];
+//   const params: { category: string[] }[] = [];
 
-  Object.values(allCategories.categories).forEach((category) => {
-    params.push({ category: [category.name.toLowerCase()] });
+//   Object.values(allCategories.categories).forEach((category) => {
+//     params.push({ category: [category.name.toLowerCase()] });
 
-    category.subGroups.forEach((subGroup) => {
-      params.push({
-        category: [
-          category.name.toLowerCase(),
-          subGroup.subGroupName.toLowerCase(),
-        ],
-      });
-    });
-  });
+//     category.subGroups.forEach((subGroup) => {
+//       params.push({
+//         category: [
+//           category.name.toLowerCase(),
+//           subGroup.subGroupName.toLowerCase(),
+//         ],
+//       });
+//     });
+//   });
 
-  return params;
-}
+//   return params;
+// }
 
 export default async function Layout({
   params,
   children,
 }: {
-  params: Promise<{ category: string[] }>;
+  params: Promise<{ category: string }>;
   children: ReactNode;
 }) {
-  const { category: categoryList } = await params;
-  const [category, group] = categoryList;
-
+  const { category } = await params;
   const session = await auth();
   const allCategories = await getCategories();
 
@@ -49,7 +48,7 @@ export default async function Layout({
     (e) => e.name.toLocaleLowerCase() === curCategory.toLocaleLowerCase()
   );
 
-  const curSubCategory = group ? decodeURIComponent(group) : null;
+  // const curSubCategory = group ? decodeURIComponent(group) : null;
 
   return (
     <>
@@ -58,19 +57,21 @@ export default async function Layout({
       </div>
       <div className="mt-auto   items-end  w-full">
         <div className="flex flex-col items-start pt-16 pb-2">
-          <div className="text-5xl ">
-            {curCategory.slice(0, 1).toUpperCase() + curCategory.slice(1)}{" "}
+          <TitleBlurAnimation
+            title={curCategory.slice(0, 1).toUpperCase() + curCategory.slice(1)}
+            mutedText={
+              keys[0].description ||
+              "프론트엔드 개발자 , PHM입니다. 저를 기록합니다."
+            }
+          />
+          {/* <div className="text-5xl ">
             {curSubCategory && (
               <>
                 <span className="text-[.3em] pr-3 opacity-30">/</span>
                 <span className="text-[.3em]">{curSubCategory}</span>
               </>
             )}
-          </div>
-          <p className="text-muted-foreground mt-5 mb-3">
-            {keys[0].description ||
-              "프론트엔드 개발자 , PHM입니다. 저를 기록합니다."}
-          </p>
+          </div> */}
           {session?.user && (
             <Button className=" text-xs mt-4 px-10" asChild>
               <Link className="flex" href={"/write"}>
@@ -81,7 +82,7 @@ export default async function Layout({
           {/* <NavCategories /> */}
         </div>
         {/* <NavCategories /> */}{" "}
-        <PostListNav curCategory={curCategory} curSubGroup={curSubCategory} />
+        {/* <PostListNav curCategory={curCategory} curSubGroup={curSubCategory} /> */}
       </div>
       <div className="py-10">{children}</div>
     </>

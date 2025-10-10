@@ -1,13 +1,7 @@
 "use client";
 
 import { TextareaHTMLAttributes } from "react";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "./form";
+import { FormControl, FormField, FormItem, FormLabel } from "./form";
 import { Textarea } from "./textarea";
 import { cn } from "@/lib/utils";
 
@@ -33,7 +27,6 @@ export default function TextareaFormField({
                   <Textarea {...field} {...rest} />
                 </FormControl>
               </FormItem>
-              <FormMessage className="mr-auto" />
             </>
           );
         }}

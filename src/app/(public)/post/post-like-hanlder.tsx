@@ -83,7 +83,7 @@ export default function PostLikeHandler({
         debounce(optimisticLike);
       }}
     >
-      <span className="flex gap-1 items-center text-xs  size-7 justify-center text-muted-foreground rounded-lg bg-foreground/3">
+      <span className="flex gap-1 items-center text-xs  size-7 justify-center text-muted-foreground rounded-lg bg-foreground/2">
         <Heart
           size={13}
           className={cn(isLike ? "fill-red-400 text-transparent" : "fill-none")}

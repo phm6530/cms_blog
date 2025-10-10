@@ -20,7 +20,7 @@ import { DateUtils } from "@/util/date-uill";
 
 export default function CommentItem({
   id: commentId,
-  replyIdx,
+
   comment,
   children,
   deps,
