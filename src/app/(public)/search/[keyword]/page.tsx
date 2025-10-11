@@ -6,18 +6,18 @@ import PostItem from "../../category/post-list-item";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PostItemModel } from "@/type/post.type";
 import { useEffect, useRef } from "react";
 import LoadingSpinerV2 from "@/components/ui/loading-spinner-v2";
 import PostItemSkeleton from "../../category/post-item-skeleton";
 import { ObserverGSAPWrapper } from "@/components/ani-components/observer-wrapper";
+import { InitialReturnData } from "../../category/[category]/_components/page";
 
 export default function Keyword() {
   const { keyword } = useParams();
   const ref = useRef<HTMLDivElement>(null);
 
   const { data, fetchNextPage, isFetching, isPending } = useInfiniteQuery<{
-    list: PostItemModel[];
+    list: InitialReturnData;
     isNextPage: boolean;
     total: string;
   }>({
@@ -32,7 +32,7 @@ export default function Keyword() {
       baseUrl += `&cursor=${cursor}&limit=${limit}`;
 
       const response = await withFetchRevaildationAction<{
-        list: Array<PostItemModel>;
+        list: InitialReturnData;
         isNextPage: boolean;
         total: string;
       }>({

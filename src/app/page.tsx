@@ -11,7 +11,7 @@ export default async function Home() {
         {/* <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-black/100 pointer-events-none" /> */}
 
         <div className="relative w-full  flex justify-between">
-          <div className="mt-auto pb-10 pt-10 items-end gap-20 w-full">
+          <div className="mt-auto pb-10 md:pt-10 items-end gap-20 w-full">
             <TitleBlurAnimation
               title="Phm, Dev Blog"
               mutedText="프론트엔드 개발자 , PHM입니다. 저를 기록합니다."

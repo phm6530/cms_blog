@@ -51,7 +51,11 @@ export default function ClientProvider({
         defaultTheme="dark"
         enableColorScheme={false}
       >
-        <SessionProvider session={session}>{children}</SessionProvider>
+        <div id="smooth-wrapper">
+          <div id="smooth-content">
+            <SessionProvider session={session}>{children}</SessionProvider>{" "}
+          </div>
+        </div>
       </ThemeProvider>
     </QueryClientProvider>
   );

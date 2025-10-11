@@ -17,11 +17,11 @@ export default function PostVanner({
       ref={ref}
       className={cn(
         `relative flex  overflow-hidden  md:h-auto  w-full mx-auto 
-        after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-3xl after:bg-no-repeat after:content-['']
+        after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center rounded-3xl after:bg-no-repeat after:content-['']
         after:bg-gradient-to-b 
         `,
         !!thumbnail_url
-          ? " after:via-zinc-500/40 after:to-zinc-900/80 p-1  md:px-12 aspect-[16/17]  md:aspect-[16/12] text-white"
+          ? " after:via-zinc-500/60 after:to-zinc-900/90 p-1  sm:px-12 aspect-[16/17] sm:aspect-[16/12]   text-white"
           : ""
       )}
     >

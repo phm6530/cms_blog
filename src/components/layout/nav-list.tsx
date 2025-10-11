@@ -1,7 +1,7 @@
 "use client";
 
 import useMediaQuery from "@/hook/useMediaQuery";
-import { Menu, X } from "lucide-react";
+import { LucideMenu, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -59,7 +59,7 @@ export default function NavList({
           className="block  md:hidden cursor-pointer"
           onClick={() => setToggle((prev) => !prev)}
         >
-          <Menu size={20} />
+          <LucideMenu className="text-muted-foreground hover:text-foreground active:text-red-300" />
         </div>
       )}
 
@@ -89,7 +89,7 @@ export default function NavList({
               href={`/category/${e.label}`}
               className={cn(
                 "hover:text-indigo-300",
-                "text-base md:text-sm  py-4 border-t md:border-t-0  transition-all flex gap-2 items-center"
+                "text-3xl md:text-sm  py-4  md:border-t-0  transition-all flex gap-2 items-center"
               )}
               key={`${e.label}:${idx}`}
             >

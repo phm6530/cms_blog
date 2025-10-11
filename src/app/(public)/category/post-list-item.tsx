@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { DateUtils } from "@/util/date-uill";
 import { HighlightKeyword } from "@/util/keyword-highlist";
-import BadgeNew from "@/components/shared/badge-new";
+
 import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
@@ -53,27 +53,38 @@ export const PostItem = forwardRef<
                   unoptimized
                 />
               </div>
+
+              {/* 베지들 - 모바일에서는 숨김 */}
+              <div className="absolute top-3 left-3 z-10 hidden md:block">
+                <Badge
+                  variant={"secondary"}
+                  className="text-[10px] px-2 py-0.5 rounded-md font-medium"
+                >
+                  {sub_group_name}
+                </Badge>
+              </div>
             </div>
           )}
 
           <div className="flex flex-col gap-2 py-3 ">
-            <div className="flex gap-2 mb-2 items-center">
-              <Badge
-                variant={"secondary"}
-                className="text-[10px] px-2 py-0.5 rounded-md font-medium"
-              >
-                {sub_group_name}
-              </Badge>
-              {DateUtils.isNew(created_at) && <BadgeNew />}
-            </div>
-
-            <p className="group-hover:underline text-base md:text-base tracking-tight">
+            <div className="group-hover:underline text-base md:text-base tracking-tight">
               {!!keyword ? (
                 <HighlightKeyword text={post_title} keyword={keyword} />
               ) : (
-                post_title
+                <>
+                  {post_title}{" "}
+                  {DateUtils.isNew(created_at) && (
+                    <div className=" top-2 right-2 md:top-3 md:right-3 z-10 inline-block ">
+                      <div className="relative">
+                        <div className="bg-gradient-to-r from-red-400 to-red-500  text-white text-[7px] text-center md:text-[10px]   size-3  md:py-1 rounded shadow-md">
+                          N
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
-            </p>
+            </div>
 
             <p className="line-clamp-2 text-sm  text-muted-foreground leading-5 tracking-tight md:mb-4 break-words">
               {post_description}

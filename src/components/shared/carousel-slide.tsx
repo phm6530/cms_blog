@@ -108,21 +108,18 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                 </div>
               </div>
               <div
-                className="flex flex-col py-10 h-full   z-10 rounded-tl-2xl px-10 md:px-0  absolute sm:static w-full    sm:gap-5 "
+                className="flex flex-col py-12 h-full   z-10 rounded-tl-2xl px-10 md:px-0  absolute sm:static w-full    sm:gap-5 "
                 // style={{
                 //   backdropFilter: "blur(10px)",
                 // }}
               >
                 <div className="flex gap-2 ">
-                  <Badge
-                    variant={"outline"}
-                    className="text-[10px] rounded-full text-white border border-zinc-50/20"
-                  >
+                  <Badge variant={"secondary"} className="text-[10px] ">
                     {data.sub_group_name}
                   </Badge>
                 </div>
 
-                <h1 className="text-shadow leading-relaxed sm:leading-snug text-zinc-50 sm:text-foreground  mt-3 z-10  max-w-[400px] md:max-w-full text-[clamp(1.2rem,5vw,1.7rem)] sm:text-2xl lg:text-3xl  break-keep whitespace-pre-line ">
+                <h1 className="text-shadow leading-relaxed sm:leading-snug text-zinc-50 sm:text-foreground  mt-3 sm:mt-0 z-10  max-w-[400px] md:max-w-full text-[clamp(1.2rem,5vw,1.7rem)] sm:text-2xl lg:text-3xl  break-keep whitespace-pre-line ">
                   {data.post_title}
                 </h1>
                 <div className="mt-auto sm:mt-0  w-full">

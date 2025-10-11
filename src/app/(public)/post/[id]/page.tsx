@@ -102,12 +102,12 @@ export default async function PostDetail({
   const contents = HtmlContentNormalizer.setImgUrl(blog_contents.contents);
 
   return (
-    <div className=" mx-0 md:mx-auto w-full! md:w-auto  md:pt-0 md:grid-cols-[1fr_250px] md:gap-x-30 grid">
+    <div className=" mx-0 md:mx-auto w-full! md:w-auto  md:pt-0 lg:grid-cols-[1fr_250px] md:gap-x-[7vw] grid">
       {/* 본문 영역 */}
-      <div className="pt-10">
+      <div className="md:pt-10 ">
         <PostVanner thumbnail_url={blog_metadata.thumbnail_url}>
           <div className={cn("py-5 flex flex-col relative z-1 ")}>
-            <div className="mb-10 mt-auto">
+            <div className="mb-10 mt-auto px-5 md:px-0">
               <div className="flex gap-2 mt-auto mb-3 ">
                 <Badge
                   variant={"secondary"}
@@ -130,7 +130,7 @@ export default async function PostDetail({
               </div>
               <h1
                 className={cn(
-                  "text-3xl md:text-3xl mb-2   text-shadow-zinc-950",
+                  "text-[clamp(1.6rem,4vw,3rem)] md:text-3xl mb-2   text-shadow-zinc-950 ",
                   blog_metadata.thumbnail_url &&
                     " leading-snug break-keep    whitespace-pre-line text-zinc-50"
                 )}
@@ -154,12 +154,12 @@ export default async function PostDetail({
             </div>
           </div>
         </PostVanner>
-        <div className="grid gap-5 md:pt-10 relative">
+        <div className="grid gap-5 md:pt-10 relative mt-10 md:mt-0">
           {/* ------ TipTap Editor - custom lib ------ */}
           <PostView contents={contents} />
 
           {/* ---- 댓글 ----- */}
-          <h1 className="text-2xl">Comments</h1>
+          <h1 className="text-2xl mt-20">Comments</h1>
           <CommentSection postId={id} />
 
           {/* ---- post Tool bar ----- */}

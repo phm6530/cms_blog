@@ -56,7 +56,7 @@ export default async function Layout({
   return (
     <>
       <div className="mt-auto   items-end  w-full">
-        <div className="flex flex-col items-start pt-12 pb-2">
+        <div className="flex flex-col items-start md:pt-12 pb-2">
           <TitleBlurAnimation
             title={
               categoryName.slice(0, 1).toUpperCase() + categoryName.slice(1)
