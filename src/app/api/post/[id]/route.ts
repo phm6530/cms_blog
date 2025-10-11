@@ -9,51 +9,8 @@ import { eq } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { PostFormData } from "../route";
-import { blogSubGroup, categorySchema } from "@/db/schema/category";
-import { apiHandler } from "@/util/api-hanlder";
+
 import { pinnedPostSchema } from "@/db/schema/post/pinned-post";
-
-export async function GET(
-  req: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
-  const { id } = await context.params; //v15 부턴 바꼇나보네
-
-  return await apiHandler(async () => {
-    if (!id) {
-      return NextResponse.json(
-        { error: true, message: "잘못된 요청입니다." },
-        { status: 400 }
-      );
-    }
-
-    const [rows] = await db
-      .select()
-      .from(blogMetaSchema)
-      .innerJoin(
-        blogContentsSchema,
-        eq(blogContentsSchema.post_id, blogMetaSchema.post_id)
-      )
-      .leftJoin(
-        blogSubGroup,
-        eq(blogSubGroup.sub_group_id, blogMetaSchema.sub_group_id)
-      )
-      .leftJoin(
-        categorySchema,
-        eq(categorySchema.group_id, blogMetaSchema.category_id)
-      )
-      .leftJoin(
-        pinnedPostSchema,
-        eq(pinnedPostSchema.post_id, blogMetaSchema.post_id)
-      )
-      .where(eq(blogContentsSchema.post_id, +id));
-
-    if (!rows) {
-      throw new Error("이미 삭제되었거나 잘못된 요청입니다.");
-    }
-    return rows;
-  });
-}
 
 // 갈아끼우기
 // 전체 덮어쓰기 (PUT)
@@ -115,7 +72,7 @@ export async function PUT(
 
     //고정콘텐츠 일경우는 메인 쪽도 초기화
     if (!!body.pinnedPost) {
-      revalidateTag(REVALIDATE.PINNED_POST);
+      revalidateTag(REVALIDATE.POST.PINNED_POST);
     }
 
     revalidateTag(`${REVALIDATE.POST.DETAIL}:${id}`);
@@ -171,7 +128,7 @@ export async function DELETE(
 
     //고정된 post면
     if (!!pinned_post) {
-      revalidateTag(REVALIDATE.PINNED_POST);
+      revalidateTag(REVALIDATE.POST.PINNED_POST);
     }
 
     revalidateTag(`${REVALIDATE.POST.DETAIL}:${id}`); // 없애고

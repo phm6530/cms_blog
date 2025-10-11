@@ -1,13 +1,11 @@
 "use client";
 
 import useMediaQuery from "@/hook/useMediaQuery";
-import { Menu, X } from "lucide-react";
+import { LucideMenu, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { Button } from "../ui/button";
 
 export enum BREAKPOINT {
   SM = 640,
@@ -23,7 +21,7 @@ export default function NavList({
   categories: Array<{ label: string; postCnt: number }>;
 }) {
   const isDesktop = useMediaQuery(`(min-width:${BREAKPOINT.MD}px)`);
-  const session = useSession();
+
   const [toggle, setToggle] = useState<boolean>(false);
   const [backDropTarget, setBackDropTarget] =
     useState<HTMLElement | null | null>(null);
@@ -61,17 +59,16 @@ export default function NavList({
           className="block  md:hidden cursor-pointer"
           onClick={() => setToggle((prev) => !prev)}
         >
-          <Menu size={20} />
+          <LucideMenu className="text-muted-foreground hover:text-foreground active:text-red-300" />
         </div>
       )}
 
       <div
         className={cn(
-          `fixed flex flex-col ease-side p-5 md:flex-row! bg-background md:bg-transparent! top-0 gap-0 z-100 md:z-10 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto`,
+          `fixed flex flex-col mr-auto ease-side p-5 md:flex-row! bg-background md:bg-transparent! top-0 gap-0 z-100 md:z-10 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto`,
           `md:static md:flex-row   md:h-auto md:border-0 md:gap-8 md:p-0  md:items-center`,
           toggle ? "left-[100px]" : "left-full"
         )}
-        // inline으로 반영
         style={{
           transition: `transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
           left 0.75s cubic-bezier(0.77, 0.2, 0.05, 1)`,
@@ -92,7 +89,7 @@ export default function NavList({
               href={`/category/${e.label}`}
               className={cn(
                 "hover:text-indigo-300",
-                "text-base md:text-sm py-4 border-t md:border-t-0  transition-all flex gap-2 items-center"
+                "text-3xl md:text-sm  py-4  md:border-t-0  transition-all flex gap-2 items-center"
               )}
               key={`${e.label}:${idx}`}
             >
@@ -101,11 +98,11 @@ export default function NavList({
                   pathnameActive(e.label) && "dark:text-indigo-300 underline"
                 )}
               >
-                {e.label.toUpperCase()}
+                {e.label}
               </span>
-              <span className="opacity-50 text-[11px] text-primary">
+              {/* <span className="opacity-50 text-[11px] text-primary">
                 ({e.postCnt})
-              </span>
+              </span> */}
             </Link>
           );
         })}
@@ -119,25 +116,6 @@ export default function NavList({
         >
           GUEST BOARD
         </Link> */}
-
-        {session.data?.user && (
-          <>
-            <Button
-              asChild
-              className="text-xs p-0 md:border-0! border"
-              variant={"ghost"}
-            >
-              <Link href={"/admin"}>관리자 페이지</Link>
-            </Button>
-            <Button
-              onClick={async () => await signOut()}
-              className="text-xs p-0"
-              variant={"ghost"}
-            >
-              로그아웃
-            </Button>
-          </>
-        )}
       </div>
 
       {/* Portal */}

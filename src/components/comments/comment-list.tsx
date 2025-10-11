@@ -4,9 +4,9 @@ import CommentItem from "./comment-item";
 import { REVALIDATE } from "@/type/constants";
 import { CommentItemModel } from "@/lib/comment-bff";
 import { useInfiniteQuery } from "@tanstack/react-query";
+
 export default function CommentList({ postId }: { postId: string }) {
   // falt할랫더니 다밀려서 성능 이슈있을수있음 이게나음
-  // const [list, setList] = useState<Array<Array<CommentItemModel>> | null>(null);
 
   /**
    * @description 부모는 오름차순으로, 자식은 내림차순으로 가져오기 ㅇㅇ
@@ -27,7 +27,7 @@ export default function CommentList({ postId }: { postId: string }) {
       }>({
         endPoint: baseEndpont,
         options: {
-          cache: "no-cache",
+          cache: "force-cache",
           next: {
             tags: [`${REVALIDATE.COMMENT}:${postId}`],
           },
@@ -54,33 +54,18 @@ export default function CommentList({ postId }: { postId: string }) {
   const flatData = data.pages.flatMap((e) => e.result);
 
   return (
-    <section className="mt-5 mb-10">
-      <div className="border-b py-4 ">댓글 {flatData.length} 개 </div>
-      {/* {flatData.length > 10 && (
-        <div
-          onClick={() => setMoreView(true)}
-          className="text-center text-sm py-3 border cursor-pointer hover:underline"
-        >
-          이전 댓글 보기 ({flatData.length - 10})
-        </div>
-      )} */}
-      <div>
+    <section className="mt-5">
+      <div className="">
         {flatData.length === 0 ? (
           <div className="py-30 text-center border-b">
-            <p className="text-base md:text-xl">아직 등록된 댓글이 없습니다.</p>
+            <p className="text-base md:text-base">
+              아직 등록된 댓글이 없습니다.
+            </p>
           </div>
         ) : (
           flatData.map((block) => {
             return (
-              <CommentItem
-                key={`${postId}-${block.id}`}
-                {...block}
-                deps={0}
-                // className={cn(
-                //   idx < flatData.length - 10 ? "hidden" : undefined,
-                //   moreView && "block"
-                // )}
-              />
+              <CommentItem key={`${postId}-${block.id}`} {...block} deps={0} />
             );
           })
         )}

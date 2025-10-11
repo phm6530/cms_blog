@@ -1,6 +1,4 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
 import useDebounce from "@/hooks/useDebounce";
 import { cn } from "@/lib/utils";
 import withClientFetch from "@/util/withClientFetch";
@@ -42,7 +40,6 @@ export default function PostLikeHandler({
         endPoint: `api/post/${postId}/like?action=${
           optimisticLike ? "unlike" : "like"
         }`,
-        // requireAuth: true,
       });
     },
 
@@ -74,28 +71,26 @@ export default function PostLikeHandler({
   }, 1000);
 
   return (
-    <div className="text-center  py-10">
-      <Button
-        className="cursor-pointer px-10! py-5 bg-transparent!"
-        onClick={() => {
-          /**
-           * opTimistic으로
-           */
-          const optimisticLike = !isLike;
-          setLikeCount((prev) => prev + (optimisticLike ? 1 : -1));
-          setIsLike(optimisticLike);
-          debounce(optimisticLike);
-        }}
-        variant={"outline"}
-      >
+    <div
+      className="grid grid-cols-2 gap-2 items-center cursor-pointer"
+      onClick={() => {
+        /**
+         * opTimistic으로
+         */
+        const optimisticLike = !isLike;
+        setLikeCount((prev) => prev + (optimisticLike ? 1 : -1));
+        setIsLike(optimisticLike);
+        debounce(optimisticLike);
+      }}
+    >
+      <span className="flex gap-1 items-center text-xs  size-7 justify-center text-muted-foreground rounded-lg bg-foreground/2">
         <Heart
-          className={cn(
-            "size-4 text-foreground/20! ",
-            isLike ? "fill-red-500" : "fill-none"
-          )}
+          size={13}
+          className={cn(isLike ? "fill-red-400 text-transparent" : "fill-none")}
         />
-        <span className=" opacity-70 text-xs">{likeCount}</span>
-      </Button>
+      </span>
+
+      <span className="text-xs">{likeCount}</span>
     </div>
   );
 }

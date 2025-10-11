@@ -4,13 +4,11 @@ import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
 import { ReactNode, useRef } from "react";
 
 export default function PostVanner({
-  hasThumbnail,
   thumbnail_url,
   children,
 }: {
-  hasThumbnail: boolean;
-  thumbnail_url: string;
-  children: ReactNode;
+  thumbnail_url: string | null;
+  children?: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -18,16 +16,16 @@ export default function PostVanner({
     <section
       ref={ref}
       className={cn(
-        `relative flex  overflow-hidden  md:h-auto  max-w-[1100px]   w-full mx-auto 
-        after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-2xl after:bg-no-repeat after:content-['']
+        `relative flex  overflow-hidden  md:h-auto  w-full mx-auto 
+        after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center rounded-3xl after:bg-no-repeat after:content-['']
         after:bg-gradient-to-b 
         `,
-        hasThumbnail
-          ? " from:via-black/50 after:to-black/80 p-5 md:p-10 md:px-15 aspect-[16/17]  md:aspect-[16/9] text-white"
-          : "pt-10"
+        !!thumbnail_url
+          ? " after:via-zinc-500/60 after:to-zinc-900/90 p-1  sm:px-12 aspect-[16/17] sm:aspect-[16/12]   text-white"
+          : ""
       )}
     >
-      {hasThumbnail && (
+      {thumbnail_url && (
         <div
           className="absolute top-0 left-0  z-0 w-full h-full animate-vanner "
           style={{

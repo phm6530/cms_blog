@@ -1,3 +1,4 @@
+"use client";
 import {
   Carousel,
   CarouselContent,
@@ -5,113 +6,110 @@ import {
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { CategoryModel } from "@/type/blog-group";
-import { REVALIDATE } from "@/type/constants";
-import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { useSelectedLayoutSegments } from "next/navigation";
+import React from "react";
 
-export default async function PostListNav({
-  curCategory,
-  selectGroup,
+type OmitThumb = Omit<CategoryModel["subGroups"], "thumb">;
+
+export default function PostListNav({
+  subGroups,
+  categoryProps,
 }: {
-  curCategory: string;
-  selectGroup?: string;
+  subGroups: OmitThumb;
+  categoryProps: Omit<CategoryModel, "subGroups">;
 }) {
-  const response = await withFetchRevaildationAction<{
-    category: { [key: string]: CategoryModel };
-    count: number;
-  }>({
-    endPoint: "api/category",
-    options: {
-      cache: "force-cache",
-      next: {
-        tags: [REVALIDATE.POST.CATEGORY],
-      },
+  const [groupSegment] = useSelectedLayoutSegments();
+
+  const navArr: Array<Omit<OmitThumb[number], "thumb">> = [
+    {
+      id: categoryProps.id,
+      subGroupName: "전체보기",
+      postCount: categoryProps.postCnt,
+      thumb: null,
     },
-  });
-
-  if (!response.success) {
-    notFound();
-  }
-
-  const { category } = response.result;
-  const curNavList = category[curCategory];
-  const activeStyle = (subGroupName?: string) => {
-    const isActive = selectGroup === subGroupName || selectGroup === undefined;
-
-    return cn(
-      "rounded-full text-xs border border-foreground dark:border border-0! py-3 px-5 ",
-      isActive
-        ? "text-white  border-muted-foreground bg-foreground text-secondary"
-        : "border-0 border-border bg-muted-foreground/10"
-    );
-  };
+    ...subGroups,
+  ];
 
   return (
     <>
-      <Carousel
-        className="md:hidden block"
-        opts={{
-          dragFree: true,
-        }}
-      >
-        <CarouselContent className="pl-5 md:pl-0 md:flex md:flex-wrap ">
-          <CarouselItem className="basis-auto shrink-0">
-            <button className={activeStyle("all")}>
-              <Link href={`/category/${curCategory}`}>
-                전체보기{" "}
-                <span className="dark:text-indigo-100  dark:opacity-100 opacity-50 text-[10px]">
-                  ({curNavList.postCnt})
-                </span>
-              </Link>
-            </button>
-          </CarouselItem>
+      {/* 모바일 */}
+      <Carousel className="md:hidden block pt-10" opts={{ dragFree: true }}>
+        <CarouselContent className="pl-4 pr-4">
+          {navArr.map((group, idx) => {
+            const href =
+              idx === 0
+                ? `/category/${categoryProps.name}`
+                : `/category/${categoryProps.name}/${group.subGroupName}`;
 
-          {curNavList.subGroups.map((group, idx) => (
-            <CarouselItem
-              className={cn(
-                "basis-auto shrink-0 pl-2!",
-                idx === curNavList.subGroups.length - 1 && "mr-4"
-              )}
-              key={group.id}
-            >
-              <button className={activeStyle(group.subGroupName)}>
-                <Link href={`/category/${curCategory}/${group.subGroupName}`}>
-                  {group.subGroupName}{" "}
-                  <span className="dark:text-indigo-300 dark:opacity-100 opacity-50 text-xs">
+            const isActive =
+              (idx === 0 && groupSegment === undefined) ||
+              group.subGroupName === decodeURIComponent(groupSegment ?? "");
+
+            return (
+              <CarouselItem
+                key={`${group.id}:${idx}`}
+                className={cn(
+                  "basis-auto shrink-0",
+                  idx === 0 ? "pl-1" : "pl-2"
+                )}
+              >
+                <Link
+                  href={href}
+                  className={cn(
+                    "border px-4 py-3 rounded-full flex gap-1 whitespace-nowrap",
+                    isActive && "bg-foreground text-background"
+                  )}
+                >
+                  <span className="text-xs">{group.subGroupName}</span>
+                  <span className="opacity-50 text-xs">
                     ({group.postCount})
                   </span>
                 </Link>
-              </button>
-            </CarouselItem>
-          ))}
-
-          <CarouselItem className="basis-auto shrink-0 w-4" />
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
       </Carousel>
 
-      <section className="w-full pl-5  gap-3 hidden flex-wrap mb-6 md:flex mt-10">
-        <button className={activeStyle("all")}>
-          <Link href={`/category/${curCategory}`}>
-            전체보기{" "}
-            <span className="dark:text-indigo-300 dark:opacity-100 opacity-50 text-xs">
-              ({curNavList.postCnt})
-            </span>
-          </Link>
-        </button>
+      {/* 데스크탑 */}
+      <section className="w-full  mt-8 hidden md:block">
+        {/* 서브 카테고리 목록 */}
 
-        {curNavList.subGroups.map((group) => {
-          return (
-            <button key={group.id} className={activeStyle(group.subGroupName)}>
-              <Link href={`/category/${curCategory}/${group.subGroupName}`}>
-                {group.subGroupName}{" "}
-                <span className="dark:text-indigo-300 dark:opacity-100 opacity-50 text-xs">
-                  ({group.postCount})
-                </span>
-              </Link>
-            </button>
-          );
-        })}
+        <div className="flex items-center gap-6 flex-wrap border-b py-4 pt-6">
+          {navArr.map((group, idx) => {
+            const href =
+              idx === 0
+                ? `/category/${categoryProps.name}`
+                : `/category/${categoryProps.name}/${group.subGroupName}`;
+
+            const isActive =
+              (idx === 0 && groupSegment === undefined) ||
+              group.subGroupName === decodeURIComponent(groupSegment ?? "");
+
+            return (
+              <React.Fragment key={`${group.id}:${idx}`}>
+                <Link
+                  href={href}
+                  className={cn(
+                    "transition-all text-sm hover:text-foreground",
+                    isActive
+                      ? " text-foreground underline "
+                      : "text-muted-foreground "
+                  )}
+                >
+                  <span>{group.subGroupName}</span>
+                  <span className="opacity-40 ml-1.5 text-xs">
+                    ({group.postCount})
+                  </span>
+                </Link>
+                {/* {idx < subCategories.length - 1 && (
+                  <span className="opacity-20">|</span>
+                )} */}
+              </React.Fragment>
+            );
+          })}
+        </div>
       </section>
     </>
   );

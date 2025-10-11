@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { BlogDetailResponse, BlogMetadata } from "@/type/blog.type";
+import { BlogMetadata } from "@/type/blog.type";
 import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import { DateUtils } from "@/util/date-uill";
 import withClientFetch from "@/util/withClientFetch";
@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { wirtePostSchema } from "./schema";
 import { setDefaultValues } from "./defaultvalue-form";
+import getPostItem from "@/app/(public)/post/[id]/action/page-service";
 
 export function DraftDialog() {
   const [view, setView] = useState<boolean>(false);
@@ -77,7 +78,9 @@ export function DraftDialog() {
   /** --- 단일 ITEM 가져오기 --- */
   const { mutate: getDraftItem } = useMutation({
     mutationFn: async (id: number) => {
-      const response = await withFetchRevaildationAction<BlogDetailResponse>({
+      const response = await withFetchRevaildationAction<
+        Awaited<ReturnType<typeof getPostItem>>
+      >({
         endPoint: `api/post/${id}`,
         options: {
           cache: "force-cache",

@@ -1,11 +1,10 @@
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import PostItem from "../../category/post-list-item";
 import { REVALIDATE } from "@/type/constants";
-import { PostItemModel } from "@/type/post.type";
-type SearchResult = [...PostItemModel[], number];
+import { InitialReturnData } from "../../category/[category]/_components/page";
 
 export default async function KeywordList({ keyword }: { keyword: string }) {
-  const response = await withFetchRevaildationAction<SearchResult>({
+  const response = await withFetchRevaildationAction<InitialReturnData>({
     endPoint: `api/post?group=all&keyword=${keyword}`,
     options: {
       cache: "no-store",
@@ -25,7 +24,7 @@ export default async function KeywordList({ keyword }: { keyword: string }) {
           ( {typeof last === "number" ? last : 0} )
         </span>
       </div>
-      {(arr as PostItemModel[]).map((item, idx) => {
+      {arr.map((item, idx) => {
         return <PostItem {...item} key={idx} keyword={keyword} />;
       })}
     </>

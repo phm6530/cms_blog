@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
 :root {
   --font-scale: 1;
 }
@@ -121,11 +122,15 @@
     @apply border-border outline-ring/50;
   }
 
+  p {
+    @apply text-foreground/90 text-base leading-relaxed tracking-tight;
+  }
+
   html {
     @apply md:text-base text-sm;
   }
   body {
-    @apply bg-background text-foreground  font-pretendard;
+    @apply bg-background text-foreground  font-SUIT-Regular;
   }
 
   button {
@@ -255,10 +260,6 @@
     font-style: normal;
   }
 
-  .grid-layout {
-    @apply max-w-[1100px] mx-auto w-[calc(100%-2.5rem)] md:w-[calc(100%-30px)];
-  }
-
   /*Mobile */
   .nav {
     @apply flex-col;
@@ -287,9 +288,10 @@
   --animate-wiggle: wiggle 0.5s ease;
   --animate-fadein: fadeIn 0.5s ease;
   --animate-close: close 0.5s 0.5s ease;
-  --animate-opacity: opacity 1.4s ease;
+  --animate-opacity: opacity 1.4s ease forwards;
   --animate-bgscale: bgScale 5s cubic-bezier(0.2, 0.56, 0.38, 0.41) infinite
     forwards alternate;
+
   @keyframes fadeIn {
     0% {
       transform: translateY(30px);
@@ -313,6 +315,7 @@
   --font-pretendard: "Pretendard Variable";
   --font-Poppins: "Poppins";
   --font-SUIT-Regular: "SUIT-Regular";
+  --font-NanumSquare: "NanumSquare", sans-serif;
 }
 
 @layer base {
@@ -323,4 +326,14 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Main Layout */
+@utility grid-layout {
+  @apply max-w-[1100px] mx-auto w-[calc(100%-2.5rem)] md:w-full md:px-5;
+}
+
+@utility w-calc-* {
+  width: calc(100% - --spacing(--value(integer)));
+  width: calc(100% - --value([length]));
 }

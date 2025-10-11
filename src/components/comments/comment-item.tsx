@@ -1,10 +1,10 @@
 "use client";
-import { Button } from "../ui/button";
+
 import CommentForm from "./comment-form";
 import useStore from "@/context/store";
-import { ChevronUp, Reply, X } from "lucide-react";
+
 import { cn } from "@/lib/utils";
-import ProfileUser from "../ui/profile-user";
+
 import { useSession } from "next-auth/react";
 import ConfirmButton from "../shared/confirm-button";
 import withClientFetch from "@/util/withClientFetch";
@@ -16,9 +16,11 @@ import { useForm } from "react-hook-form";
 import InputPassword from "../ui/password-input";
 import { CommentItemModel } from "@/lib/comment-bff";
 import { useLayoutEffect, useRef, useState } from "react";
+import { DateUtils } from "@/util/date-uill";
 
 export default function CommentItem({
   id: commentId,
+
   comment,
   children,
   deps,
@@ -27,24 +29,18 @@ export default function CommentItem({
   author,
   post_id,
   className,
-}: CommentItemModel & { deps: number; className?: string }) {
+}: CommentItemModel & { deps: number; className?: string; replyIdx?: number }) {
   const { passwordFomView, setPasswordFormId, commentsViewId, toggleFormView } =
-    useStore(); // Zustand로 공유
+    useStore();
   const ref = useRef<HTMLInputElement>(null);
-  const [lineClimp, setLineClimp] = useState<boolean>(false);
+  const [lineClimp, setLineClimp] = useState(false);
   const queryClient = useQueryClient();
-
-  console.log(author);
 
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const oneLineHight = 34;
-    const height = el.scrollHeight;
-    if (height >= oneLineHight * 3) {
-      setLineClimp(true);
-    }
-  }, [ref]);
+    if (el.scrollHeight >= 34 * 3) setLineClimp(true);
+  }, []);
 
   const session = useSession();
   const router = useRouter();
@@ -53,9 +49,7 @@ export default function CommentItem({
     mutationFn: async (data?: { password?: string }) => {
       return await withClientFetch({
         endPoint: `api/comment/${post_id}?item=${commentId}`,
-        options: {
-          method: HTTP_METHOD.DELETE,
-        },
+        options: { method: HTTP_METHOD.DELETE },
         body:
           author.role === "guest" && data?.password
             ? { password: data.password }
@@ -63,12 +57,7 @@ export default function CommentItem({
       });
     },
     onSuccess: () => {
-      toast.success("삭제 되었습니다", {
-        style: {
-          background: "#1e293b",
-          color: "#38bdf8",
-        },
-      });
+      toast.success("삭제 되었습니다");
       queryClient.invalidateQueries({
         queryKey: [`${REVALIDATE.COMMENT}:${post_id}`],
       });
@@ -76,151 +65,123 @@ export default function CommentItem({
     },
   });
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({ defaultValues: { password: "" } });
+  const { register, handleSubmit } = useForm({
+    defaultValues: { password: "" },
+  });
 
-  const onDeleteHnadler = (data: { password: string }) => {
-    mutate(data);
-  };
-
-  const isReply = (deps > 0) as any;
+  const onDeleteHandler = (data: { password: string }) => mutate(data);
+  const isReply = deps > 0;
 
   return (
     <article
       className={cn(
-        "flex gap-2 justify-start  animate-wiggle",
-        deps === 0 && "mb-2 border-b last:border-b-0 py-5 ",
+        "text-sm leading-relaxed",
+        deps === 0 && "border-b border-border/30 py-4",
         className
       )}
-      style={{ marginLeft: `${!!isReply ? 20 : 0}px` }}
+      style={{ marginLeft: isReply ? 20 : 0 }}
     >
-      {!!isReply && <Reply size={13} className="rotate-180 opacity-60 mt-2" />}
-      <div className="flex flex-col gap-2  w-full">
-        <ProfileUser
-          profileImg={
-            author.role === "admin" || author.role === "super"
-              ? author.profile_img
-              : null
-          }
-          nickname={author.nickname}
-          role={author.role}
-          createAt={created_at}
-        />
-        <div className="pl-0 py-2">
-          <div
-            ref={ref}
-            className={cn(
-              "text-sm  text-secondary-foreground whitespace-pre-wrap border-input border-l pl-3 font-pretendard leading-6",
-              lineClimp && "line-clamp-3"
-            )}
-          >
-            {comment}
-          </div>{" "}
-          {lineClimp && (
-            <div
-              className="text-xs p-1 mt-3 items-center flex gap-1 cursor-pointer text-violet-400"
-              onClick={() => setLineClimp(false)}
-            >
-              <ChevronUp size={13} />
-              내용 펼치기
-            </div>
+      {/* 작성자 + 시간 */}
+      <div className="flex items-center gap-2 text-xs mb-1">
+        <span className="font-bold">{author.nickname}</span>
+        <span className="text-xs text-muted-foreground ">
+          {" "}
+          {DateUtils.fromNow(created_at)}
+        </span>
+      </div>
+
+      {/* 본문 */}
+      <div
+        ref={ref}
+        className={cn(
+          "whitespace-pre-wrap break-words text-foreground",
+          lineClimp && "line-clamp-3"
+        )}
+      >
+        {comment}
+      </div>
+
+      {/* 더보기 */}
+      {lineClimp && (
+        <button
+          onClick={() => setLineClimp(false)}
+          className="mt-1 text-xs text-muted-foreground hover:underline"
+        >
+          더보기
+        </button>
+      )}
+
+      {/* 액션 */}
+      <div className="flex gap-3 mt-2 text-xs text-muted-foreground">
+        <button
+          onClick={() => toggleFormView(commentId)}
+          className="hover:underline"
+        >
+          답글
+        </button>
+
+        {author.role === "admin" &&
+          author.admin_email === session.data?.user?.email && (
+            <ConfirmButton title="삭제하시겠습니까?" cb={() => mutate({})}>
+              <button className="hover:underline">삭제</button>
+            </ConfirmButton>
           )}
-          <div className="flex gap-2 pt-4 items-center text-xs [&>span:cursor-pointer]">
-            <Button
-              className=" cursor-pointer text-xs p-0 text-muted-foreground"
-              variant={"link"}
-              onClick={() => toggleFormView(commentId)} // 해당 댓글에 대한 폼을 토글
+
+        {author.role === "guest" && (
+          <>
+            <button
+              onClick={() => setPasswordFormId(commentId)}
+              className="hover:underline"
             >
-              댓글쓰기
-            </Button>
+              {passwordFomView === commentId ? "취소" : "삭제"}
+            </button>
 
-            {/* Admin이랑 동일하면 */}
-            {(() => {
-              // admin이면서 자기 댓글인 경우
-              if (
-                (author.role === "admin" || author.role === "super") &&
-                author.admin_email === session.data?.user?.email
-              ) {
-                return (
-                  <ConfirmButton
-                    title="댓글을 삭제하시겠습니까?"
-                    cb={() => mutate({})}
-                  >
-                    <Button
-                      className="cursor-pointer animate-wiggle text-xs p-0 text-muted-foreground"
-                      variant={"link"}
-                    >
-                      삭제
-                    </Button>
-                  </ConfirmButton>
-                );
-              }
+            {passwordFomView === commentId && (
+              <form
+                onSubmit={handleSubmit(onDeleteHandler)}
+                className="flex gap-2 mt-1"
+              >
+                <InputPassword
+                  {...register("password", { required: true })}
+                  className="h-6 w-28 text-xs px-2"
+                  placeholder="비밀번호"
+                />
+                <button
+                  type="submit"
+                  className="px-2 py-1 border rounded text-xs hover:bg-muted"
+                >
+                  확인
+                </button>
+              </form>
+            )}
+          </>
+        )}
+      </div>
 
-              // guest인 경우, guest_id 비교
-              if (author.role === "guest") {
-                return (
-                  <>
-                    <Button
-                      className="cursor-pointer animate-wiggle text-xs p-0 text-muted-foreground"
-                      variant={"link"}
-                      onClick={() => setPasswordFormId(commentId)}
-                    >
-                      {passwordFomView === commentId ? <X /> : "삭제"}
-                    </Button>
-
-                    {passwordFomView === commentId && (
-                      <form
-                        className="flex gap-2"
-                        onSubmit={handleSubmit(onDeleteHnadler)}
-                      >
-                        <div className=" flex flex-col">
-                          <InputPassword
-                            {...register("password", {
-                              required: { value: true, message: "required" },
-                            })}
-                            className="py-1 placeholder:text-xs"
-                            placeholder="비밀번호"
-                            aria-invalid={!!errors.password}
-                          />
-                        </div>
-
-                        <Button
-                          variant={"outline"}
-                          className="cursor-pointer text-xs"
-                        >
-                          확인
-                        </Button>
-                      </form>
-                    )}
-                  </>
-                );
-              }
-
-              return null;
-            })()}
-          </div>
-        </div>
-        {commentsViewId === commentId && (
+      {/* 답글 작성 */}
+      {commentsViewId === commentId && (
+        <div className="mt-3">
           <CommentForm
             postId={post_id + ""}
             parent_id={isReply ? parent_id : commentId}
           />
-        )}
-        {deps < 1 &&
-          children.map((e, idx) => {
-            return (
-              <CommentItem
-                key={idx}
-                {...e}
-                parent_id={commentId}
-                deps={deps + 1}
-              />
-            );
-          })}
-      </div>
+        </div>
+      )}
+
+      {/* 대댓글 */}
+      {deps < 1 && children.length > 0 && (
+        <div className="pl-4 border-l border-border/20 mt-3 space-y-3">
+          {children.map((e, idx) => (
+            <CommentItem
+              key={idx}
+              {...e}
+              replyIdx={idx}
+              parent_id={commentId}
+              deps={deps + 1}
+            />
+          ))}
+        </div>
+      )}
     </article>
   );
 }

@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
       .select()
       .from(usersTable)
       .where(eq(usersTable.email, email));
+    console.log(user);
 
     if (!user || !user.password || !(await compare(password, user.password))) {
       return NextResponse.json(
@@ -30,7 +31,7 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
     }
-    console.log(user);
+    console.log("user:::", user);
 
     return NextResponse.json(
       {

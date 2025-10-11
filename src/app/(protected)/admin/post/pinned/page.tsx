@@ -5,12 +5,12 @@ import { cn } from "@/lib/utils";
 
 import { REVALIDATE } from "@/type/constants";
 import { PinnedPostModel } from "@/type/post.type";
-import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GripVertical } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { replaceSortAction } from "./sort-action";
 import { toast } from "sonner";
+import { actionPinnedPosts } from "./action";
 
 export default function PinnedPage() {
   const [dragIdx, setDragIdx] = useState<number | null>(null);
@@ -37,33 +37,16 @@ export default function PinnedPage() {
       });
       prevList.current = list; // 이전 버전을 업데이트
       queryClient.invalidateQueries({
-        queryKey: [REVALIDATE.PINNED_POST],
+        queryKey: [REVALIDATE.POST.PINNED_POST],
       });
     },
   });
 
   const { data, isLoading } = useQuery({
-    queryKey: [REVALIDATE.PINNED_POST],
-    queryFn: async () => {
-      const response = await withFetchRevaildationAction<
-        Array<PinnedPostModel>
-      >({
-        endPoint: `api/pinned`,
-        options: {
-          cache: "force-cache",
-          next: {
-            tags: [REVALIDATE.PINNED_POST, "pinneds"],
-          },
-        },
-      });
-
-      if (!response.success) {
-        throw new Error(response.message); //에러메세지
-      }
-
-      return response.result;
-    },
+    queryKey: [REVALIDATE.POST.PINNED_POST],
+    queryFn: async () => await actionPinnedPosts(),
   });
+  console.log("data?", data);
 
   useEffect(() => {
     if (data) {
