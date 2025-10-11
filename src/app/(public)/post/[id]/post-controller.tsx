@@ -105,7 +105,7 @@ export default function PostController({
       <div className="flex flex-col gap-6">
         <div className="flex gap-4 items-center">
           <div
-            className="size-10 shadow-xl border-2 shadow-muted-foreground  rounded-full bg-gray-500/10 flex justify-center items-center relative  bg-cover"
+            className="size-10 shadow-2xl  border-3 border-white/50  rounded-full bg-gray-500/10 flex justify-center items-center relative  bg-cover"
             style={{
               backgroundImage: "url(/img/my-dog.jpg)",
             }}

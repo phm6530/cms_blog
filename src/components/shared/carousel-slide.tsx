@@ -15,12 +15,16 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { unsplashS3Mapping } from "@/util/unsplash-s3-mapping";
 import { Button } from "../ui/button";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { PinIcon } from "lucide-react";
 
 export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
   const router = useRouter();
+  const ref = React.useRef<HTMLDivElement>(null);
 
   React.useLayoutEffect(() => {
     if (!api) {
@@ -35,8 +39,30 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
     });
   }, [api]);
 
+  useGSAP(
+    () => {
+      if (!ref.current) return;
+      const tl = gsap.timeline({
+        defaults: { autoAlpha: 0, ease: "power1.out" },
+      });
+      tl.from(ref.current, {
+        delay: 0.8,
+        y: 20,
+        autoAlpha: 0,
+        filter: "blur(5px)",
+        duration: 1,
+        ease: "power3.out",
+      });
+    },
+    { scope: ref, dependencies: [] }
+  );
+
   return (
-    <section className="relative">
+    <section className="relative invisible" ref={ref}>
+      <h1 className="text-sm flex mb-2 gap-2 items-center">
+        <PinIcon size={14} />
+        <span>Pinned Posts</span>
+      </h1>
       <Carousel
         opts={{
           loop: true,
@@ -48,12 +74,12 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
           {postList.map((data, index) => (
             <CarouselItem
               key={index}
-              className="flex gap-[3rem]   basis-1/1 overflow-hidden"
+              className="grid  sm:grid-cols-[4fr_3fr] md:gap-[3rem] basis-1/1  relative "
             >
               <div
                 onClick={() => router.push(`/post/${data.post_id}`)}
-                className=" relative  overflow-hidden w-[65%]  after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-2xl after:bg-no-repeat after:content-['']
-        after:bg-gradient-to-b after:from-black-0 after:via-black/0 after:to-black/80  aspect-[16/12]   text-white"
+                className=" relative   aspect-[10/11] md:aspect-auto overflow-hidden  after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-2xl after:bg-no-repeat after:content-['']
+        sm:after:bg-gradient-to-b after:bg-gradient-to-t sm:after:from-zinc-950/0 after:from-zinc-950 after:via-zinc-700/5 after:to-zinc-950  rounded-3xl    text-white  md:min-h-[440px]"
               >
                 <div
                   className="absolute  w-full h-full  rounded-2xl bg-center top-0 left-0    "
@@ -81,25 +107,31 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                   </span>
                 </div>
               </div>
-              <div className="flex flex-col   z-10  py-10 w-[40%] ">
+              <div
+                className="flex flex-col py-10 h-full   z-10 rounded-tl-2xl px-10 md:px-0  absolute sm:static w-full    sm:gap-5 "
+                // style={{
+                //   backdropFilter: "blur(10px)",
+                // }}
+              >
                 <div className="flex gap-2 ">
                   <Badge
-                    variant={"secondary"}
-                    className="text-[10px] rounded-full"
+                    variant={"outline"}
+                    className="text-[10px] rounded-full text-white border border-zinc-50/20"
                   >
                     {data.sub_group_name}
                   </Badge>
                 </div>
 
-                <h1 className="text-shadow leading-snug  mt-3 z-10  text-2xl md:text-3xl  break-keep whitespace-pre-line ">
+                <h1 className="text-shadow leading-relaxed sm:leading-snug text-zinc-50 sm:text-foreground  mt-3 z-10  max-w-[400px] md:max-w-full text-[clamp(1.2rem,5vw,1.7rem)] sm:text-2xl lg:text-3xl  break-keep whitespace-pre-line ">
                   {data.post_title}
                 </h1>
+                <div className="mt-auto sm:mt-0  w-full">
+                  <p className="text-sm text-right sm:text-left line-clamp-3 ml-auto sm:ml-0 max-w-[250px] sm:line-clamp-3 sm:text-sm leading-relaxed z-10 mt-6  text-zinc-100/70  md:max-w-full  sm:text-muted-foreground md:w-[90%]">
+                    {data.post_description}
+                  </p>
+                </div>
 
-                <p className="text-sm  line-clamp-3 md:text-sm leading-relaxed z-10 mt-6   opacity-90 text-muted-foreground">
-                  {data.post_description}
-                </p>
-
-                <div className="text-xs  flex gap-3 z-1  mt-auto">
+                <div className="text-xs hidden sm:flex gap-3 z-1  mt-auto">
                   <Button className="text-xs p-5 px-6">Read More</Button>
                 </div>
               </div>

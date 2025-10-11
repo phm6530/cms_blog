@@ -11,7 +11,6 @@ class Database {
 
       //
       if (process.env.STATUS === "DEV") {
-        console.log("local server : connection");
         connection = postgres({
           host: process.env.POSTGRES_HOST!,
           port: +process.env.POSTGRES_PORT!,

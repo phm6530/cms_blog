@@ -19,24 +19,25 @@ export default function TitleBlurAnimation({
       const tl = gsap.timeline({ defaults: { autoAlpha: 0 } });
 
       tl.from(textRefs.current, {
-        y: 50,
+        x: 50,
         autoAlpha: 0,
         stagger: 0.02,
         filter: "blur(14px)",
-        ease: "back.out",
-        duration: 0.7,
+        ease: "power3.out",
+        duration: 0.9,
       });
 
       tl.from(
         mutedTextRef.current,
         {
-          y: 20,
+          x: 20,
           autoAlpha: 0,
-          stagger: 0.04,
+          stagger: 0.02,
+          filter: "blur(14px)",
           duration: 0.6,
           ease: "power3.out",
         },
-        "-=.2"
+        "-=.7"
       );
     },
     { dependencies: [] }
@@ -44,7 +45,7 @@ export default function TitleBlurAnimation({
 
   return (
     <div className="flex flex-col items-start pt-16">
-      <div className="text-5xl">
+      <div className="md:text-5xl text-[clamp(1.2rem,9vw,3rem)]">
         {Array.from(title).map((ch, idx) => (
           <span
             key={`${ch}:${idx}`}

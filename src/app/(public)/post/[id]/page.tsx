@@ -102,7 +102,7 @@ export default async function PostDetail({
   const contents = HtmlContentNormalizer.setImgUrl(blog_contents.contents);
 
   return (
-    <div className=" mx-0 md:mx-auto w-full! md:w-auto  md:pt-0 md:grid-cols-[1fr_250px] md:gap-30 grid">
+    <div className=" mx-0 md:mx-auto w-full! md:w-auto  md:pt-0 md:grid-cols-[1fr_250px] md:gap-x-30 grid">
       {/* 본문 영역 */}
       <div className="pt-10">
         <PostVanner thumbnail_url={blog_metadata.thumbnail_url}>
@@ -154,7 +154,6 @@ export default async function PostDetail({
             </div>
           </div>
         </PostVanner>
-
         <div className="grid gap-5 md:pt-10 relative">
           {/* ------ TipTap Editor - custom lib ------ */}
           <PostView contents={contents} />
@@ -164,7 +163,7 @@ export default async function PostDetail({
           <CommentSection postId={id} />
 
           {/* ---- post Tool bar ----- */}
-        </div>
+        </div>{" "}
       </div>
 
       <div className=" hidden md:block relative ">
@@ -180,6 +179,7 @@ export default async function PostDetail({
           />
         </div>
       </div>
+
       <div className="col-span-full">
         <Suspense fallback={<LoadingSpiner />}>
           <RelatedPosts
@@ -189,7 +189,6 @@ export default async function PostDetail({
           />
         </Suspense>
       </div>
-      {/* Post Toc */}
     </div>
   );
 }

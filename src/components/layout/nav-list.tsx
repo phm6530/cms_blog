@@ -5,9 +5,7 @@ import { Menu, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { Button } from "../ui/button";
 
 export enum BREAKPOINT {
   SM = 640,
@@ -23,7 +21,7 @@ export default function NavList({
   categories: Array<{ label: string; postCnt: number }>;
 }) {
   const isDesktop = useMediaQuery(`(min-width:${BREAKPOINT.MD}px)`);
-  const session = useSession();
+
   const [toggle, setToggle] = useState<boolean>(false);
   const [backDropTarget, setBackDropTarget] =
     useState<HTMLElement | null | null>(null);
@@ -118,25 +116,6 @@ export default function NavList({
         >
           GUEST BOARD
         </Link> */}
-
-        {session.data?.user && (
-          <>
-            <Button
-              asChild
-              className="text-xs p-0 md:border-0! border"
-              variant={"ghost"}
-            >
-              <Link href={"/admin"}>관리자 페이지</Link>
-            </Button>
-            <Button
-              onClick={async () => await signOut()}
-              className="text-xs p-0"
-              variant={"ghost"}
-            >
-              로그아웃
-            </Button>
-          </>
-        )}
       </div>
 
       {/* Portal */}

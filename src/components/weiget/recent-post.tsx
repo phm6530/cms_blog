@@ -4,6 +4,7 @@ import { PostItemModel } from "@/type/post.type";
 import PostItem from "@/app/(public)/category/post-list-item";
 import VisitorWigetV2 from "./visitor-weiget-v2";
 import Link from "next/link";
+import { ObserverGSAPWrapper } from "../ani-components/observer-wrapper";
 
 type PortfolioProject = {
   title: string;
@@ -56,7 +57,7 @@ export default async function RecentPost() {
   return (
     <section className="flex flex-col ">
       {/* 상단 위젯 박스 */}
-      <div className="grid grid-cols-2 gap-10 bg-secondary/40 p-5 mb-20 mt-5 rounded-xl">
+      <div className="grid md:grid-cols-2 gap-10 bg-secondary/40 p-5 mb-20 mt-5 rounded-xl">
         {/* 방문자 위젯 */}
         <div className="flex flex-col gap-4">
           <VisitorWigetV2 />
@@ -66,14 +67,14 @@ export default async function RecentPost() {
         </div>
 
         {/* Portfolio Widget */}
-        <div className="flex flex-col gap-2 border-l pl-5">
-          <div className="grid grid-cols-2 gap-3 py-2">
+        <div className="flex flex-col gap-2  ">
+          <div className="grid grid-cols-2 gap-5 py-2">
             {portfolio.map((proj, idx) => (
               <Link
                 key={idx}
                 href={proj.url}
                 target="_blank"
-                className="flex flex-col group"
+                className="flex flex-col group border-l pl-3"
               >
                 <span className="font-medium group-hover:underline group-hover:text-indigo-300 text-sm ">
                   {proj.title}
@@ -88,17 +89,19 @@ export default async function RecentPost() {
       </div>
 
       {/* 최근 포스팅 */}
-      <div className="flex flex-col">
+      <div className="flex flex-col mb-8">
         <h2 className="col-span-full mb-4 text-lg ">최근 포스팅</h2>
-        <div className="grid grid-cols-3 gap-8 space-y-12">
+        <div className=" grid md:grid-cols-2 lg:grid-cols-3 w-full  gap-5 md:gap-10 relative">
           {!posts?.length ? (
             <div className="col-span-full text-sm text-muted-foreground">
               등록된 콘텐츠가 없습니다.
             </div>
           ) : (
-            posts
-              .slice(0, 12)
-              .map((item) => <PostItem {...item} key={item.post_id} />)
+            posts.slice(0, 12).map((item) => (
+              <ObserverGSAPWrapper key={item.post_id}>
+                <PostItem {...item} />
+              </ObserverGSAPWrapper>
+            ))
           )}
         </div>
       </div>

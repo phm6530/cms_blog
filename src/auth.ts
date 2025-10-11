@@ -46,8 +46,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
           );
 
-          console.log(response);
-
           const data = await response.json();
 
           if (!response.ok) {

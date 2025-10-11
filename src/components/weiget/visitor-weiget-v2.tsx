@@ -28,11 +28,11 @@ export default function VisitorWigetV2() {
       ) : (
         <div className="flex items-center gap-3 text-lg ">
           <span className="text-sm text-muted-foreground">안녕하세요?</span>
-          <span>
+          <span className="tracking-wide">
             오늘{" "}
             <span className="font-semibold text-red-500 underline">
               {data?.result.today_cnt ?? 0}
-            </span>{" "}
+            </span>
             번째 방문자시네요!
           </span>
         </div>

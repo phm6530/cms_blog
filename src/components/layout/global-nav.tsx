@@ -3,9 +3,12 @@ import { notFound } from "next/navigation";
 import NavList from "./nav-list";
 import HeaderNav from "./header-nav";
 import getCategories from "@/service/get-category";
+import { auth } from "@/auth";
+import GlobalNavAdmin from "./global-nav-admin";
 
 export default async function GlobalNav() {
   const response = await getCategories();
+  const session = await auth();
 
   if (!response) {
     notFound();
@@ -21,6 +24,9 @@ export default async function GlobalNav() {
         backdropFilter: "blur(20px)",
       }}
     >
+      {/* 관리자 Nav */}
+      {session?.user && session.user.role === "super" && <GlobalNavAdmin />}
+
       <div className="grid-layout flex  justify-between items-center ">
         <Link href={"/"}>
           <h1 className=" text-xl md:text-xl font-bold font-SUIT-Regular pr-26">

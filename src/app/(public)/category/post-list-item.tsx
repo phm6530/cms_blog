@@ -34,15 +34,15 @@ export const PostItem = forwardRef<
         <div
           ref={ref}
           className={cn(
-            " border-l-indigo-500 flex  group cursor-pointer  flex-col  gap-5 invisible",
+            " border-l-indigo-500 grid group cursor-pointer   gap-5 items-center",
 
             thumbnail_url &&
-              "grid-cols-[minmax(0,5fr)_minmax(100px,2fr)] group",
+              "grid-cols-[minmax(120px,2fr)_minmax(0,5fr)] md:grid-cols-1  group ",
             className
           )}
         >
           {thumbnail_url && (
-            <div className="w-full relative overflow-hidden rounded-xl group aspect-[16/10]">
+            <div className="w-full relative overflow-hidden rounded-xl group md:aspect-[16/10] aspect-[1/1]">
               <div className="w-full h-full ml-auto absolute inset-0  transition-all group-hover:scale-110">
                 <div className="absolute inset-0 z-1 bg-gradient-to-b from-zinc-950/0 to-zinc-50/20 opacity-0 group-hover:opacity-100 transition-all"></div>
                 <Image
@@ -56,15 +56,15 @@ export const PostItem = forwardRef<
             </div>
           )}
 
-          <div className="flex flex-col gap-2 py-1 ">
-            <div className="flex gap-3 mb-2">
-              <Badge variant={"secondary"} className="text-[10px] rounded-full">
+          <div className="flex flex-col gap-2 py-3 ">
+            <div className="flex gap-2 mb-2 items-center">
+              <Badge
+                variant={"secondary"}
+                className="text-[10px] px-2 py-0.5 rounded-md font-medium"
+              >
                 {sub_group_name}
               </Badge>
-              <div className="relative inline-flex items-center justify-center">
-                {/* 실제 Badge 내용 */}
-                {DateUtils.isNew(created_at) && <BadgeNew />}
-              </div>
+              {DateUtils.isNew(created_at) && <BadgeNew />}
             </div>
 
             <p className="group-hover:underline text-base md:text-base tracking-tight">
@@ -78,10 +78,10 @@ export const PostItem = forwardRef<
             <p className="line-clamp-2 text-sm  text-muted-foreground leading-5 tracking-tight md:mb-4 break-words">
               {post_description}
             </p>
-            <div className="text-xs text-muted-foreground mt-1 flex gap-3 ">
+            <div className="text-xs text-muted-foreground mt-3 flex gap-3 ">
               <PostStats comment_cnt={comment_count} like_cnt={like_cnt ?? 0} />
 
-              <span className="border-l-2 pl-3 text-xs">
+              <span className=" text-xs ml-auto">
                 {DateUtils.dateFormatKR(created_at, "YY. MM. DD")}
               </span>
             </div>

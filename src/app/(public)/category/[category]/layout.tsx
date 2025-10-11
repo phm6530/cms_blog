@@ -2,11 +2,12 @@ import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PostListNav from "../post-list-nav";
-import SearchInput from "@/components/ui/search-input";
 import { auth } from "@/auth";
 import { Plus } from "lucide-react";
 import getCategories from "@/service/get-category";
 import TitleBlurAnimation from "@/components/ani-components/title-blur-animation";
+import GsapListFadeIn from "./_components/gsap-list-fadein";
+
 // import NavCategories from "@/components/nav-categories";
 
 // export async function generateStaticParams() {
@@ -54,11 +55,8 @@ export default async function Layout({
 
   return (
     <>
-      <div className=" md:hidden  mt-4">
-        <SearchInput name="keyword" />
-      </div>
       <div className="mt-auto   items-end  w-full">
-        <div className="flex flex-col items-start pt-16 pb-2">
+        <div className="flex flex-col items-start pt-12 pb-2">
           <TitleBlurAnimation
             title={
               categoryName.slice(0, 1).toUpperCase() + categoryName.slice(1)
@@ -75,7 +73,7 @@ export default async function Layout({
                 <span className="text-[.3em]">{curSubCategory}</span>
               </>
             )}
-          </div> */}
+          </div> */}{" "}
           {session?.user && (
             <Button className=" text-xs mt-4 px-10" asChild>
               <Link className="flex" href={"/write"}>
@@ -89,7 +87,9 @@ export default async function Layout({
       </div>
 
       {/* list - Wrapper */}
-      <div className="py-10">{children}</div>
+      <GsapListFadeIn>
+        <div className="py-10">{children}</div>
+      </GsapListFadeIn>
     </>
   );
 }

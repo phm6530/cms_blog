@@ -10,6 +10,7 @@ import { PostItemModel } from "@/type/post.type";
 import { useEffect, useRef } from "react";
 import LoadingSpinerV2 from "@/components/ui/loading-spinner-v2";
 import PostItemSkeleton from "../../category/post-item-skeleton";
+import { ObserverGSAPWrapper } from "@/components/ani-components/observer-wrapper";
 
 export default function Keyword() {
   const { keyword } = useParams();
@@ -113,12 +114,13 @@ export default function Keyword() {
                       flatPageDatas?.map((item, idx) => {
                         const isLast = flatPageDatas.length - 2 === idx;
                         return (
-                          <PostItem
-                            {...item}
-                            key={`${item?.post_id}-${idx}`}
-                            keyword={decodeURIComponent(keyword as string)}
-                            ref={isLast ? ref : undefined}
-                          />
+                          <ObserverGSAPWrapper key={`${item?.post_id}-${idx}`}>
+                            <PostItem
+                              {...item}
+                              keyword={decodeURIComponent(keyword as string)}
+                              ref={isLast ? ref : undefined}
+                            />
+                          </ObserverGSAPWrapper>
                         );
                       })
                     )}

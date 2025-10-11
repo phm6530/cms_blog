@@ -34,23 +34,24 @@ export default function PostListNav({
   return (
     <>
       {/* 모바일 */}
-      {/* <Carousel className="md:hidden block" opts={{ dragFree: true }}>
-        <CarouselContent className="pl-5">
-          {subCategories.map((group, idx) => {
+      <Carousel className="md:hidden block pt-10" opts={{ dragFree: true }}>
+        <CarouselContent className="pl-4 pr-4">
+          {navArr.map((group, idx) => {
             const href =
               idx === 0
-                ? `/category/${curCategory}`
-                : `/category/${curCategory}/${group.subGroupName}`;
+                ? `/category/${categoryProps.name}`
+                : `/category/${categoryProps.name}/${group.subGroupName}`;
 
             const isActive =
-              (idx === 0 && !curSubGroup) || curSubGroup === group.subGroupName;
+              (idx === 0 && groupSegment === undefined) ||
+              group.subGroupName === decodeURIComponent(groupSegment ?? "");
 
             return (
               <CarouselItem
-                key={group.id}
+                key={`${group.id}:${idx}`}
                 className={cn(
-                  "basis-auto shrink-0 pl-2",
-                  idx === subCategories.length - 1 && "mr-4"
+                  "basis-auto shrink-0",
+                  idx === 0 ? "pl-1" : "pl-2"
                 )}
               >
                 <Link
@@ -69,7 +70,7 @@ export default function PostListNav({
             );
           })}
         </CarouselContent>
-      </Carousel> */}
+      </Carousel>
 
       {/* 데스크탑 */}
       <section className="w-full  mt-8 hidden md:block">
@@ -88,17 +89,16 @@ export default function PostListNav({
 
             return (
               <React.Fragment key={`${group.id}:${idx}`}>
-                <Link href={href} className={cn("transition-all")}>
-                  <span
-                    className={cn(
-                      "transition-all text-sm",
-                      isActive
-                        ? " text-foreground underline "
-                        : "text-muted-foreground "
-                    )}
-                  >
-                    {group.subGroupName}
-                  </span>
+                <Link
+                  href={href}
+                  className={cn(
+                    "transition-all text-sm hover:text-foreground",
+                    isActive
+                      ? " text-foreground underline "
+                      : "text-muted-foreground "
+                  )}
+                >
+                  <span>{group.subGroupName}</span>
                   <span className="opacity-40 ml-1.5 text-xs">
                     ({group.postCount})
                   </span>
