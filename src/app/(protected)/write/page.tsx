@@ -33,7 +33,6 @@ export default async function Page(props: {
   if (!response) {
     notFound();
   }
-  console.log(response);
 
   return (
     <>

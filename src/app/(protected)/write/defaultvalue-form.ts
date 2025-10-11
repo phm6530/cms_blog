@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { wirtePostSchema } from "./schema";
 import { POST_STATUS } from "@/type/constants";
-import { BlogDetailResponse } from "@/type/blog.type";
 import { HtmlContentNormalizer } from "@/util/baseurl-slice";
+import getPostItem from "@/app/(public)/post/[id]/action/page-service";
 
 const defaultValues: z.infer<typeof wirtePostSchema> = {
   title: "",
@@ -17,7 +17,9 @@ const defaultValues: z.infer<typeof wirtePostSchema> = {
   status: POST_STATUS.PUBLISHED,
 };
 
-export const setDefaultValues = (editData: BlogDetailResponse | undefined) => {
+export const setDefaultValues = (
+  editData: Awaited<ReturnType<typeof getPostItem>> | undefined
+) => {
   return {
     ...(!!editData
       ? {

@@ -29,6 +29,7 @@ type BlogSubGroup = {
   group_id: number;
   default_thum: string | null;
 };
+
 export interface BlogDetailResponse {
   blog_metadata: BlogMetadata;
   blog_contents: BlogContents;

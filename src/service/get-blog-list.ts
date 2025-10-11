@@ -6,7 +6,7 @@ import {
   commentSchema,
   pinnedPostSchema,
 } from "@/db/schema";
-import { and, desc, eq, ilike, lt, lte, not, sql } from "drizzle-orm";
+import { and, desc, eq, ilike, lt, not, sql } from "drizzle-orm";
 
 type GetBlogList = (args: {
   categoryTag: string | null;
