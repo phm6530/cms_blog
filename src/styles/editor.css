@@ -1316,7 +1316,7 @@ code.hljs {
   font-size: 0.75rem;
 }
 .tiptap h1 {
-  font-size: calc(2.15rem * var(--font-scale));
+  font-size: calc(2rem * var(--font-scale));
 }
 .tiptap h2 {
   font-size: calc(1.75rem * var(--font-scale));

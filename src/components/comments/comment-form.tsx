@@ -126,11 +126,11 @@ export default function CommentForm({
           ) : (
             <>
               {!session.data?.user ? (
-                <div className="flex gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   {/* id */}
                   <div
                     className={cn(
-                      "focus-within:border-muted-foreground border px-2 py-1 rounded-lg w-full grid grid-cols-[1fr_auto] items-center gap-3",
+                      "focus-within:border-muted-foreground border  rounded-lg  grid  items-center",
                       form.formState.errors.guest && "border-red-300"
                     )}
                   >
@@ -138,21 +138,21 @@ export default function CommentForm({
                       placeholder="닉네임"
                       type="text"
                       autoComplete="off"
-                      className="resize-none focus:outline-0 placeholder:text-xs text-sm p-2"
+                      className="resize-none focus:outline-0 placeholder:text-xs text-sm p-2 w-full"
                       {...form.register("guest")}
                     ></input>
                   </div>
 
                   <div
                     className={cn(
-                      "focus-within:border-muted-foreground border px-2 py-1 rounded-lg w-full grid grid-cols-[1fr_auto] items-center gap-3",
+                      "focus-within:border-muted-foreground border   rounded-lg  grid  items-center",
                       form.formState.errors.password && "border-red-300"
                     )}
                   >
                     <input
                       placeholder="비밀번호"
                       type="password"
-                      className="resize-none focus:outline-0 placeholder:text-xs text-sm p-2"
+                      className="resize-none focus:outline-0 placeholder:text-xs text-sm p-2  w-full"
                       {...form.register("password")}
                     />
                   </div>
@@ -188,7 +188,7 @@ export default function CommentForm({
           <div className="w-full">
             <div
               className={cn(
-                "focus-within:border-muted-foreground border px-2 py-1 rounded-lg w-full grid grid-cols-[1fr_auto] items-center gap-3",
+                "focus-within:border-muted-foreground border px-1 py-1 rounded-lg w-full grid grid-cols-[1fr_auto] items-center gap-3",
                 form.formState.errors.comment && "border-red-300"
               )}
             >
