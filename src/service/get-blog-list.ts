@@ -116,9 +116,11 @@ export default async function getBlogList({
     searchCnt = row.count;
   }
 
+  const hasNext = rows.length > limit;
+
   return {
     list: flatRows,
     searchCnt,
-    rowsCnt: rows.length,
+    isNextPage: hasNext,
   };
 }

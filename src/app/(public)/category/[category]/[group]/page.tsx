@@ -6,7 +6,7 @@ import CategoryPage from "../_components/page";
 const getCachedList = (categoryTag: string, groupTag: string) =>
   unstable_cache(
     async () => {
-      const { list, rowsCnt } = await getBlogList({
+      const { list, isNextPage } = await getBlogList({
         groupTag,
         categoryTag,
         permission: false,
@@ -15,7 +15,7 @@ const getCachedList = (categoryTag: string, groupTag: string) =>
         limit: LIMIT_CNT.POST_LIST,
         curPostId: null,
       });
-      return { list, rowsCnt };
+      return { list, isNextPage };
     },
     [`${REVALIDATE.POST.LIST}:${categoryTag}:${groupTag}`],
     { tags: [REVALIDATE.POST.LIST] }
@@ -28,7 +28,7 @@ export default async function Page({
   const { category, group } = await params;
   const categoryTag = decodeURI(category);
   const groupTag = decodeURI(group);
-  const { list, rowsCnt } = await getCachedList(categoryTag, groupTag);
+  const { list, isNextPage } = await getCachedList(categoryTag, groupTag);
 
-  return <CategoryPage initalData={list} initalIsNextPage={rowsCnt > 10} />;
+  return <CategoryPage initalData={list} initalIsNextPage={isNextPage} />;
 }

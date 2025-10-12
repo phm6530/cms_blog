@@ -78,6 +78,8 @@ export default function CategoryPage({
       enabled: false,
     });
 
+  console.log(data.pages);
+
   useEffect(() => {
     if (!ref.current) return;
 
@@ -131,9 +133,9 @@ export default function CategoryPage({
       )}
 
       {isFetching && (
-        <>
+        <div className="col-span-full">
           <LoadingSpinerV2 text="loading ..." />
-        </>
+        </div>
       )}
 
       {/* //InfinityScrollTriger */}

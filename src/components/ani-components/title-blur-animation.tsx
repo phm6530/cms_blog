@@ -14,6 +14,7 @@ export default function TitleBlurAnimation({
   const textRefs = useRef<HTMLSpanElement[]>([]);
   const mutedTextRef = useRef<HTMLDivElement>(null);
 
+  console.log("???"); // 여기 왜안뜸?
   useGSAP(
     () => {
       const tl = gsap.timeline({ defaults: { autoAlpha: 0 } });

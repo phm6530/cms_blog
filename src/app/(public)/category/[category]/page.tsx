@@ -7,7 +7,7 @@ import { LIMIT_CNT, REVALIDATE } from "@/type/constants";
 const getCachedList = (categoryTag: string) =>
   unstable_cache(
     async () => {
-      const { list, rowsCnt } = await getBlogList({
+      const { list, isNextPage } = await getBlogList({
         groupTag: null,
         categoryTag,
         permission: false,
@@ -16,7 +16,7 @@ const getCachedList = (categoryTag: string) =>
         limit: LIMIT_CNT.POST_LIST,
         curPostId: null,
       });
-      return { list, rowsCnt };
+      return { list, isNextPage };
     },
     [`${REVALIDATE.POST.LIST}:${categoryTag}:all`],
     { tags: [REVALIDATE.POST.LIST] }
@@ -29,7 +29,7 @@ export default async function Page({
 }) {
   const { category } = await params;
   const categoryTag = decodeURI(category);
-  const { list, rowsCnt } = await getCachedList(categoryTag);
+  const { list, isNextPage } = await getCachedList(categoryTag);
 
-  return <CategoryPage initalData={list} initalIsNextPage={rowsCnt > 10} />;
+  return <CategoryPage initalData={list} initalIsNextPage={isNextPage} />;
 }

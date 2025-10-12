@@ -52,6 +52,7 @@ export default async function Layout({
 
   const { subGroups, ...rest } = { ...categories[categoryName] };
   const categoryProps = rest;
+  console.log("test");
 
   return (
     <>

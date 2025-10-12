@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
   const limit = limitQuery ? Number(limitQuery) : LIMIT_CNT.POST_LIST;
 
   // where..
-  const { list, searchCnt, rowsCnt } = await getBlogList({
+  const { list, searchCnt, isNextPage } = await getBlogList({
     groupTag,
     categoryTag,
     permission: session?.user.role === "super", // 비밀글은 나 만봄
@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
       success: true,
       result: {
         list,
-        isNextPage: rowsCnt > limit,
+        isNextPage,
         ...(!!searchKeyword && { total: searchCnt }),
       },
     },
