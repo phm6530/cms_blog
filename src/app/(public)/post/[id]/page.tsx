@@ -131,7 +131,7 @@ export default async function PostDetail({
               </div>
               <h1
                 className={cn(
-                  "text-[clamp(1.6rem,4vw,2rem)] lg:text-3xl mb-2 text-shadow-zinc-950 ",
+                  "text-[clamp(1.6rem,5vw,2rem)] lg:text-3xl mb-2 text-shadow-zinc-950 ",
                   blog_metadata.thumbnail_url &&
                     " leading-snug break-keep    whitespace-pre-line text-zinc-50"
                 )}

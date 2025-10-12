@@ -1,5 +1,5 @@
 "use client";
-import { REVALIDATE } from "@/type/constants";
+import { LIMIT_CNT, REVALIDATE } from "@/type/constants";
 import { AdminPostItemModel } from "@/type/post.type";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import PostListItem from "../components/post-list-item";
@@ -22,7 +22,7 @@ export default function Page() {
     useInfiniteQuery({
       queryKey: [REVALIDATE.POST.LIST, category, isSubGroup, keyword],
       queryFn: async ({ pageParam }) => {
-        const limit = 10;
+        const limit = LIMIT_CNT.POST_LIST;
         const cursor = pageParam !== 0 ? pageParam : null;
 
         let baseUrl = `api/post?category=${category}&group=${isSubGroup}`;

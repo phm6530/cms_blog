@@ -119,12 +119,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                   </span>
                 </div>
               </div>
-              <div
-                className="flex flex-col py-12 h-full   z-10 rounded-tl-2xl px-10 md:px-0  absolute pointer-events-none sm:pointer-events-auto sm:static w-full    sm:gap-5 "
-                // style={{
-                //   backdropFilter: "blur(10px)",
-                // }}
-              >
+              <div className="flex flex-col py-12 h-full   z-10 rounded-tl-2xl px-10 md:px-0  absolute pointer-events-none sm:pointer-events-auto sm:static w-full    sm:gap-5 ">
                 <div className="flex gap-2 ">
                   <Badge variant={"secondary"} className="text-[10px] ">
                     {data.sub_group_name}
@@ -150,7 +145,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
           ))}
         </CarouselContent>
         <CarouselPrevious className="left-[-17px] md:flex hidden  bg-background! border-transparent! hover:border-border!" />
-        <CarouselNext className="right-[-22px] md:flex hidden bg-background! border-transparent! hover:border-border!" />
+        <CarouselNext className="right-[-17px] md:flex hidden bg-background! border-transparent! hover:border-border!" />
       </Carousel>
       <div className="mt-3 flex gap-1 justify-center h-3">
         {Array.from({ length: count }).map((_, idx) => {

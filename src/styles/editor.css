@@ -1003,12 +1003,12 @@ code.hljs {
 :root {
   --tt-toolbar-height: 2.75rem;
   --tt-safe-area-bottom: env(safe-area-inset-bottom, 0px);
-  --tt-toolbar-bg-color: var(--white);
+  --tt-toolbar-bg-color: var(--background);
   --tt-toolbar-border-color: var(--tt-gray-light-a-100);
 }
 
 .dark {
-  --tt-toolbar-bg-color: var(--black);
+  --tt-toolbar-bg-color: var(--background);
   --tt-toolbar-border-color: var(--tt-gray-dark-a-50);
 }
 
@@ -1357,7 +1357,11 @@ code.hljs {
 .tiptap a {
   color: var(--tt-brand-color-400);
   cursor: pointer;
+  word-break: break-all;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
+
 .tiptap a:hover {
   color: var(--tt-brand-color-700);
 }
