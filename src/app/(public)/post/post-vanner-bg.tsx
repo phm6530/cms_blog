@@ -21,7 +21,7 @@ export default function PostVanner({
         after:bg-gradient-to-b 
         `,
         !!thumbnail_url
-          ? " after:via-zinc-500/30 after:to-zinc-900/80 p-1  sm:px-12 aspect-[16/18] sm:aspect-[16/12]   text-white"
+          ? " after:via-zinc-500/30 after:to-zinc-900/80 p-1  sm:px-12 aspect-[16/20] sm:aspect-[16/12]   text-white"
           : ""
       )}
     >
