@@ -1,5 +1,5 @@
 export enum LIMIT_CNT {
-  POST_LIST = 10,
+  POST_LIST = 9,
 }
 
 export enum POST_KEY {
