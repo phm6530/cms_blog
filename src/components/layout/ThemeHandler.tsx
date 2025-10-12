@@ -18,7 +18,7 @@ export default function ThemeHandler() {
     return (
       <Button
         variant={"outline"}
-        className="size-10 rounded-full md:ml-0 ml-auto bg-transparent!"
+        className="size-8 rounded-full md:ml-0 ml-auto bg-transparent!"
         disabled
       ></Button>
     );
@@ -29,8 +29,7 @@ export default function ThemeHandler() {
   return (
     <Button
       onClick={() => setTheme(curTheme)}
-      variant={"default"}
-      className="size-10 rounded-full md:ml-0 ml-auto "
+      className="size-8 order-1 mr-1"
       aria-label={`Switch to ${curTheme} mode`}
     >
       {curTheme === "dark" ? (
