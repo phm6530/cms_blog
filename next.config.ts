@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  compiler: {
-    removeConsole: !(process.env.STATUS === "DEV"),
-  },
+  // compiler: {
+  //   removeConsole: !(process.env.STATUS === "DEV"),
+  // },
 
   experimental: {
     serverActions: {
