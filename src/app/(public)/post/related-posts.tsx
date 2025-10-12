@@ -49,7 +49,7 @@ export default async function RelatedPosts({
                 <Link
                   href={`${e.post_id}`}
                   key={`${e.post_id}:${idx}`}
-                  className={idx === 3 ? "hidden md:block" : ""}
+                  className={idx === 3 ? "block md:hidden" : ""}
                 >
                   <article className="flex flex-col gap-3">
                     {e.thumbnail_url ? (
