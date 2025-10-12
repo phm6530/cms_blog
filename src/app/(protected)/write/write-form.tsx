@@ -18,7 +18,7 @@ import { z } from "zod";
 import PostTitleField from "@/components/shared/post-title-Field";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import withClientFetch from "@/util/withClientFetch";
-import useThrottling from "@/hook/useThrottling";
+import useThrottling from "@/hooks/useThrottling";
 import { ENV, HTTP_METHOD, POST_STATUS, WRITE_MODE } from "@/type/constants";
 import { v4 as uuidv4 } from "uuid";
 import transformHtmlToPlainText from "@/util/domParse";

@@ -57,7 +57,7 @@ export default function CommentList({ postId }: { postId: string }) {
     <section className="mt-5">
       <div className="">
         {flatData.length === 0 ? (
-          <div className="py-30 text-center border-b">
+          <div className="py-30 text-center ">
             <p className="text-base md:text-base">
               아직 등록된 댓글이 없습니다.
             </p>

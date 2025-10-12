@@ -1,5 +1,5 @@
 "use client";
-import useThrottling from "@/hook/useThrottling";
+import useThrottling from "@/hooks/useThrottling";
 import { cn } from "@/lib/utils";
 import { SearchIcon } from "lucide-react";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -45,7 +45,7 @@ export default function SearchInput({
     <form onSubmit={searchHandler} className={cn("ml-auto", className)}>
       <div
         className={cn(
-          `rounded-full bg-muted-foreground/5  overflow-hidden 
+          `rounded-full bg-muted-foreground/7  overflow-hidden 
        flex flex-1`,
           className
         )}

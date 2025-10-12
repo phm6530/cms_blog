@@ -1,6 +1,6 @@
 "use client";
 
-import useMediaQuery from "@/hook/useMediaQuery";
+import useMediaQuery from "@/hooks/useMediaQuery";
 import { Menu } from "lucide-react";
 import { ReactNode, useLayoutEffect, useState } from "react";
 import { Button } from "../ui/button";

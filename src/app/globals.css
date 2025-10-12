@@ -1,9 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "../styles/utility.css";
+@import "../styles/font.css";
+@import "../styles/keyframes.css";
 
-:root {
-  --font-scale: 1;
-}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -38,13 +38,22 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+
+  /* 반경 */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* 폰트 */
+  --font-pretendard: "Pretendard Variable";
+  --font-Poppins: "Poppins";
+  --font-SUIT-Regular: "SUIT-Regular";
+  --font-NanumSquare: "NanumSquare", sans-serif;
 }
 
 :root {
+  --font-scale: 1;
   --radius: 0.5rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -122,218 +131,24 @@
     @apply border-border outline-ring/50;
   }
 
-  p {
-    @apply text-foreground/90 text-base leading-relaxed tracking-tight;
-  }
-
   html {
     @apply md:text-base text-sm;
   }
+
   body {
-    @apply bg-background text-foreground  font-SUIT-Regular;
+    @apply bg-background text-foreground font-SUIT-Regular;
+  }
+
+  p {
+    @apply text-foreground/90 text-base leading-relaxed tracking-tight;
   }
 
   button {
     cursor: pointer;
   }
+
   textarea::placeholder,
   input::placeholder {
     @apply text-xs md:text-sm;
   }
-
-  @keyframes fadeIn {
-    0% {
-      transform: translateY(-30px);
-    }
-    100% {
-      transform: translateY(0px);
-    }
-  }
-
-  @keyframes close {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-
-  @keyframes opacity {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes bgScaleInit {
-    0% {
-      transform: scale(1);
-      opacity: 0;
-    }
-    100% {
-      transform: scale(1.2);
-      opacity: 1;
-    }
-  }
-
-  @keyframes bgScaleLoop {
-    0% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  .animate-fadein {
-    animation: fadeIn 0.5s linear infinite alternate;
-  }
-
-  .animate-close {
-    animation: close 0.5s 0.5s forwards;
-  }
-
-  @keyframes opacity {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  .animate-opacity {
-    opacity: 0;
-    animation: opacity 0.5s linear forwards;
-  }
-
-  @font-face {
-    font-family: "Pretendard Variable";
-    font-style: normal;
-    font-display: swap;
-    src: url("../../public/font/PretendardVariable.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "Montserrat";
-    src: url("../../public/font/Montserrat-VariableFont_wght.woff2")
-      format("woff2");
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "Montserrat";
-    src: url("../../public/font/Montserrat-Regular.woff2") format("woff2");
-    font-weight: normal;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: "Montserrat";
-    src: url("../../public/font/Montserrat-Bold.woff2") format("woff2");
-    font-weight: bold;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "Poppins";
-    src: url("../../public/font/Poppins-Regular.woff2") format("woff2");
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "Poppins";
-    src: url("../../public/font/Poppins-Bold.woff2") format("woff2");
-    font-weight: bold;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "SUIT-Regular";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2")
-      format("woff2");
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  /*Mobile */
-  .nav {
-    @apply flex-col;
-  }
-
-  .my-transition {
-    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
-      left 0.75s cubic-bezier(0.77, 0.2, 0.05, 1);
-  }
-
-  .nav-pc {
-    @apply flex-row!;
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  .scrollbar-hide {
-    -ms-overflow-style: none; /* IE/Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-}
-
-@theme {
-  --animate-wiggle: wiggle 0.5s ease;
-  --animate-fadein: fadeIn 0.5s ease;
-  --animate-close: close 0.5s 0.5s ease;
-  --animate-opacity: opacity 1.4s ease forwards;
-  --animate-bgscale: bgScale 5s cubic-bezier(0.2, 0.56, 0.38, 0.41) infinite
-    forwards alternate;
-
-  @keyframes fadeIn {
-    0% {
-      transform: translateY(30px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0px);
-      opacity: 1;
-    }
-  }
-
-  @keyframes wiggle {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  --font-pretendard: "Pretendard Variable";
-  --font-Poppins: "Poppins";
-  --font-SUIT-Regular: "SUIT-Regular";
-  --font-NanumSquare: "NanumSquare", sans-serif;
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-/* Main Layout */
-@utility grid-layout {
-  @apply max-w-[1100px] mx-auto w-[calc(100%-2.5rem)] md:w-full md:px-5;
-}
-
-@utility w-calc-* {
-  width: calc(100% - --spacing(--value(integer)));
-  width: calc(100% - --value([length]));
 }

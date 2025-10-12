@@ -41,7 +41,7 @@ export default async function RelatedPosts({
   return (
     <>
       {response.result?.list.length !== 0 && (
-        <>
+        <div className=" border-t">
           <h1 className="mb-4 mt-10"> 관련 게시물</h1>
           <section className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-10 mb-10">
             {response.result?.list.map((e, idx) => {
@@ -75,7 +75,7 @@ export default async function RelatedPosts({
               );
             })}
           </section>
-        </>
+        </div>
       )}
     </>
   );

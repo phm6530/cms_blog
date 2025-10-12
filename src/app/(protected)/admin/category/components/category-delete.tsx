@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
-import useThrottling from "@/hook/useThrottling";
+import useThrottling from "@/hooks/useThrottling";
 import { deleteCategory } from "../action/delete-category";
 
 /**

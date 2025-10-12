@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { insertCategory } from "../action/insert-category";
 import { DialogFooter } from "@/components/ui/dialog";
-import useThrottling from "@/hook/useThrottling";
+import useThrottling from "@/hooks/useThrottling";
 
 const categorySchema = z.object({
   categoryName: z.string().min(2, "카테고리 명은 최소 2글자 입력해주세요."),

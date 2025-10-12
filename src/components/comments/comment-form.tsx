@@ -1,6 +1,6 @@
 "use client";
 
-import useThrottling from "@/hook/useThrottling";
+import useThrottling from "@/hooks/useThrottling";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form } from "../ui/form";
 import { Button } from "../ui/button";

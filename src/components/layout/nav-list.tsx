@@ -1,6 +1,6 @@
 "use client";
 
-import useMediaQuery from "@/hook/useMediaQuery";
+import useMediaQuery from "@/hooks/useMediaQuery";
 import { LucideMenu, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";

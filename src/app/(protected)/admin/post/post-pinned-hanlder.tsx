@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import LoadingSpinerV2 from "@/components/ui/loading-spinner-v2";
-import useThrottling from "@/hook/useThrottling";
+import useThrottling from "@/hooks/useThrottling";
 import { cn } from "@/lib/utils";
 import { HTTP_METHOD, POST_STATUS, REVALIDATE } from "@/type/constants";
 import withClientFetch from "@/util/withClientFetch";

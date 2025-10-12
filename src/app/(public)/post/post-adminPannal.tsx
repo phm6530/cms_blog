@@ -2,7 +2,7 @@
 
 import ConfirmButton from "@/components/shared/confirm-button";
 import { Button } from "@/components/ui/button";
-import useThrottling from "@/hook/useThrottling";
+import useThrottling from "@/hooks/useThrottling";
 import { HTTP_METHOD, REVALIDATE } from "@/type/constants";
 import withClientFetch from "@/util/withClientFetch";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

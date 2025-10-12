@@ -82,7 +82,7 @@ export default function PostToc() {
   }, []);
 
   return (
-    <div className="rounded-lg">
+    <div className="rounded-lg h-[300px] overflow-y-scroll">
       <div className="flex items-center gap-2 mb-4 pb-3 border-b">
         <FileText className="w-4 h-4 text-muted-foreground" />
         <h3 className="text-sm font-semibold">목차</h3>

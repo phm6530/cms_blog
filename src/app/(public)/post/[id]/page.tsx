@@ -159,12 +159,13 @@ export default async function PostDetail({
           <PostView contents={contents} />
           {/* ---- 댓글 ----- */}
           <h1 className="text-2xl mt-20">Comments</h1>
-          <CommentSection postId={id} />s{/* ---- post Tool bar ----- */}
+          <CommentSection postId={id} />
+          {/* ---- post Tool bar ----- */}
         </div>{" "}
       </div>
 
       <div className="bottom-0 w-full fixed   lg:w-auto left-0  z-15 lg:relative  ">
-        <div className="md:sticky lg:top-50 bg-red-500!  text-left lg:min-h-[400px] ">
+        <div className="lg:sticky lg:top-50   text-left lg:min-h-[400px] ">
           <PostController
             postId={+id}
             thumbnail_url={blog_metadata.thumbnail_url}

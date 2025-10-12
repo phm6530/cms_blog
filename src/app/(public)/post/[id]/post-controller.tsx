@@ -6,11 +6,10 @@ import PostToc from "../post-toc";
 import { cn } from "@/lib/utils";
 import { DateUtils } from "@/util/date-uill";
 import { POST_STATUS } from "@/type/constants";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import PostLikeHandler from "../post-like-hanlder";
-import AdminPannal from "../post-adminPannal";
 
 export default function PostController({
   postId,
@@ -79,9 +78,9 @@ export default function PostController({
   );
 
   return (
-    <div className="flex flex-col gap-10 bg-muted">
-      {/* <div className="flex flex-col gap-6">
-       <div className="flex gap-4 items-center">
+    <div className="flex flex-col gap-10 bg-zinc-100 lg:bg-transparent">
+      <div className="flex-col gap-6 hidden lg:flex  ">
+        <div className=" flex   gap-4 items-center">
           <div
             className="size-10 shadow-2xl  border-3 border-white/50  rounded-full bg-gray-500/10 flex justify-center items-center relative  bg-cover"
             style={{
@@ -92,8 +91,8 @@ export default function PostController({
             <h1 className="text-lg">Phm_</h1>
             <p className="text-xs text-muted-foreground">@Front Developer</p>
           </div>
-        </div> 
-       <div
+        </div>
+        <div
           onClick={() => setToggle((prev) => !prev)}
           className="text-xs group p-3 rounded-full flex gap-3 items-center justify-center cursor-pointer border hover:border-zinc-400"
         >
@@ -102,19 +101,19 @@ export default function PostController({
             size={14}
             className="group-hover:rotate-180 transition-all duration-500 opacity-70 group-hover:opacity-100"
           />
-        </div> 
-      </div> */}
+        </div>
+      </div>
 
       <div className="relative transition-all duration-400 flex ">
         {/* Controller */}
         <div
           ref={controllerRef}
           className={cn(
-            "md:absolute inset-0 flex md:flex-col gap-10 grid-layout py-3 items-center justify-between",
+            "lg:absolute  inset-0 flex lg:flex-col gap-10 w-calc-8 md:w-calc-0 justify-between mx-auto py-3 ",
             toggle && "pointer-events-none"
           )}
         >
-          {/* <div className="flex gap-2 flex-col  ">
+          <div className="hidden  lg:flex gap-2 flex-col  ">
             <h2 className="text-xs text-muted-foreground">카테고리</h2>
             <div className="flex gap-1">
               <Badge variant={"secondary"}>{sub_group_name}</Badge>
@@ -125,14 +124,18 @@ export default function PostController({
                 <Badge className="rounded-full">비공개</Badge>
               )}
             </div>
-          </div> */}
+          </div>
           <div className="flex flex-col gap-2">
-            {/* <h2 className="text-xs text-muted-foreground">본문 크기</h2> */}
+            <h2 className="hidden lg:block text-xs text-muted-foreground">
+              본문 크기
+            </h2>
             <PostToolbar />
           </div>
 
           <div className="flex flex-col gap-2">
-            {/* <h2 className="text-xs text-muted-foreground">포스트 인사이트</h2> */}
+            <h2 className="hidden lg:block text-xs text-muted-foreground">
+              포스트 인사이트
+            </h2>
             <div className="flex gap-0 ">
               <div className="grid grid-cols-2 gap-2 items-center">
                 <span className="flex gap-1 items-center text-xs  size-7 justify-center text-muted-foreground rounded-lg bg-foreground/2">
