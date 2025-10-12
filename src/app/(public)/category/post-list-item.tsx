@@ -67,7 +67,7 @@ export const PostItem = forwardRef<
           )}
 
           <div className="flex flex-col gap-2 py-3 ">
-            <div className="group-hover:underline text-base md:text-base tracking-tight">
+            <div className="group-hover:underline text-[clamp(1rem,2.5vw,1.2rem)] md:text-base tracking-tight">
               {!!keyword ? (
                 <HighlightKeyword text={post_title} keyword={keyword} />
               ) : (

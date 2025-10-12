@@ -6,10 +6,11 @@ import PostToc from "../post-toc";
 import { cn } from "@/lib/utils";
 import { DateUtils } from "@/util/date-uill";
 import { POST_STATUS } from "@/type/constants";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import PostLikeHandler from "../post-like-hanlder";
+import useMediaQuery from "@/hooks/useMediaQuery";
 
 export default function PostController({
   postId,
@@ -31,6 +32,15 @@ export default function PostController({
   const controllerRef = useRef<HTMLDivElement>(null);
 
   const [toggle, setToggle] = useState<boolean>(false);
+
+  const isDesktop = useMediaQuery("(min-width:1024px)");
+
+  /** 모바일에선 TOC 필요없음 */
+  useEffect(() => {
+    if (!isDesktop) {
+      setToggle(false);
+    }
+  }, [isDesktop]);
 
   useGSAP(
     () => {
@@ -84,7 +94,7 @@ export default function PostController({
   };
 
   return (
-    <div className="flex flex-col gap-10 bg-zinc-100 lg:bg-transparent">
+    <div className="flex flex-col gap-10 bg-muted lg:bg-transparent">
       <div className="flex-col gap-6 hidden lg:flex  ">
         <div className=" flex   gap-4 items-center">
           <div
@@ -115,7 +125,7 @@ export default function PostController({
         <div
           ref={controllerRef}
           className={cn(
-            "lg:absolute  inset-0 flex lg:flex-col gap-10 w-calc-8 md:w-calc-0 justify-between mx-auto py-3 ",
+            "lg:absolute  inset-0 flex lg:flex-col gap-10 w-calc-8 lg:w-calc-0 justify-between mx-auto py-3 ",
             toggle && "pointer-events-none"
           )}
         >

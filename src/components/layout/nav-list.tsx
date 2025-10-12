@@ -1,11 +1,18 @@
 "use client";
 
 import useMediaQuery from "@/hooks/useMediaQuery";
-import { LucideMenu, X } from "lucide-react";
+import {
+  GithubIcon,
+  Hammer,
+  LucideMenu,
+  MessageCircleMore,
+  X,
+} from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Button } from "../ui/button";
 
 export enum BREAKPOINT {
   SM = 640,
@@ -108,6 +115,20 @@ export default function NavList({
           );
         })}
 
+        <div className="flex md:hidden border-t w-full py-6 mt-5 flex-col gap-3">
+          {/* 연락처 */}
+          <a
+            href="mailto:squirrel309@naver.com"
+            className="text-sm text-foreground transition-colors"
+          >
+            squirrel309@naver.com
+          </a>
+
+          {/* 카피라이트 */}
+          <p className="text-xs text-muted-foreground">
+            Copyright © {new Date().getFullYear()} p. Hyun
+          </p>
+        </div>
         {/* <Link
           href={"/guestbook"}
           className={cn(

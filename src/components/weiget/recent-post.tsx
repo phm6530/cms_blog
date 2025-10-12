@@ -45,7 +45,7 @@ export default async function RecentPost() {
     {
       title: "KakaoTalk",
       description: "실시간 연락하기 (오픈채팅)",
-      url: "https://open.kakao.com/o/xxxxxxx",
+      url: "https://open.kakao.com/o/sq4skkTf",
     },
     {
       title: "Personal Library",
