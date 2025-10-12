@@ -21,6 +21,7 @@ import LoadingSpiner from "@/components/animation/loading-spiner";
 import { PostItemModel } from "@/type/post.type";
 import getPostItem from "./action/page-service";
 import PostController from "./post-controller";
+import AdminPannal from "../post-adminPannal";
 
 // List get
 interface PostListApiResponse {
@@ -154,6 +155,10 @@ export default async function PostDetail({
             </div>
           </div>
         </PostVanner>
+        {/* 관리자 핸들러 */}
+        {session?.user?.role === "super" && (
+          <AdminPannal postId={+id} category={blog_sub_group.sub_group_name} />
+        )}
         <div className="grid gap-5 md:pt-10 relative mt-10 md:mt-0">
           {/* ------ TipTap Editor - custom lib ------ */}
           <PostView contents={contents} />

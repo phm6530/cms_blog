@@ -62,9 +62,9 @@ export default function AdminPannal({
   }
 
   return (
-    <div className="flex gap-2 flex-col border-t pt-5">
-      <div className="flex items-center gap-3 text-xs">
-        관리자 패널 <Settings size={12} />{" "}
+    <div className="flex gap-2 justify-between border px-2 py-1 rounded-lg mt-5 ">
+      <div className="flex items-center gap-3 text-xs border-r pr-10">
+        <Settings size={16} /> 관리자 패널
       </div>
       {session.data?.user && (
         <div className="flex gap-2">
