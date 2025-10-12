@@ -1,18 +1,11 @@
 "use client";
 
 import useMediaQuery from "@/hooks/useMediaQuery";
-import {
-  GithubIcon,
-  Hammer,
-  LucideMenu,
-  MessageCircleMore,
-  X,
-} from "lucide-react";
+import { LucideMenu, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "../ui/button";
 
 export enum BREAKPOINT {
   SM = 640,
