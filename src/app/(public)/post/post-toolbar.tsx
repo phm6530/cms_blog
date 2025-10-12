@@ -28,12 +28,7 @@ export default function PostToolbar() {
   };
 
   return (
-    <div className=" divide-x flex">
-      <Button
-        asChild
-        className="text-xs rounded-none"
-        variant={"ghost"}
-      ></Button>
+    <div className=" divide-x flex items-center mt-1">
       {/* 글자크기*/}
       <div className="flex gap-2 items-center ">
         <TypeIcon size={15} />

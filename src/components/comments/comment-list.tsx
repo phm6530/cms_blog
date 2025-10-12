@@ -1,7 +1,7 @@
 "use client";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import CommentItem from "./comment-item";
-import { REVALIDATE } from "@/type/constants";
+import { LIMIT_CNT, REVALIDATE } from "@/type/constants";
 import { CommentItemModel } from "@/lib/comment-bff";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -15,7 +15,7 @@ export default function CommentList({ postId }: { postId: string }) {
   const { data, isLoading } = useInfiniteQuery({
     queryKey: [`${REVALIDATE.COMMENT}:${postId}`],
     queryFn: async ({ pageParam }: { pageParam: number }) => {
-      const limit = 10;
+      const limit = LIMIT_CNT.POST_LIST;
       const cursor = pageParam !== 0 ? pageParam : null;
 
       let baseEndpont = `api/comment/${postId}`;

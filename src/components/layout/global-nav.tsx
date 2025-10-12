@@ -27,7 +27,7 @@ export default async function GlobalNav() {
       {/* 관리자 Nav */}
       {session?.user && session.user.role === "super" && <GlobalNavAdmin />}
 
-      <div className="grid-layout   justify-between items-center md:py-0 py-4 grid grid-cols-[auto_auto]  md:grid-cols-[auto_auto_1fr]  ">
+      <div className="grid-layout py-4    justify-between items-center md:py-0 py-2 grid grid-cols-[auto_auto]  md:grid-cols-[auto_auto_1fr] ">
         <Link href={"/"}>
           <h1 className=" text-xl md:text-xl font-bold font-SUIT-Regular pr-26">
             Dev Blog

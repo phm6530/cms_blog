@@ -183,7 +183,9 @@ export default function WirteForm({
         {!!form.watch("postGroup") && <CheckField />}
 
         <EditorProvider editor={editor}>
-          <SimpleToolTip />
+          <div className="sticky top-20 z-10">
+            <SimpleToolTip />
+          </div>
 
           <PostTitleField
             name="title"

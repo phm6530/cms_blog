@@ -6,7 +6,7 @@ import { guestBoardSchema } from "@/db/schema/guest-board";
 import { mapToCommentModel } from "@/lib/comment-bff";
 import { ComemntCreateService } from "@/lib/comment-create";
 import { createCommentTree } from "@/lib/comment-mapping";
-import { REVALIDATE } from "@/type/constants";
+import { LIMIT_CNT, REVALIDATE } from "@/type/constants";
 
 import {
   and,
@@ -60,7 +60,7 @@ export async function GET(req: NextRequest) {
   const qs = req.nextUrl.searchParams;
   const cursor = qs.get("cursor");
 
-  const LIMIT = 10;
+  const LIMIT = LIMIT_CNT.POST_LIST;
 
   // 공유할 Base Query
   const baseQuery = db

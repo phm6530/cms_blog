@@ -1,6 +1,6 @@
 "use client";
 
-import { REVALIDATE } from "@/type/constants";
+import { LIMIT_CNT, REVALIDATE } from "@/type/constants";
 import { withFetchRevaildationAction } from "@/util/withFetchRevaildationAction";
 import { usePathname } from "next/navigation";
 import PostItem from "../../post-list-item";
@@ -37,7 +37,7 @@ export default function CategoryPage({
     }>({
       queryKey: [REVALIDATE.POST.LIST, decodingcategoryName, isSubGroup],
       queryFn: async ({ pageParam }) => {
-        const limit = 10;
+        const limit = LIMIT_CNT.POST_LIST;
         const cursor = pageParam !== 0 ? pageParam : null; // 일단 초기 0, APi 변경후에 받을예정임
 
         let baseUrl = `api/post?category=${decodingcategoryName}&group=${isSubGroup}`;

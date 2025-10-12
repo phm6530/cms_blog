@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const session = await auth();
   const body: PostFormData = await req.json();
-  const DRAFT_LIMIT = 10;
+  const DRAFT_LIMIT = LIMIT_CNT.POST_LIST;
 
   return await apiHandler(async () => {
     if (!session?.user) {
