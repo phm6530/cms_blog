@@ -56,10 +56,13 @@ export default function NavList({
     <>
       {!isDesktop && (
         <div
-          className="block  md:hidden cursor-pointer"
+          className="block md:hidden cursor-pointer order-2"
           onClick={() => setToggle((prev) => !prev)}
         >
-          <LucideMenu className="text-muted-foreground hover:text-foreground active:text-red-300" />
+          <LucideMenu
+            size={26}
+            className="text-muted-foreground hover:text-foreground active:text-red-300"
+          />
         </div>
       )}
 

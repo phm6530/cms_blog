@@ -119,7 +119,7 @@ export default function CommentForm({
         >
           {session.status === "loading" ? (
             <div className="flex gap-2 items-center">
-              <Skeleton className="size-10 rounded-full" />
+              <Skeleton className="size-8 rounded-full" />
               <Skeleton className="h-6 w-32" />{" "}
               <Skeleton className="h-6 w-32" />
             </div>

@@ -90,7 +90,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
               }}
             >
               <div
-                className=" relative aspect-[10/14]   sm:aspect-[10/12] md:aspect-auto overflow-hidden  after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-2xl after:bg-no-repeat after:content-['']
+                className=" relative  aspect-[15/19]  sm:aspect-[10/12] md:aspect-auto overflow-hidden  after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-2xl after:bg-no-repeat after:content-['']
         sm:after:bg-gradient-to-b after:bg-gradient-to-t sm:after:from-zinc-950/0 after:from-zinc-950 after:via-zinc-700/5 after:to-zinc-950  rounded-3xl    text-white  md:min-h-[440px]"
               >
                 <div

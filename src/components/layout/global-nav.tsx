@@ -5,6 +5,7 @@ import HeaderNav from "./header-nav";
 import getCategories from "@/service/get-category";
 import { auth } from "@/auth";
 import GlobalNavAdmin from "./global-nav-admin";
+import ThemeHandler from "./ThemeHandler";
 
 export default async function GlobalNav() {
   const response = await getCategories();
@@ -27,15 +28,18 @@ export default async function GlobalNav() {
       {/* 관리자 Nav */}
       {session?.user && session.user.role === "super" && <GlobalNavAdmin />}
 
-      <div className="grid-layout py-4    justify-between items-center md:py-0 py-2 grid grid-cols-[auto_auto]  md:grid-cols-[auto_auto_1fr] ">
+      <div className="grid-layout py-4 gap-x-2 justify-between items-center md:py-0  grid grid-cols-[1fr_auto_auto]  md:grid-cols-[auto_1fr_auto_auto] ">
         <Link href={"/"}>
           <h1 className=" text-xl md:text-xl font-bold font-SUIT-Regular pr-26">
             Dev Blog
           </h1>
         </Link>
         <NavList categories={mappingCategories} />
-        <div className="hidden md:block">
+        <div className="hidden md:block ">
           <HeaderNav />
+        </div>
+        <div className="order-1 md:order-2">
+          <ThemeHandler />
         </div>
       </div>
     </div>
