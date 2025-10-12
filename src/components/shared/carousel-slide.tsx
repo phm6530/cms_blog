@@ -18,6 +18,7 @@ import { Button } from "../ui/button";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { PinIcon } from "lucide-react";
+import Link from "next/link";
 
 export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
   const [api, setApi] = React.useState<CarouselApi>();
@@ -25,6 +26,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
   const [count, setCount] = React.useState(0);
   const router = useRouter();
   const ref = React.useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = React.useState(false);
 
   React.useLayoutEffect(() => {
     if (!api) {
@@ -38,6 +40,14 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
       setCurrent(api.selectedScrollSnap() + 1);
     });
   }, [api]);
+
+  React.useEffect(() => {
+    const mql = window.matchMedia("(max-width: 639px)");
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    setIsMobile(mql.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
 
   useGSAP(
     () => {
@@ -74,10 +84,12 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
           {postList.map((data, index) => (
             <CarouselItem
               key={index}
-              className="grid  sm:grid-cols-[4fr_3fr] md:gap-[3rem] basis-1/1  relative "
+              className="grid cursor-pointer sm:cursor-auto  sm:grid-cols-[4fr_3fr] md:gap-[3rem] basis-1/1  relative "
+              onClick={() => {
+                if (isMobile) router.push(`/post/${data.post_id}`);
+              }}
             >
               <div
-                onClick={() => router.push(`/post/${data.post_id}`)}
                 className=" relative   aspect-[10/11] md:aspect-auto overflow-hidden  after:absolute after:inset-0 after:animate-opacity after:bg-cover  after:bg-center md:rounded-2xl after:bg-no-repeat after:content-['']
         sm:after:bg-gradient-to-b after:bg-gradient-to-t sm:after:from-zinc-950/0 after:from-zinc-950 after:via-zinc-700/5 after:to-zinc-950  rounded-3xl    text-white  md:min-h-[440px]"
               >
@@ -108,7 +120,7 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                 </div>
               </div>
               <div
-                className="flex flex-col py-12 h-full   z-10 rounded-tl-2xl px-10 md:px-0  absolute sm:static w-full    sm:gap-5 "
+                className="flex flex-col py-12 h-full   z-10 rounded-tl-2xl px-10 md:px-0  absolute pointer-events-none sm:pointer-events-auto sm:static w-full    sm:gap-5 "
                 // style={{
                 //   backdropFilter: "blur(10px)",
                 // }}
@@ -129,7 +141,9 @@ export function CarouselSlide({ postList }: { postList: PostItemModel[] }) {
                 </div>
 
                 <div className="text-xs hidden sm:flex gap-3 z-1  mt-auto">
-                  <Button className="text-xs p-5 px-6">Read More</Button>
+                  <Button className="text-xs p-5 px-6" asChild>
+                    <Link href={`/post/${data.post_id}`}>Read More</Link>
+                  </Button>
                 </div>
               </div>
             </CarouselItem>

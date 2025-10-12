@@ -30,30 +30,8 @@ export default function PostController({
 }) {
   const tocRef = useRef<HTMLDivElement>(null);
   const controllerRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+
   const [toggle, setToggle] = useState<boolean>(false);
-
-  // 높이 동기화
-  useEffect(() => {
-    const updateHeight = () => {
-      if (!containerRef.current) return;
-
-      const activeRef = toggle ? tocRef.current : controllerRef.current;
-      if (activeRef) {
-        const height = activeRef.scrollHeight;
-        containerRef.current.style.height = `${height}px`;
-      }
-    };
-
-    updateHeight();
-
-    // ResizeObserver로 내용 변경 감지
-    const observer = new ResizeObserver(updateHeight);
-    if (tocRef.current) observer.observe(tocRef.current);
-    if (controllerRef.current) observer.observe(controllerRef.current);
-
-    return () => observer.disconnect();
-  }, [toggle]);
 
   useGSAP(
     () => {
@@ -101,23 +79,21 @@ export default function PostController({
   );
 
   return (
-    <div className="flex flex-col gap-10">
-      <div className="flex flex-col gap-6">
-        <div className="flex gap-4 items-center">
+    <div className="flex flex-col gap-10 bg-muted">
+      {/* <div className="flex flex-col gap-6">
+       <div className="flex gap-4 items-center">
           <div
             className="size-10 shadow-2xl  border-3 border-white/50  rounded-full bg-gray-500/10 flex justify-center items-center relative  bg-cover"
             style={{
               backgroundImage: "url(/img/my-dog.jpg)",
             }}
-          >
-            {/* <div className="absolute bottom-0 -right-1 size-3 bg-teal-500 rounded-full border-2 border-background"></div> */}
-          </div>
+          ></div>
           <div>
             <h1 className="text-lg">Phm_</h1>
             <p className="text-xs text-muted-foreground">@Front Developer</p>
           </div>
-        </div>
-        <div
+        </div> 
+       <div
           onClick={() => setToggle((prev) => !prev)}
           className="text-xs group p-3 rounded-full flex gap-3 items-center justify-center cursor-pointer border hover:border-zinc-400"
         >
@@ -126,19 +102,19 @@ export default function PostController({
             size={14}
             className="group-hover:rotate-180 transition-all duration-500 opacity-70 group-hover:opacity-100"
           />
-        </div>
-      </div>
+        </div> 
+      </div> */}
 
-      <div ref={containerRef} className="relative transition-all duration-400">
+      <div className="relative transition-all duration-400 flex ">
         {/* Controller */}
         <div
           ref={controllerRef}
           className={cn(
-            "absolute inset-0 flex flex-col gap-10 ",
+            "md:absolute inset-0 flex md:flex-col gap-10 grid-layout py-3 items-center justify-between",
             toggle && "pointer-events-none"
           )}
         >
-          <div className="flex gap-2 flex-col">
+          {/* <div className="flex gap-2 flex-col  ">
             <h2 className="text-xs text-muted-foreground">카테고리</h2>
             <div className="flex gap-1">
               <Badge variant={"secondary"}>{sub_group_name}</Badge>
@@ -149,14 +125,14 @@ export default function PostController({
                 <Badge className="rounded-full">비공개</Badge>
               )}
             </div>
-          </div>
+          </div> */}
           <div className="flex flex-col gap-2">
-            <h2 className="text-xs text-muted-foreground">본문 크기</h2>
+            {/* <h2 className="text-xs text-muted-foreground">본문 크기</h2> */}
             <PostToolbar />
           </div>
 
           <div className="flex flex-col gap-2">
-            <h2 className="text-xs text-muted-foreground">포스트 인사이트</h2>
+            {/* <h2 className="text-xs text-muted-foreground">포스트 인사이트</h2> */}
             <div className="flex gap-0 ">
               <div className="grid grid-cols-2 gap-2 items-center">
                 <span className="flex gap-1 items-center text-xs  size-7 justify-center text-muted-foreground rounded-lg bg-foreground/2">
@@ -168,7 +144,6 @@ export default function PostController({
               <PostLikeHandler postId={postId} likeCnt={like_cnt} />
             </div>
           </div>
-          <AdminPannal postId={postId} category={sub_group_name} />
         </div>
 
         {/* TOC */}

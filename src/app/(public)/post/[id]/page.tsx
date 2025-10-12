@@ -104,7 +104,7 @@ export default async function PostDetail({
   return (
     <div className=" mx-0 md:mx-auto w-full! md:w-auto  md:pt-0 lg:grid-cols-[1fr_250px] md:gap-x-[7vw] grid">
       {/* 본문 영역 */}
-      <div className="md:pt-10 ">
+      <div className="md:pt-13 pt-8">
         <PostVanner thumbnail_url={blog_metadata.thumbnail_url}>
           <div className={cn("py-5 flex flex-col relative z-1 ")}>
             <div className="mb-10 mt-auto px-5 md:px-0">
@@ -130,7 +130,7 @@ export default async function PostDetail({
               </div>
               <h1
                 className={cn(
-                  "text-[clamp(1.6rem,4vw,3rem)] md:text-3xl mb-2   text-shadow-zinc-950 ",
+                  "text-[clamp(1.6rem,4vw,3rem)] md:text-3xl mb-2 text-shadow-zinc-950 w-[80%]",
                   blog_metadata.thumbnail_url &&
                     " leading-snug break-keep    whitespace-pre-line text-zinc-50"
                 )}
@@ -157,17 +157,14 @@ export default async function PostDetail({
         <div className="grid gap-5 md:pt-10 relative mt-10 md:mt-0">
           {/* ------ TipTap Editor - custom lib ------ */}
           <PostView contents={contents} />
-
           {/* ---- 댓글 ----- */}
           <h1 className="text-2xl mt-20">Comments</h1>
-          <CommentSection postId={id} />
-
-          {/* ---- post Tool bar ----- */}
+          <CommentSection postId={id} />s{/* ---- post Tool bar ----- */}
         </div>{" "}
       </div>
 
-      <div className=" hidden md:block relative ">
-        <div className="sticky top-50  text-left min-h-[400px] ">
+      <div className="bottom-0 w-full fixed   lg:w-auto left-0  z-15 lg:relative  ">
+        <div className="md:sticky lg:top-50 bg-red-500!  text-left lg:min-h-[400px] ">
           <PostController
             postId={+id}
             thumbnail_url={blog_metadata.thumbnail_url}

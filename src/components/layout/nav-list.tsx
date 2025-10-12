@@ -65,7 +65,8 @@ export default function NavList({
 
       <div
         className={cn(
-          `fixed flex flex-col mr-auto ease-side p-5 md:flex-row! bg-background md:bg-transparent! top-0 gap-0 z-100 md:z-10 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto`,
+          ` fixed flex flex-col mr-auto ease-side p-10 md:p-5  bg-background md:bg-transparent
+          top-0 gap-0 z-100 md:z-10 right-0 border-l h-screen w-[calc(100%-100px)] md:w-auto`,
           `md:static md:flex-row   md:h-auto md:border-0 md:gap-8 md:p-0  md:items-center`,
           toggle ? "left-[100px]" : "left-full"
         )}
