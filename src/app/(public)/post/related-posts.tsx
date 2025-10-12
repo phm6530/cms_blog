@@ -15,7 +15,7 @@ export default async function RelatedPosts({
   categoryName: string;
   subGroupName: string;
 }) {
-  const limit = 3;
+  const limit = 4;
 
   let baseUrl = `api/post?category=${categoryName}&group=${subGroupName}&curPost=${curPost}`;
   baseUrl += `&cursor=${0}&limit=${limit}`;
@@ -46,7 +46,11 @@ export default async function RelatedPosts({
           <section className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-10 mb-10">
             {response.result?.list.map((e, idx) => {
               return (
-                <Link href={`${e.post_id}`} key={`${e.post_id}:${idx}`}>
+                <Link
+                  href={`${e.post_id}`}
+                  key={`${e.post_id}:${idx}`}
+                  className={idx === 3 ? "hidden md:block" : ""}
+                >
                   <article className="flex flex-col gap-3">
                     {e.thumbnail_url ? (
                       <div className="w-full aspect-[16/8] relative">

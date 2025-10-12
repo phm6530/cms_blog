@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
           .where(eq(blogMetaSchema.status, POST_STATUS.DRAFT));
 
         if (+row.cnt >= DRAFT_LIMIT) {
-          throw new Error("임시저장은 10개 초과 불가합니다.");
+          throw new Error("임시저장은 9개 초과 불가합니다.");
         }
       }
 
