@@ -18,7 +18,7 @@ export default function ThemeHandler() {
     return (
       <Button
         variant={"outline"}
-        className="size-8 rounded-full md:ml-0 ml-auto bg-transparent!"
+        className="size-8 rounded-full md:ml-0 ml-auto bg-transparent"
         disabled
       ></Button>
     );

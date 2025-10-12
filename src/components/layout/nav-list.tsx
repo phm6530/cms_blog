@@ -56,7 +56,7 @@ export default function NavList({
     <>
       {!isDesktop && (
         <div
-          className="block  md:hidden cursor-pointer  order-2 md:order-1"
+          className="block md:hidden cursor-pointer order-2"
           onClick={() => setToggle((prev) => !prev)}
         >
           <LucideMenu
