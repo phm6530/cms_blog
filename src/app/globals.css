@@ -140,7 +140,7 @@
   }
 
   p {
-    @apply text-foreground/90 text-base leading-relaxed tracking-tight;
+    @apply text-foreground/90  leading-relaxed tracking-tight;
   }
 
   button {
