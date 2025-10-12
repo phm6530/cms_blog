@@ -158,7 +158,9 @@ export default async function PostDetail({
           {/* ------ TipTap Editor - custom lib ------ */}
           <PostView contents={contents} />
           {/* ---- 댓글 ----- */}
-          <h1 className="text-2xl mt-20">Comments</h1>
+          <h1 className="text-2xl mt-20" id="comment-section">
+            Comments
+          </h1>
           <CommentSection postId={id} />
           {/* ---- post Tool bar ----- */}
         </div>{" "}

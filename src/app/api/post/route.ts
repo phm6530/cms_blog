@@ -18,7 +18,7 @@ import { usersTable } from "@/db/schema";
 import { blogContentsSchema } from "@/db/schema/blog-contents";
 import { blogMetaSchema } from "@/db/schema/blog-metadata";
 import getBlogList from "@/service/get-blog-list";
-import { POST_STATUS, REVALIDATE } from "@/type/constants";
+import { LIMIT_CNT, POST_STATUS, REVALIDATE } from "@/type/constants";
 import { apiHandler } from "@/util/api-hanlder";
 import { WithTransaction } from "@/util/withTransaction";
 import { eq, sql } from "drizzle-orm";
@@ -45,7 +45,7 @@ export async function GET(req: NextRequest) {
   const cursor = cursorQuery ? Number(cursorQuery) : null;
 
   const limitQuery = qs.get("limit");
-  const limit = limitQuery ? Number(limitQuery) : 10;
+  const limit = limitQuery ? Number(limitQuery) : LIMIT_CNT.POST_LIST;
 
   // where..
   const { list, searchCnt, rowsCnt } = await getBlogList({

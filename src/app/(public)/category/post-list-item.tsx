@@ -74,9 +74,9 @@ export const PostItem = forwardRef<
                 <>
                   {post_title}{" "}
                   {DateUtils.isNew(created_at) && (
-                    <div className=" top-2 right-2 md:top-3 md:right-3 z-10 inline-block ">
+                    <div className=" right-2  md:right-3 z-10 inline-block  ">
                       <div className="relative">
-                        <div className="bg-gradient-to-r from-red-400 to-red-500  text-white text-[7px] text-center md:text-[10px]   size-3  md:py-1 rounded shadow-md">
+                        <div className="bg-gradient-to-r from-red-400 to-red-500  text-white text-[7px] text-center md:text-[8px]   size-3   rounded shadow-md">
                           N
                         </div>
                       </div>

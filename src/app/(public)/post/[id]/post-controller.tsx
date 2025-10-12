@@ -77,6 +77,12 @@ export default function PostController({
     { dependencies: [toggle] }
   );
 
+  const moveCommentSection = () => {
+    document
+      .getElementById("comment-section")
+      ?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="flex flex-col gap-10 bg-zinc-100 lg:bg-transparent">
       <div className="flex-col gap-6 hidden lg:flex  ">
@@ -137,7 +143,10 @@ export default function PostController({
               포스트 인사이트
             </h2>
             <div className="flex gap-0 ">
-              <div className="grid grid-cols-2 gap-2 items-center">
+              <div
+                className="grid grid-cols-2 gap-2 items-center cursor-pointer"
+                onClick={moveCommentSection}
+              >
                 <span className="flex gap-1 items-center text-xs  size-7 justify-center text-muted-foreground rounded-lg bg-foreground/2">
                   <MessageSquareMore size={13} />
                 </span>

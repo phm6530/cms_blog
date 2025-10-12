@@ -1,3 +1,7 @@
+export enum LIMIT_CNT {
+  POST_LIST = 10,
+}
+
 export enum POST_KEY {
   LIST = "POST_LIST",
   CATEGORY = "POST_CATEGORY",

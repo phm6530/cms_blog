@@ -1,7 +1,7 @@
 import getBlogList from "@/service/get-blog-list";
 import CategoryPage from "./_components/page";
 import { unstable_cache } from "next/cache";
-import { REVALIDATE } from "@/type/constants";
+import { LIMIT_CNT, REVALIDATE } from "@/type/constants";
 
 //전체
 const getCachedList = (categoryTag: string) =>
@@ -13,7 +13,7 @@ const getCachedList = (categoryTag: string) =>
         permission: false,
         searchKeyword: null,
         cursor: null,
-        limit: 10,
+        limit: LIMIT_CNT.POST_LIST,
         curPostId: null,
       });
       return { list, rowsCnt };
