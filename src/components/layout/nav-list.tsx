@@ -108,6 +108,20 @@ export default function NavList({
           );
         })}
 
+        <div className="flex md:hidden border-t w-full py-6 mt-5 flex-col gap-3">
+          {/* 연락처 */}
+          <a
+            href="mailto:squirrel309@naver.com"
+            className="text-sm text-foreground transition-colors"
+          >
+            squirrel309@naver.com
+          </a>
+
+          {/* 카피라이트 */}
+          <p className="text-xs text-muted-foreground">
+            Copyright © {new Date().getFullYear()} p. Hyun
+          </p>
+        </div>
         {/* <Link
           href={"/guestbook"}
           className={cn(

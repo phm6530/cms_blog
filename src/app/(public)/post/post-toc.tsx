@@ -25,7 +25,7 @@ const TocRender = (toc: TocItem[], prefix = "") => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       {toc.map((item, idx) => {
         const currentPrefix = prefix ? `${prefix}-${idx + 1}` : `${idx + 1}`;
 
@@ -53,7 +53,7 @@ const TocRender = (toc: TocItem[], prefix = "") => {
                 className={cn(
                   "line-clamp-2 group-hover:underline",
                   prefix === ""
-                    ? "text-sm font-medium"
+                    ? "text-xs font-medium"
                     : "text-xs text-muted-foreground"
                 )}
               >
@@ -82,10 +82,10 @@ export default function PostToc() {
   }, []);
 
   return (
-    <div className="rounded-lg h-[300px] overflow-y-scroll">
-      <div className="flex items-center gap-2 mb-4 pb-3 border-b">
+    <div className="rounded-lg h-[300px] overflow-y-scroll scroll-bar-custom ">
+      <div className="flex items-center gap-2 mb-4 pb-3 border-b ">
         <FileText className="w-4 h-4 text-muted-foreground" />
-        <h3 className="text-sm font-semibold">목차</h3>
+        <h3 className="text-sm ">Toc</h3>
       </div>
 
       {list.length > 0 ? (

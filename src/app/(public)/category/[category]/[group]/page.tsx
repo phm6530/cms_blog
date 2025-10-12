@@ -1,5 +1,5 @@
 import getBlogList from "@/service/get-blog-list";
-import { REVALIDATE } from "@/type/constants";
+import { LIMIT_CNT, REVALIDATE } from "@/type/constants";
 import { unstable_cache } from "next/cache";
 import CategoryPage from "../_components/page";
 
@@ -12,7 +12,7 @@ const getCachedList = (categoryTag: string, groupTag: string) =>
         permission: false,
         searchKeyword: null,
         cursor: null,
-        limit: 10,
+        limit: LIMIT_CNT.POST_LIST,
         curPostId: null,
       });
       return { list, rowsCnt };

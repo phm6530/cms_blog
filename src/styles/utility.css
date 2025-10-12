@@ -3,21 +3,28 @@
   @apply max-w-[1100px] mx-auto w-[calc(100%-2.5rem)] md:w-full md:px-5;
 }
 
-@utility test {
+@utility scroll-bar-custom {
+  /* 스크롤바 너비 */
   &::-webkit-scrollbar {
-    width: 10px;
+    @apply w-2;
   }
 
+  /* 스크롤바 막대 */
   &::-webkit-scrollbar-thumb {
-    background: rgba(220, 20, 60); /* 스크롤바 색상 */
-    border-radius: 10px; /* 스크롤바 둥근 테두리 */
+    @apply bg-primary/80 rounded-lg;
+    @apply hover:bg-primary;
+    @apply transition-colors duration-200;
   }
 
+  /* 스크롤바 트랙 */
   &::-webkit-scrollbar-track {
-    background: rgba(220, 20, 60, 0.1); /*스크롤바 뒷 배경 색상*/
+    @apply bg-primary/5 rounded-lg;
   }
-}
 
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary) / 0.8) hsl(var(--primary) / 0.05);
+}
 @utility w-calc-* {
   width: calc(100% - --spacing(--value(integer)));
   width: calc(100% - --value([length]));

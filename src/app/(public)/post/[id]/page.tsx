@@ -21,6 +21,7 @@ import LoadingSpiner from "@/components/animation/loading-spiner";
 import { PostItemModel } from "@/type/post.type";
 import getPostItem from "./action/page-service";
 import PostController from "./post-controller";
+import AdminPannal from "../post-adminPannal";
 
 // List get
 interface PostListApiResponse {
@@ -107,7 +108,7 @@ export default async function PostDetail({
       <div className="md:pt-13 pt-8">
         <PostVanner thumbnail_url={blog_metadata.thumbnail_url}>
           <div className={cn("py-5 flex flex-col relative z-1 ")}>
-            <div className="mb-10 mt-auto px-5 md:px-0">
+            <div className="mb-10 mt-auto px-5 sm:px-0">
               <div className="flex gap-2 mt-auto mb-3 ">
                 <Badge
                   variant={"secondary"}
@@ -130,14 +131,14 @@ export default async function PostDetail({
               </div>
               <h1
                 className={cn(
-                  "text-[clamp(1.6rem,4vw,3rem)] md:text-3xl mb-2 text-shadow-zinc-950 w-[80%]",
+                  "text-[clamp(1.6rem,4vw,2rem)] lg:text-3xl mb-2 text-shadow-zinc-950 ",
                   blog_metadata.thumbnail_url &&
                     " leading-snug break-keep    whitespace-pre-line text-zinc-50"
                 )}
               >
                 {blog_metadata.post_title}
               </h1>
-              <div className="flex gap-4 mt-10 text-zinc-50">
+              <div className="flex gap-4 mt-5 sm:mt-10 text-zinc-50">
                 <div className="text-xs  opacity-60">
                   {DateUtils.dateFormatKR(
                     blog_metadata.created_at,
@@ -154,6 +155,10 @@ export default async function PostDetail({
             </div>
           </div>
         </PostVanner>
+        {/* 관리자 핸들러 */}
+        {session?.user?.role === "super" && (
+          <AdminPannal postId={+id} category={blog_sub_group.sub_group_name} />
+        )}
         <div className="grid gap-5 md:pt-10 relative mt-10 md:mt-0">
           {/* ------ TipTap Editor - custom lib ------ */}
           <PostView contents={contents} />
