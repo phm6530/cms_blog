@@ -22,8 +22,8 @@ export async function uploadImageToS3(File: File, imgKey: string) {
 
     const buffer = Buffer.from(await File.arrayBuffer());
 
-    if (buffer.length > 5 * 1024 * 1024) {
-      throw new Error("5MB 넘음");
+    if (buffer.length > 10 * 1024 * 1024) {
+      throw new Error("10MB 넘음");
     }
 
     const fileName = `${new Date().toISOString()}-${imgKey}`;

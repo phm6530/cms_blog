@@ -1,56 +1,28 @@
-import s3 from "@/config/aws.config";
-import { apiHandler } from "@/util/api-hanlder";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { NextRequest } from "next/server";
-/**
- * 외부 프로젝트 전용
- */
-export const runtime = "nodejs";
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: "10mb",
-    },
+
+const s3 = new S3Client({
+  region: process.env.AWS_KEY_REGION!,
+  credentials: {
+    accessKeyId: process.env.AWS_KEY_ACCESS!,
+    secretAccessKey: process.env.AWS_KEY_SECRET!,
   },
-};
+});
 
 export async function POST(req: NextRequest) {
-  return await apiHandler(async () => {
-    const formData = await req.formData();
+  const { fileName, fileType, imgKey } = await req.json();
 
-    const file = formData.get("file") as File;
-    const imgKey = formData.get("imgKey") as string;
+  const key = `uploads/project/${imgKey}/${Date.now()}-${fileName}`;
 
-    if (!file) throw new Error("파일 없음");
-
-    const allowedMimeTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "image/webp",
-    ];
-
-    if (!allowedMimeTypes.includes(file.type)) {
-      throw new Error("MIME 타입이 이미지 아님");
-    }
-    const buffer = Buffer.from(await file.arrayBuffer());
-    if (buffer.length > 5 * 1024 * 1024) {
-      throw new Error("5MB 넘음");
-    }
-
-    const fileName = `${Date.now()}-${imgKey}`;
-    const Key = `uploads/project/${imgKey}/${fileName}`;
-
-    const command = new PutObjectCommand({
-      Bucket: process.env.AWS_S3_BUCKET_NAME!,
-      Key,
-      Body: buffer,
-      ContentType: file.type,
-    });
-
-    await s3.send(command);
-    return {
-      url: Key,
-    };
+  // Preline 방식
+  const command = new PutObjectCommand({
+    Bucket: process.env.AWS_S3_BUCKET_NAME!,
+    Key: key,
+    ContentType: fileType,
   });
+
+  const url = await getSignedUrl(s3, command, { expiresIn: 60 });
+  console.log(url, key);
+  return Response.json({ url, key });
 }

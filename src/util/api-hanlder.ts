@@ -11,6 +11,7 @@ export async function apiHandler<T>(
     const result = await cb();
     return NextResponse.json({ success: true, result }, { status: 200 });
   } catch (err) {
+    console.log("error!");
     const message =
       err instanceof Error ? err.message : "서버 오류가 발생했습니다.";
     if (isPostgresError(err) && err.code === "23503") {

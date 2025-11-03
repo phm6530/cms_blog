@@ -14,11 +14,13 @@ import LoadingSpinnerWrapper from "@/components/ui/loading-disabled-wrapper";
 import { z } from "zod";
 import { loginAction } from "./actions";
 import { useRouter } from "next/navigation";
+import useThrottling from "@/hooks/useThrottling";
 
 type LoginInput = z.infer<typeof loginSchema>;
 export default function Page() {
   const { status, update } = useSession();
   const router = useRouter();
+  const { throttle } = useThrottling();
 
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -29,17 +31,16 @@ export default function Page() {
   });
 
   const onSubmit = async (data: LoginInput) => {
-    console.log("??1323");
-    const result = await loginAction(data);
-    console.log("??1323");
-    console.log(result);
-    if (result?.error) {
-      toast.error(result.error);
-    } else {
-      await update();
-      router.refresh();
-      console.log("실행안됨????");
-    }
+    throttle(async () => {
+      const result = await loginAction(data);
+
+      if (result?.error) {
+        toast.error(result.error);
+      } else {
+        await update();
+        router.refresh();
+      }
+    }, 2000);
   };
 
   return (
