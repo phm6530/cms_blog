@@ -5,6 +5,15 @@ import { NextRequest } from "next/server";
 /**
  * 외부 프로젝트 전용
  */
+export const runtime = "node";
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb",
+    },
+  },
+};
+
 export async function POST(req: NextRequest) {
   return await apiHandler(async () => {
     const formData = await req.formData();
