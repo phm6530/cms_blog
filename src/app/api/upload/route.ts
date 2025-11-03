@@ -5,7 +5,7 @@ import { NextRequest } from "next/server";
 /**
  * 외부 프로젝트 전용
  */
-export const runtime = "node";
+export const runtime = "nodejs";
 export const config = {
   api: {
     bodyParser: {
