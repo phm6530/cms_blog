@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
 
   experimental: {
     serverActions: {
-      bodySizeLimit: "5mb", // 업로드 5MB 로
+      bodySizeLimit: "10mb", // 업로드 5MB 로
     },
   },
   images: {
